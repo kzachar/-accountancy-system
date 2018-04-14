@@ -3,6 +3,7 @@ package pl.coderstrust;
 import java.util.Arrays;
 
 public class BubbleSort {
+
   public static void main(String[] args) {
     Integer[] numbers = {18, 9, 1, 3, 12, 17};
     System.out.println("numbers in array");
