@@ -1,6 +1,6 @@
 package pl.coderstrust.accounting.model;
 
-public enum Vat {REGULAR(23), REDUCED1(8), REDUCED2(5);
+public enum Vat {REGULAR(23), REDUCED1(8), REDUCED2(5), ZERO(0);
 
   private final int rate;
 

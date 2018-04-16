@@ -18,7 +18,7 @@ public class InvoiceBook {
    database.saveInvoice(invoice);
   }
 
-  public Collection<Invoice> getInvoice(){
+  public Collection<Invoice> getInvoices(){
     return Arrays.asList();
   }
 
