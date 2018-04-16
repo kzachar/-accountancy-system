@@ -1,4 +1,4 @@
-package pl.coderstrust.accounting.database.impl.file;
+package pl.coderstrust.accounting.database;
 
 import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.database.Database;
@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InFileDatabase implements Database {
+public class InMemoryDatabase implements Database {
 
   private final Map<Integer, Invoice> invoices = new HashMap<>();
 
@@ -17,7 +17,7 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public Collection<Invoice> getInvoice() {
+  public Collection<Invoice> getInvoices() {
     return invoices.values();
   }
 
@@ -28,7 +28,7 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void removeInvoiceById(int id) {
+  public void removeInvoice(int id) {
     invoices.remove(id);
   }
 }

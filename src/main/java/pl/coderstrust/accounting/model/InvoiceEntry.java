@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 
 public class InvoiceEntry {
 
-  private String description;
+  private final String description;
+  private final BigDecimal price;
+  private final Vat vat;
 
-  private BigDecimal price;
+  public InvoiceEntry(String description, BigDecimal price, Vat vat) {
 
-  private Integer vatValue;
-
-  Vat vat;
-
-
-
+    this.description = description;
+    this.price = price;
+    this.vat = vat;
+  }
 }

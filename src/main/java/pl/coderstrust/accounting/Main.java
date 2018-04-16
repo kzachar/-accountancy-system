@@ -1,6 +1,6 @@
 package pl.coderstrust.accounting;
 
-import pl.coderstrust.accounting.database.impl.memory.InMemoryDatabase;
+import pl.coderstrust.accounting.database.InMemoryDatabase;
 import pl.coderstrust.accounting.logic.InvoiceBook;
 
 public class Main {

@@ -8,10 +8,10 @@ public interface Database {
 
   void saveInvoice(Invoice invoice);
 
-  Collection<Invoice> getInvoice();
+  Collection<Invoice> getInvoices();
 
   void updateInvoice(Invoice invoice);
 
-  void removeInvoiceById(int id);
+  void removeInvoice(int id);
 
 }

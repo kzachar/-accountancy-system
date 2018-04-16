@@ -22,8 +22,8 @@ public class InvoiceBook {
     return Arrays.asList();
   }
 
-  public void updateInvoice(Invoice invoice){}
+  public void updateInvoices(Invoice invoice){}
 
-  public void removeInvoiceById(int id){}
+  public void removeInvoice(int id){}
 
 }
