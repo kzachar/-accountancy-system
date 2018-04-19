@@ -1,7 +1,6 @@
 package pl.coderstrust.accounting.database;
 
 import pl.coderstrust.accounting.model.Invoice;
-import pl.coderstrust.accounting.database.Database;
 
 import java.util.Collection;
 import java.util.HashMap;
