@@ -1,7 +1,6 @@
 package pl.coderstrust.accounting.database;
 
 import pl.coderstrust.accounting.model.Invoice;
-import pl.coderstrust.accounting.database.Database;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,11 +8,15 @@ import java.util.Map;
 
 public class InMemoryDatabase implements Database {
 
-  private final Map<Integer, Invoice> invoices = new HashMap<>();
+  final Map<Integer, Invoice> invoices = new HashMap<>();
+  private int id = 0;
 
   @Override
-  public void saveInvoice(Invoice invoice) {
-    invoices.put(invoice.getId(), invoice);
+  public int saveInvoice(Invoice invoice) {
+    invoices
+        .put(new Integer(++id), new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
+            invoice.getBuyer(), invoice.getSeller(), invoice.getEntries()));
+    return id;
   }
 
   @Override

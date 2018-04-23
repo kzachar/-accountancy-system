@@ -12,12 +12,19 @@ public class Invoice {
   private final Company seller;
   private List<InvoiceEntry> entries;
 
-  public Invoice(Integer id, String identifier, LocalDate issuedDate, Company buyer, Company seller) {
+  public Invoice(Integer id, String identifier, LocalDate issuedDate, Company buyer, Company seller,
+      List<InvoiceEntry> entries) {
     this.id = id;
     this.identifier = identifier;
     this.issuedDate = issuedDate;
     this.buyer = buyer;
     this.seller = seller;
+    this.entries = entries;
+  }
+
+  public Invoice(String identifier, LocalDate issuedDate, Company buyer, Company seller,
+      List<InvoiceEntry> entries) {
+    this(null, identifier, issuedDate, buyer, seller, entries);
   }
 
   public Integer getId() {
