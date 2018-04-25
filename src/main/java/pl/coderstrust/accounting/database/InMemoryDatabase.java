@@ -8,7 +8,12 @@ import java.util.Map;
 
 public class InMemoryDatabase implements Database {
 
-  final Map<Integer, Invoice> invoices = new HashMap<>();
+  private final Map<Integer, Invoice> invoices = new HashMap<>();
+
+  public Map<Integer, Invoice> getInvs() {
+    return invoices;
+  }
+
   private int id = 0;
 
   @Override

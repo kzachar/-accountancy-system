@@ -16,7 +16,7 @@ public class InMemoryDatabaseTest {
   }
 
   @Test
-  public void ShouldTestIfSaveInvoiceMethodWorksWithNullId() {
+  public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed() {
     //given
     Invoice invoice = InvoiceHelper.getSampleInvoiceWithNullId();
     final String expectedKeySet = "[1, 2, 3]";
@@ -27,14 +27,14 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice);
 
     //then
-    Assert.assertEquals(false, database.invoices.isEmpty());
-    Assert.assertEquals(expectedKeySet, database.invoices.keySet().toString());
-    Assert.assertEquals(3, database.invoices.size());
+    Assert.assertEquals(false, database.getInvs().isEmpty());
+    Assert.assertEquals(expectedKeySet, database.getInvs().keySet().toString());
+    Assert.assertEquals(3, database.getInvs().size());
 
   }
 
   @Test
-  public void ShouldTestIfSaveInvoiceMethodWorks() {
+  public void shouldSaveSampleInvoices() {
     //given
     Invoice invoice = InvoiceHelper.getSampleInvoiceWithId();
     final String expectedKeySet = "[1, 2, 3, 4]";
@@ -46,8 +46,8 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice);
 
     //then
-    Assert.assertEquals(false, database.invoices.isEmpty());
-    Assert.assertEquals(expectedKeySet, database.invoices.keySet().toString());
-    Assert.assertEquals(4, database.invoices.size());
+    Assert.assertEquals(false, database.getInvs().isEmpty());
+    Assert.assertEquals(expectedKeySet, database.getInvs().keySet().toString());
+    Assert.assertEquals(4, database.getInvs().size());
   }
 }
