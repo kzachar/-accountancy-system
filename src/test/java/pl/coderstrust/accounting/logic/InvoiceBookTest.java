@@ -1,6 +1,12 @@
 package pl.coderstrust.accounting.logic;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,7 +21,6 @@ import java.time.LocalDate;
 @RunWith(MockitoJUnitRunner.class)
 public class InvoiceBookTest {
 
-  private InvoiceBook invoiceBookMock;
   private Database databaseMock;
 
   @Before
@@ -25,35 +30,36 @@ public class InvoiceBookTest {
 
   @Test
   public void shouldRemoveInvoice() {
-
     //given
-    invoiceBookMock = new InvoiceBook(databaseMock);
-    Mockito.doNothing().when(databaseMock).removeInvoice(Mockito.anyInt());
-    Mockito.when(databaseMock.get(Mockito.anyInt())).thenReturn(
+    InvoiceBook invoiceBook = new InvoiceBook(databaseMock);
+    doNothing().when(databaseMock).removeInvoice(anyInt());
+    when(databaseMock.get(anyInt())).thenReturn(
         new Invoice(1, "test", LocalDate.now(),
             new Company("Lorus", 611 - 23 - 06 - 888, "st. 1 Maja 37", 58 - 530, "Kowary"),
             new Company("Casio", 113 - 19 - 62 - 616, "st. Wirażowa 119", 02 - 145, "Warszawa")));
 
     //when
-    invoiceBookMock.removeInvoice(1);
+    invoiceBook.removeInvoice(1);
 
     //then
+    verify(databaseMock).removeInvoice(1);
   }
 
   @Test
-  public void shouldRemoveInvoiceWhenInvoiceDoesnotExist() {
-
+  public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() {
     //given
-    invoiceBookMock = new InvoiceBook(databaseMock);
-    Mockito.doNothing().when(databaseMock).removeInvoice(Mockito.anyInt());
+    InvoiceBook invoiceBook = new InvoiceBook(databaseMock);
+    doNothing().when(databaseMock).removeInvoice(anyInt());
+    when(databaseMock.get(anyInt())).thenReturn(null);
 
     //when
     try {
-      invoiceBookMock.removeInvoice(1);
+      invoiceBook.removeInvoice(1);
+      fail("should throw exception");
     } catch (IllegalArgumentException error) {
-      Assert.assertTrue(error.getMessage().contains("An invoice with given ID : "));
-    }
-    //then
 
+      //then
+      assertTrue(error.getMessage().contains("An invoice with given ID : "));
+    }
   }
 }
