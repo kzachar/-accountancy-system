@@ -15,6 +15,9 @@ public class InMemoryDatabaseTest {
     database = new InMemoryDatabase();
   }
 
+  //Tests to check if Id increments need to be added, no method defined at the time when
+  // Add invoice to InMemoryDatabase was coded
+
   @Test
   public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed() {
     //given
@@ -27,27 +30,27 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice);
 
     //then
-    Assert.assertEquals(false, database.getInvs().isEmpty());
-    Assert.assertEquals(expectedKeySet, database.getInvs().keySet().toString());
-    Assert.assertEquals(3, database.getInvs().size());
-
+    Assert.assertEquals(false, database.getInvoices().isEmpty());
+    Assert.assertEquals(3, database.getInvoices().size());
   }
 
   @Test
   public void shouldSaveSampleInvoices() {
     //given
-    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId();
+    Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
+    Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId2();
+    Invoice invoice3 = InvoiceHelper.getSampleInvoiceWithId3();
+    Invoice invoice4 = InvoiceHelper.getSampleInvoiceWithId4();
     final String expectedKeySet = "[1, 2, 3, 4]";
 
     //when
-    database.saveInvoice(invoice);
-    database.saveInvoice(invoice);
-    database.saveInvoice(invoice);
-    database.saveInvoice(invoice);
+    database.saveInvoice(invoice1);
+    database.saveInvoice(invoice2);
+    database.saveInvoice(invoice3);
+    database.saveInvoice(invoice4);
 
     //then
-    Assert.assertEquals(false, database.getInvs().isEmpty());
-    Assert.assertEquals(expectedKeySet, database.getInvs().keySet().toString());
-    Assert.assertEquals(4, database.getInvs().size());
+    Assert.assertEquals(false, database.getInvoices().isEmpty());
+    Assert.assertEquals(4, database.getInvoices().size());
   }
 }
