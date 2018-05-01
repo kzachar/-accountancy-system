@@ -18,7 +18,7 @@ public class InvoiceBook {
   }
 
   public Collection<Invoice> getInvoices() {
-    return null;
+    return Arrays.asList();
   }
 
   public void updateInvoices(Invoice invoice) {

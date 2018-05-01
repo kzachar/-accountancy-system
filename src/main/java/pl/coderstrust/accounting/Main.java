@@ -8,7 +8,5 @@ public class Main {
   public static void main(String[] args) {
 
     InvoiceBook invoiceBook = new InvoiceBook(new InMemoryDatabase());
-
   }
-
 }

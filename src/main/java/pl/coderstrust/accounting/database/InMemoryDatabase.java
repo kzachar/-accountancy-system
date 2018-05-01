@@ -9,10 +9,14 @@ import java.util.Map;
 public class InMemoryDatabase implements Database {
 
   private final Map<Integer, Invoice> invoices = new HashMap<>();
+  private int id = 0;
 
   @Override
-  public void saveInvoice(Invoice invoice) {
-    invoices.put(invoice.getId(), invoice);
+  public int saveInvoice(Invoice invoice) {
+    invoices
+        .put(new Integer(++id), new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
+            invoice.getBuyer(), invoice.getSeller(), invoice.getEntries()));
+    return id;
   }
 
   @Override

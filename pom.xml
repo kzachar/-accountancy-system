@@ -78,6 +78,7 @@
                     <limit>
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
+                      <minimum>0.80</minimum>
                       <minimum>0.30</minimum>
                     </limit>
                     <limit>
@@ -98,7 +99,13 @@
 
     </plugins>
   </build>
-
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>RELEASE</version>
+    </dependency>
+  </dependencies>
   <dependencies>
     <dependency>
       <groupId>org.mockito</groupId>
