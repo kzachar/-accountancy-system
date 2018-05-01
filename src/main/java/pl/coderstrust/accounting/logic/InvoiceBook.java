@@ -21,8 +21,15 @@ public class InvoiceBook {
     return null;
   }
 
-  public void updateInvoices(Invoice invoice){}
+  public void updateInvoices(Invoice invoice) {
+  }
 
-  public void removeInvoice(int id){}
+  public void removeInvoice(int id) {
+    if (database.get(id) != null) {
+      database.removeInvoice(id);
+    } else {
+      throw new IllegalArgumentException("An invoice with given ID : " + id + " doesn't exist");
+    }
+  }
 
 }

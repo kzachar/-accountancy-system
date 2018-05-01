@@ -30,4 +30,9 @@ public class InMemoryDatabase implements Database {
   public void removeInvoice(int id) {
     invoices.remove(id);
   }
+
+  @Override
+  public Invoice get(int id) {
+    return invoices.get(id);
+  }
 }

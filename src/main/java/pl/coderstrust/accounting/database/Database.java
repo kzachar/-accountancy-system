@@ -14,4 +14,6 @@ public interface Database {
 
   void removeInvoice(int id);
 
+  Invoice get(int id);
+
 }
