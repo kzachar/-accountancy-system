@@ -12,8 +12,8 @@ public class Invoice {
   private final Company seller;
   private List<InvoiceEntry> entries;
 
-  public Invoice(Integer id, String identifier, LocalDate issuedDate, Company buyer, Company seller,
-      List<InvoiceEntry> entries) {
+  public Invoice(Integer id, String identifier, LocalDate issuedDate, Company buyer,
+      Company seller, List<InvoiceEntry> entries) {
     this.id = id;
     this.identifier = identifier;
     this.issuedDate = issuedDate;

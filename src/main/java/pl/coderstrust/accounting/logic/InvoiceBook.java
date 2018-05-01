@@ -19,18 +19,15 @@ public class InvoiceBook {
   }
 
   public Collection<Invoice> getInvoices() {
-    return Arrays.asList();
+    return null;
   }
 
   public void updateInvoices(Invoice invoice) {
+    database.saveInvoice(invoice);
   }
 
   public void removeInvoice(int id) {
-    if (database.get(id) != null) {
-      database.removeInvoice(id);
-    } else {
-      throw new IllegalArgumentException("An invoice with given ID : " + id + " doesn't exist");
-    }
+    database.removeInvoice(id);
   }
 
 }

@@ -14,4 +14,17 @@ public class InvoiceEntry {
     this.price = price;
     this.vat = vat;
   }
+
+
+  public String getDescription() {
+    return description;
+  }
+
+  public BigDecimal getPrice() {
+    return price;
+  }
+
+  public Vat getVat() {
+    return vat;
+  }
 }
