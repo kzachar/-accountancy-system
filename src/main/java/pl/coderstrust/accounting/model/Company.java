@@ -8,9 +8,9 @@ public class Company {
   private final Integer postalCode;
   private final String location;
 
-
   public Company(String name, Integer taxId, String streetAndNumber, Integer postalCode,
       String location) {
+
     this.name = name;
     this.taxId = taxId;
     this.streetAndNumber = streetAndNumber;
