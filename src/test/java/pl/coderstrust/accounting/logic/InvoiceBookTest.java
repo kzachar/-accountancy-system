@@ -36,7 +36,7 @@ public class InvoiceBookTest {
     when(databaseMock.get(anyInt())).thenReturn(
         new Invoice(1, "test", LocalDate.now(),
             new Company("Lorus", 611 - 23 - 06 - 888, "st. 1 Maja 37", 58 - 530, "Kowary"),
-            new Company("Casio", 113 - 19 - 62 - 616, "st. Wirażowa 119", 02 - 145, "Warszawa")));
+            new Company("Casio", 113 - 19 - 62 - 616, "st. Wirażowa 119", 02 - 145, "Warszawa"),null));
 
     //when
     invoiceBook.removeInvoice(1);
