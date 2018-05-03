@@ -6,17 +6,17 @@ public class InvoiceEntryValidator {
 
     if (invoiceEntry.getDescription() == null) {
       throw new InvoiceEntryValidatorException(
-          "Expected Description field filled up");
+          "Expected Description field not empty");
     }
 
     if (invoiceEntry.getPrice() == null) {
       throw new InvoiceEntryValidatorException(
-          "Expected Price field filled up");
+          "Expected Price field not empty");
     }
 
     if (invoiceEntry.getVat() == null) {
       throw new InvoiceEntryValidatorException(
-          "Expected Vat field filled up");
+          "Expected Vat field not empty");
     }
   }
 }

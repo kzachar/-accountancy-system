@@ -3,13 +3,13 @@ package pl.coderstrust.accounting.model;
 public class Company {
 
   private final String name;
-  private final Integer taxId;
+  private final String  taxId;
   private final String streetAndNumber;
   private final String postalCode;
   private final String location;
 
 
-  public Company(String name, Integer taxId, String streetAndNumber, String postalCode,
+  public Company(String name, String  taxId, String streetAndNumber, String postalCode,
       String location) {
     this.name = name;
     this.taxId = taxId;
@@ -22,7 +22,7 @@ public class Company {
     return name;
   }
 
-  public Integer getTaxId() {
+  public String getTaxId() {
     return taxId;
   }
 
