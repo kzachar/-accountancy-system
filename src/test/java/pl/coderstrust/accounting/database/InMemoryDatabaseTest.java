@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.database;
 
+import static junit.framework.Assert.assertNotNull;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,7 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice);
 
     //then
+    assertNotNull(database.getInvoices());
     Assert.assertEquals(false, database.getInvoices().isEmpty());
     Assert.assertEquals(3, database.getInvoices().size());
   }
@@ -69,6 +72,7 @@ public class InMemoryDatabaseTest {
     database.removeInvoice(2);
 
     //then
+    assertNotNull(database.getInvoices());
     Assert.assertEquals(false, database.getInvoices().isEmpty());
     Assert.assertEquals(1, database.getInvoices().size());
     Assert.assertEquals(3, database.get(3).getId().intValue());
