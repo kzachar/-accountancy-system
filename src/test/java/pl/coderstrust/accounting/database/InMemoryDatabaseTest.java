@@ -91,6 +91,7 @@ public class InMemoryDatabaseTest {
     database.removeInvoice(2);
 
     //then
+    assertNotNull(database.getInvoices());
     Assert.assertEquals(true, database.getInvoices().isEmpty());
     Assert.assertEquals(0, database.getInvoices().size());
   }
@@ -108,6 +109,7 @@ public class InMemoryDatabaseTest {
     database.removeInvoice(2);
 
     //then
+    assertNotNull(database.getInvoices());
     Assert.assertEquals(true, database.getInvoices().isEmpty());
     Assert.assertEquals(0, database.getInvoices().size());
   }
