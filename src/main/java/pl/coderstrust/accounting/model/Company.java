@@ -22,7 +22,7 @@ public class Company {
     return name;
   }
 
-  public Integer getTaxID() {
+  public Integer getTaxId() {
     return taxId;
   }
 

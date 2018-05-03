@@ -21,7 +21,8 @@ public class InvoiceValidatorTest {
 
     entries.add(entry);
 
-    Invoice testInvoice = new Invoice(-9, null, LocalDate.of(2019, Month.JANUARY, 1), testCompany, testCompany, entries);
+    Invoice testInvoice = new Invoice(-9, null, LocalDate.of(2019, Month.JANUARY, 1), testCompany,
+        testCompany, entries);
 
     InvoiceValidator.validate(testInvoice);
   }

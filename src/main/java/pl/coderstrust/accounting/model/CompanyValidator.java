@@ -9,16 +9,16 @@ public class CompanyValidator {
           String.valueOf(company.getName()));
     }
 
-    if (company.getTaxID() == null) {
+    if (company.getTaxId() == null) {
       throw new CompanyValidatorException(
           "Validation of company tax id field failed. Expected tax id field filled up, got: ",
-          String.valueOf(company.getTaxID()));
+          String.valueOf(company.getTaxId()));
     }
 
-    if (company.getTaxID().toString().length() != 10) {
+    if (company.getTaxId().toString().length() != 10) {
       throw new CompanyValidatorException(
           "Validation of company tax id field failed. Expected tax id should consist of 10 digits, got: ",
-          String.valueOf(company.getTaxID()));
+          String.valueOf(company.getTaxId()));
     }
 
     if (!company.getPostalCode().matches("\\d{2}-\\d{3}")) {
