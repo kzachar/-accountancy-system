@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.database;
 
+import static junit.framework.Assert.assertNotNull;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -30,6 +32,7 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice);
 
     //then
+    assertNotNull(database.getInvoices());
     Assert.assertEquals(false, database.getInvoices().isEmpty());
     Assert.assertEquals(3, database.getInvoices().size());
   }
@@ -52,5 +55,62 @@ public class InMemoryDatabaseTest {
     //then
     Assert.assertEquals(false, database.getInvoices().isEmpty());
     Assert.assertEquals(4, database.getInvoices().size());
+  }
+
+  @Test
+  public void shouldAdd3AndRemove2SampleInvoices() {
+    //given
+    Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
+    Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId2();
+    Invoice invoice3 = InvoiceHelper.getSampleInvoiceWithId3();
+
+    //when
+    database.saveInvoice(invoice1);
+    database.saveInvoice(invoice2);
+    database.saveInvoice(invoice3);
+    database.removeInvoice(1);
+    database.removeInvoice(2);
+
+    //then
+    assertNotNull(database.getInvoices());
+    Assert.assertEquals(false, database.getInvoices().isEmpty());
+    Assert.assertEquals(1, database.getInvoices().size());
+    Assert.assertEquals(3, database.get(3).getId().intValue());
+  }
+
+  @Test
+  public void shouldAdd2AndRemove2SampleInvoices() {
+    //given
+    Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
+    Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId2();
+
+    //when
+    database.saveInvoice(invoice1);
+    database.saveInvoice(invoice2);
+    database.removeInvoice(1);
+    database.removeInvoice(2);
+
+    //then
+    assertNotNull(database.getInvoices());
+    Assert.assertEquals(true, database.getInvoices().isEmpty());
+    Assert.assertEquals(0, database.getInvoices().size());
+  }
+
+  @Test
+  public void shouldAdd2AndRemove2SampleInvoicesWithNullIdIsPassed() {
+    //given
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithNullId();
+
+    //when
+    database.saveInvoice(invoice);
+    database.saveInvoice(invoice2);
+    database.removeInvoice(1);
+    database.removeInvoice(2);
+
+    //then
+    assertNotNull(database.getInvoices());
+    Assert.assertEquals(true, database.getInvoices().isEmpty());
+    Assert.assertEquals(0, database.getInvoices().size());
   }
 }
