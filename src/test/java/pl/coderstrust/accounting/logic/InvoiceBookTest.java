@@ -3,7 +3,6 @@ package pl.coderstrust.accounting.logic;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,11 +31,10 @@ public class InvoiceBookTest {
   public void shouldRemoveInvoice() {
     //given
     InvoiceBook invoiceBook = new InvoiceBook(databaseMock);
-    doNothing().when(databaseMock).removeInvoice(anyInt());
     when(databaseMock.get(anyInt())).thenReturn(
         new Invoice(1, "test", LocalDate.now(),
-            new Company("Lorus", 611 - 23 - 06 - 888, "st. 1 Maja 37", 58 - 530, "Kowary"),
-            new Company("Casio", 113 - 19 - 62 - 616, "st. Wirażowa 119", 02 - 145, "Warszawa"), null));
+            new Company("Lorus", "6112306888", "st. 1 Maja 37", "58 - 530", "Kowary"),
+            new Company("Casio", "1131962616", "st. Wirażowa 119", "02 - 145", "Warszawa"), null));
 
     //when
     invoiceBook.removeInvoice(1);
@@ -49,7 +47,6 @@ public class InvoiceBookTest {
   public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() {
     //given
     InvoiceBook invoiceBook = new InvoiceBook(databaseMock);
-    doNothing().when(databaseMock).removeInvoice(anyInt());
     when(databaseMock.get(anyInt())).thenReturn(null);
 
     //when

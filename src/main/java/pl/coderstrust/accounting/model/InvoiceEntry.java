@@ -15,7 +15,6 @@ public class InvoiceEntry {
     this.vat = vat;
   }
 
-
   public String getDescription() {
     return description;
   }

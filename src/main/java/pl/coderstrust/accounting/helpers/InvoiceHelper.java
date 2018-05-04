@@ -92,7 +92,6 @@ public class InvoiceHelper {
   }
 
   public static InvoiceEntry getSampleInvoiceEntry() {
-
     InvoiceEntry entry = new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(entry);

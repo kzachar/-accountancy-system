@@ -42,7 +42,5 @@ public class InvoiceValidator {
     if (invoice.getSeller() == null) {
       throw new InvoiceValidatorException("Expected seller field not empty");
     }
-
-
   }
 }
