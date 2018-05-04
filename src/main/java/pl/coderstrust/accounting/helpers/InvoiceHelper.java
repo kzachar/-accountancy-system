@@ -79,16 +79,16 @@ public class InvoiceHelper {
   }
 
   public static Company getSampleBuyer() {
-    return new Company("CompanyBuyerTest4", "444444444", "Test Buyer Street 4", "44444",
+    return new Company("CompanyBuyerTest4", "1444444444", "Test Buyer Street 4", "44-444",
         "TestLocationBuyer4");
   }
 
   public static Company getSampleSeller() {
-    return new Company("CompanyBuyerTest4", "444444444", "Test Buyer Street 4", "44444",
+    return new Company("CompanySellerTest4", "1444444444", "Test Buyer Street 4", "44-444",
         "TestLocationBuyer4");
   }
 
-  public static List getSampleListOfEntries() {
+  public static List<InvoiceEntry> getSampleListOfEntries() {
     InvoiceEntry entry = new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(entry);

@@ -19,8 +19,12 @@ import org.mockito.Mock;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.InvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
+import pl.coderstrust.accounting.model.validator.InvoiceValidator;
+import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
 public class InvoiceBookTest {
@@ -28,12 +32,15 @@ public class InvoiceBookTest {
   @Mock
   private Database databaseMock;
 
+  @Mock
+  private InvoiceValidator invoiceValidatorMock;
+
   private InvoiceBook invoiceBook;
 
   @Before
   public void setUp() {
     initMocks(this);
-    invoiceBook = new InvoiceBook(databaseMock);
+    invoiceBook = new InvoiceBook(databaseMock, invoiceValidatorMock);
   }
 
   @Test
@@ -77,6 +84,7 @@ public class InvoiceBookTest {
     //then
     verify(databaseMock)
         .updateInvoice(argThat(passed -> verifyArguments(passed, invoice, sampleInvoice)));
+    verify(invoiceValidatorMock).validate(any());
   }
 
   private boolean verifyArguments(Invoice passedToDatabase, Invoice passedToMethod,
@@ -155,6 +163,30 @@ public class InvoiceBookTest {
     } catch (Exception ex) {
       thrown = true;
       assertTrue(ex instanceof IllegalArgumentException);
+    }
+
+    //then
+    assertTrue(thrown);
+    verify(databaseMock, never()).updateInvoice(any());
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryingToUpdateInvoiceThatDoesNotValidate() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
+    List<InvoiceValidationException> validationExceptions = new ArrayList<>();
+    validationExceptions.add(new InvoiceValidationException("TEST"));
+    when(invoiceValidatorMock.validate(any())).thenReturn(validationExceptions);
+    when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
+    boolean thrown = false;
+
+    //when
+    try {
+      invoiceBook.updateInvoice(sampleInvoice);
+    } catch (Exception ex) {
+      thrown = true;
+      assertTrue(ex instanceof IllegalArgumentException);
+      assertTrue(ex.getMessage().contains("TEST"));
     }
 
     //then

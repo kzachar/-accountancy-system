@@ -4,6 +4,8 @@ import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Company;
 import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.model.InvoiceEntry;
+import pl.coderstrust.accounting.model.validator.InvoiceValidator;
+import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -12,9 +14,11 @@ import java.util.List;
 public class InvoiceBook {
 
   private final Database database;
+  private final InvoiceValidator invoiceValidator;
 
-  public InvoiceBook(Database database) {
+  public InvoiceBook(Database database, InvoiceValidator invoiceValidator) {
     this.database = database;
+    this.invoiceValidator = invoiceValidator;
   }
 
   public void saveInvoice(Invoice invoice) {
@@ -29,21 +33,38 @@ public class InvoiceBook {
       throw new IllegalArgumentException("Invoice to update must have a valid ID");
     }
     Invoice current = database.get(invoice.getId());
-    if (current != null) {
-      String identifier = invoice.getIdentifier() == null ? current.getIdentifier() : invoice
-          .getIdentifier();
-      LocalDate issuedDate =
-          invoice.getIssuedDate() == null ? current.getIssuedDate() : invoice.getIssuedDate();
-      List<InvoiceEntry> entries =
-          invoice.getEntries() == null ? current.getEntries() : invoice.getEntries();
-      Company buyer = invoice.getBuyer() == null ? current.getBuyer() : invoice.getBuyer();
-      Company seller = invoice.getSeller() == null ? current.getSeller() : invoice.getSeller();
-      database.updateInvoice(
-          new Invoice(invoice.getId(), identifier, issuedDate, buyer, seller, entries));
-    } else {
+    if (current == null) {
       throw new IllegalArgumentException(
           "Cannot update: An invoice with given ID : " + invoice.getId() + " doesn't exist");
+
+    } else {
+      Invoice invoiceToUpdate = prepareInvoiceToUpdate(invoice, current);
+      Collection<InvoiceValidationException> validationExceptions = invoiceValidator
+          .validate(invoiceToUpdate);
+      if (validationExceptions.isEmpty()) {
+        database.updateInvoice(invoiceToUpdate);
+      } else {
+        StringBuilder sb = new StringBuilder("The updated invoice is not correct: ");
+        for (InvoiceValidationException exception : validationExceptions) {
+          sb.append(exception.getMessage());
+          sb.append("\n");
+        }
+        throw new IllegalArgumentException(sb.toString());
+      }
     }
+  }
+
+  private Invoice prepareInvoiceToUpdate(Invoice invoice, Invoice current) {
+    String identifier = invoice.getIdentifier() == null ? current.getIdentifier() : invoice
+        .getIdentifier();
+    LocalDate issuedDate =
+        invoice.getIssuedDate() == null ? current.getIssuedDate() : invoice.getIssuedDate();
+    List<InvoiceEntry> entries =
+        invoice.getEntries() == null ? current.getEntries() : invoice.getEntries();
+    Company buyer = invoice.getBuyer() == null ? current.getBuyer() : invoice.getBuyer();
+    Company seller = invoice.getSeller() == null ? current.getSeller() : invoice.getSeller();
+    return new Invoice(invoice.getId(), identifier, issuedDate, buyer, seller,
+        entries);
   }
 
   public void removeInvoice(int id) {
