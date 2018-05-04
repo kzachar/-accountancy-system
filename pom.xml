@@ -79,7 +79,6 @@
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
                       <minimum>0.80</minimum>
-                      <minimum>0.30</minimum>
                     </limit>
                     <limit>
                       <counter>BRANCH</counter>
@@ -111,6 +110,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
+    </dependency>
+    <dependency>
+      <groupId>pl.pragmatists</groupId>
+      <artifactId>JUnitParams</artifactId>
+      <version>1.1.1</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
