@@ -50,8 +50,4 @@ public class Invoice {
   public List<InvoiceEntry> getEntries() {
     return entries;
   }
-
-  public void setEntries(List<InvoiceEntry> entries) {
-    this.entries = entries;
-  }
 }

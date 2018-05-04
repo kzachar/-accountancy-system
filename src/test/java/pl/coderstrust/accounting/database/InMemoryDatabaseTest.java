@@ -1,13 +1,24 @@
 package pl.coderstrust.accounting.database;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThat;
 
-import org.junit.Assert;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import pl.coderstrust.accounting.helpers.InvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.time.LocalDate;
+import java.util.Collection;
+
+@RunWith(JUnitParamsRunner.class)
 public class InMemoryDatabaseTest {
 
   private InMemoryDatabase database;
@@ -24,7 +35,6 @@ public class InMemoryDatabaseTest {
   public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed() {
     //given
     Invoice invoice = InvoiceHelper.getSampleInvoiceWithNullId();
-    final String expectedKeySet = "[1, 2, 3]";
 
     //when
     database.saveInvoice(invoice);
@@ -32,9 +42,9 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice);
 
     //then
-    assertNotNull(database.getInvoices());
-    Assert.assertEquals(false, database.getInvoices().isEmpty());
-    Assert.assertEquals(3, database.getInvoices().size());
+    assertNotNull(database.get(1));
+    assertNotNull(database.get(2));
+    assertNotNull(database.get(3));
   }
 
   @Test
@@ -44,7 +54,6 @@ public class InMemoryDatabaseTest {
     Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId2();
     Invoice invoice3 = InvoiceHelper.getSampleInvoiceWithId3();
     Invoice invoice4 = InvoiceHelper.getSampleInvoiceWithId4();
-    final String expectedKeySet = "[1, 2, 3, 4]";
 
     //when
     database.saveInvoice(invoice1);
@@ -53,8 +62,10 @@ public class InMemoryDatabaseTest {
     database.saveInvoice(invoice4);
 
     //then
-    Assert.assertEquals(false, database.getInvoices().isEmpty());
-    Assert.assertEquals(4, database.getInvoices().size());
+    assertThat(database.get(1).getIdentifier(), is(invoice1.getIdentifier()));
+    assertThat(database.get(2).getIdentifier(), is(invoice2.getIdentifier()));
+    assertThat(database.get(3).getIdentifier(), is(invoice3.getIdentifier()));
+    assertThat(database.get(4).getIdentifier(), is(invoice4.getIdentifier()));
   }
 
   @Test
@@ -72,45 +83,138 @@ public class InMemoryDatabaseTest {
     database.removeInvoice(2);
 
     //then
-    assertNotNull(database.getInvoices());
-    Assert.assertEquals(false, database.getInvoices().isEmpty());
-    Assert.assertEquals(1, database.getInvoices().size());
-    Assert.assertEquals(3, database.get(3).getId().intValue());
+    assertNull(database.get(1));
+    assertNull(database.get(2));
+    assertNotNull(database.get(3));
   }
 
-  @Test
-  public void shouldAdd2AndRemove2SampleInvoices() {
-    //given
-    Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
-    Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId2();
 
-    //when
-    database.saveInvoice(invoice1);
-    database.saveInvoice(invoice2);
-    database.removeInvoice(1);
-    database.removeInvoice(2);
-
-    //then
-    assertNotNull(database.getInvoices());
-    Assert.assertEquals(true, database.getInvoices().isEmpty());
-    Assert.assertEquals(0, database.getInvoices().size());
-  }
-
-  @Test
-  public void shouldAdd2AndRemove2SampleInvoicesWithNullIdIsPassed() {
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowExceptionWhenTryingToUpdateWithNullId() {
     //given
     Invoice invoice = InvoiceHelper.getSampleInvoiceWithNullId();
-    Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithNullId();
+
+    //when
+    database.updateInvoice(invoice);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowExceptionWhenTryingToUpdateInvoiceThatDoesNotExist() {
+    //given
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId1();
+
+    //when
+    database.updateInvoice(invoice);
+  }
+
+  @Test
+  public void shouldUpdateInvoice() {
+    //given
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId1();
+    String newIdentifier = "ABC";
+    LocalDate newDate = LocalDate.now();
+    Invoice updatedInvoice = new Invoice(1, newIdentifier, newDate,
+        InvoiceHelper.getSampleBuyerCompany(), InvoiceHelper.getSampleSellerCompany(),
+        InvoiceHelper.getSampleInvoiceEntries());
 
     //when
     database.saveInvoice(invoice);
-    database.saveInvoice(invoice2);
-    database.removeInvoice(1);
-    database.removeInvoice(2);
+    database.updateInvoice(updatedInvoice);
 
     //then
-    assertNotNull(database.getInvoices());
-    Assert.assertEquals(true, database.getInvoices().isEmpty());
-    Assert.assertEquals(0, database.getInvoices().size());
+    Invoice actual = database.get(1);
+    assertThat(actual.getIdentifier(), is(newIdentifier));
+    assertThat(actual.getIssuedDate(), is(newDate));
   }
+
+  @Test
+  @Parameters(method = "findParameters")
+  public void shouldFindInvoiceByEveryParameter(Invoice searchParams) {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    database.saveInvoice(sampleInvoice);
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+
+    //when
+    Collection<Invoice> result = database.find(searchParams, null, null);
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    Invoice actual = result.iterator().next();
+    assertEquals(1, (int) actual.getId());
+    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+
+  }
+
+  @SuppressWarnings("unused")
+  private Object[] findParameters() {
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    return new Object[]{
+        new Object[]{new Invoice(1, null, null, null, null, null)},
+        new Object[]{new Invoice(null, sampleInvoice.getIdentifier(), null, null, null, null)},
+        new Object[]{new Invoice(null, null, sampleInvoice.getIssuedDate(), null, null, null)},
+        new Object[]{new Invoice(null, null, null, sampleInvoice.getBuyer(), null, null)},
+        new Object[]{new Invoice(null, null, null, null, sampleInvoice.getSeller(), null)},
+        new Object[]{new Invoice(null, null, null, null, null, sampleInvoice.getEntries())}
+    };
+  }
+
+  @Test
+  public void shouldFindInvoiceByDateRange() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    database.saveInvoice(sampleInvoice);
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+
+    //when
+    Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
+        sampleInvoice.getIssuedDate().plusDays(1));
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    Invoice actual = result.iterator().next();
+    assertEquals(1, (int) actual.getId());
+    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+  }
+
+  @Test
+  public void shouldFindInvoiceByIssuedDateFrom() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    database.saveInvoice(sampleInvoice);
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+
+    //when
+    Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
+        null);
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    Invoice actual = result.iterator().next();
+    assertEquals(1, (int) actual.getId());
+    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+  }
+
+  @Test
+  public void shouldFindInvoiceByIssuedDateTo() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    database.saveInvoice(sampleInvoice);
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+
+    //when
+    Collection<Invoice> result = database.find(null, null,
+        sampleInvoice.getIssuedDate().plusDays(1));
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    Invoice actual = result.iterator().next();
+    assertEquals(1, (int) actual.getId());
+    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+  }
+
 }

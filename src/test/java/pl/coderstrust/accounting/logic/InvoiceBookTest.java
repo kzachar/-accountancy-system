@@ -2,41 +2,44 @@ package pl.coderstrust.accounting.logic;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.Mock;
 import pl.coderstrust.accounting.database.Database;
-import pl.coderstrust.accounting.model.Company;
+import pl.coderstrust.accounting.helpers.InvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.time.LocalDate;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(JUnitParamsRunner.class)
 public class InvoiceBookTest {
 
+  @Mock
   private Database databaseMock;
+
+  private InvoiceBook invoiceBook;
 
   @Before
   public void setUp() {
-    databaseMock = Mockito.mock(Database.class);
+    initMocks(this);
+    invoiceBook = new InvoiceBook(databaseMock);
   }
 
   @Test
   public void shouldRemoveInvoice() {
     //given
-    InvoiceBook invoiceBook = new InvoiceBook(databaseMock);
-    doNothing().when(databaseMock).removeInvoice(anyInt());
-    when(databaseMock.get(anyInt())).thenReturn(
-        new Invoice(1, "test", LocalDate.now(),
-            new Company("Lorus", 611 - 23 - 06 - 888, "st. 1 Maja 37", 58 - 530, "Kowary"),
-            new Company("Casio", 113 - 19 - 62 - 616, "st. Wirażowa 119", 02 - 145, "Warszawa"), null));
+    when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
 
     //when
     invoiceBook.removeInvoice(1);
@@ -48,8 +51,6 @@ public class InvoiceBookTest {
   @Test
   public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() {
     //given
-    InvoiceBook invoiceBook = new InvoiceBook(databaseMock);
-    doNothing().when(databaseMock).removeInvoice(anyInt());
     when(databaseMock.get(anyInt())).thenReturn(null);
 
     //when
@@ -61,5 +62,129 @@ public class InvoiceBookTest {
       //then
       assertTrue(error.getMessage().contains("An invoice with given ID : "));
     }
+  }
+
+  @Test
+  @Parameters(method = "updateParameters")
+  public void shouldUpdateOnlyGivenParam(Invoice invoice) {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
+    when(databaseMock.get(anyInt())).thenReturn(sampleInvoice);
+
+    //when
+    invoiceBook.updateInvoice(invoice);
+
+    //then
+    verify(databaseMock)
+        .updateInvoice(argThat(passed -> verifyArguments(passed, invoice, sampleInvoice)));
+  }
+
+  private boolean verifyArguments(Invoice passedToDatabase, Invoice passedToMethod,
+      Invoice fromDatabase) {
+    if (!passedToDatabase.getIdentifier().equals(
+        passedToMethod.getIdentifier() == null ? fromDatabase.getIdentifier()
+            : passedToMethod.getIdentifier())) {
+      return false;
+    }
+    if (!passedToDatabase.getIssuedDate().equals(
+        passedToMethod.getIssuedDate() == null ? fromDatabase.getIssuedDate()
+            : passedToMethod.getIssuedDate())) {
+      return false;
+    }
+    if (!passedToDatabase.getBuyer().equals(
+        passedToMethod.getBuyer() == null ? fromDatabase.getBuyer()
+            : passedToMethod.getBuyer())) {
+      return false;
+    }
+    if (!passedToDatabase.getSeller().equals(
+        passedToMethod.getSeller() == null ? fromDatabase.getSeller()
+            : passedToMethod.getSeller())) {
+      return false;
+    }
+    return passedToDatabase.getEntries().equals(
+        passedToMethod.getEntries() == null ? fromDatabase.getEntries()
+            : passedToMethod.getEntries());
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryingToUpdateNullInvoice() {
+    //given
+    boolean thrown = false;
+
+    //when
+    try {
+      invoiceBook.updateInvoice(null);
+    } catch (Exception ex) {
+      thrown = true;
+      assertTrue(ex instanceof IllegalArgumentException);
+    }
+
+    //then
+    assertTrue(thrown);
+    verify(databaseMock, never()).updateInvoice(any());
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryingToUpdateInvoiceWithNullId() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    boolean thrown = false;
+
+    //when
+    try {
+      invoiceBook.updateInvoice(sampleInvoice);
+    } catch (Exception ex) {
+      thrown = true;
+      assertTrue(ex instanceof IllegalArgumentException);
+    }
+
+    //then
+    assertTrue(thrown);
+    verify(databaseMock, never()).updateInvoice(any());
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenTryingToUpdateInvoiceThatDoesNotExist() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
+    boolean thrown = false;
+
+    //when
+    try {
+      invoiceBook.updateInvoice(sampleInvoice);
+    } catch (Exception ex) {
+      thrown = true;
+      assertTrue(ex instanceof IllegalArgumentException);
+    }
+
+    //then
+    assertTrue(thrown);
+    verify(databaseMock, never()).updateInvoice(any());
+  }
+
+  @Test
+  public void shouldDelegateFindingInvoiceToDatabase() {
+    //given
+    Invoice searchParams = new Invoice(null, null, null, null, null);
+    LocalDate dateFrom = LocalDate.now();
+    LocalDate dateTo = LocalDate.now();
+
+    //when
+    invoiceBook.findInvoices(searchParams, dateFrom, dateTo);
+
+    //then
+    verify(databaseMock).find(searchParams, dateFrom, dateTo);
+  }
+
+  @SuppressWarnings("unused")
+  private Object[] updateParameters() {
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    return new Object[]{
+        new Object[]{new Invoice(1, sampleInvoice.getIdentifier(), null, null, null, null)},
+        new Object[]{new Invoice(1, null, sampleInvoice.getIssuedDate(), null, null, null)},
+        new Object[]{new Invoice(1, null, null, sampleInvoice.getBuyer(), null, null)},
+        new Object[]{new Invoice(1, null, null, null, sampleInvoice.getSeller(), null)},
+        new Object[]{new Invoice(1, null, null, null, null, sampleInvoice.getEntries())}
+    };
   }
 }
