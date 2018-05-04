@@ -23,6 +23,7 @@ public class InvoiceBook {
   }
 
   public void updateInvoices(Invoice invoice) {
+    database.saveInvoice(invoice);
   }
 
   public void removeInvoice(int id) {
@@ -32,5 +33,4 @@ public class InvoiceBook {
       throw new IllegalArgumentException("An invoice with given ID : " + id + " doesn't exist");
     }
   }
-
 }
