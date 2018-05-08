@@ -2,7 +2,6 @@ package pl.coderstrust.accounting.helpers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.util.List;
 
 public class FileHelper {
 
-  public static void writeToFile(List<String> lines, File file) throws IOException {
+  public static void writeToFile(List<String> lines, String  file) throws IOException {
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
       for (String line : lines) {
         bufferedWriter.write(line);
@@ -20,7 +19,7 @@ public class FileHelper {
     }
   }
 
-  public static List<String> readFromFile(File file) throws IOException {
+  public static List<String> readFromFile(String file) throws IOException {
     ArrayList<String> lines = new ArrayList<>();
     try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
       String line;

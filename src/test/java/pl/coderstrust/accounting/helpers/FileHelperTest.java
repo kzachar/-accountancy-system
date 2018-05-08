@@ -2,6 +2,7 @@ package pl.coderstrust.accounting.helpers;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import org.junit.Test;
@@ -18,7 +19,7 @@ import java.util.List;
 public class FileHelperTest {
 
   @Test
-  public void writeToFile() throws IOException {
+  public void shouldWriteLinesToFileAndCheckIfParametersNotNull() throws IOException {
     //given
     File file = File.createTempFile("123", "");
     file.deleteOnExit();
@@ -28,15 +29,17 @@ public class FileHelperTest {
     lines.add("Hello Adam!");
 
     //when
-    FileHelper.writeToFile(lines, file);
+    FileHelper.writeToFile(lines, file.toString());
     List<String> result = testReadFromFile(file);
 
     //then
+    assertNotNull(file);
+    assertNotNull(lines);
     assertThat(lines, is(equalTo(result)));
   }
 
   @Test
-  public void readFromFile() throws IOException {
+  public void shouldReadLinesFromFileAndCheckIfParametersNotNull() throws IOException {
     //given
     File file = File.createTempFile("123", "");
     file.deleteOnExit();
@@ -47,9 +50,10 @@ public class FileHelperTest {
     testWriteToFile(lines, file);
 
     //when
-    List<String> result = FileHelper.readFromFile(file);
+    List<String> result = FileHelper.readFromFile(file.toString());
 
     //then
+    assertNotNull(file);
     assertThat(lines, is(equalTo(result)));
   }
 
