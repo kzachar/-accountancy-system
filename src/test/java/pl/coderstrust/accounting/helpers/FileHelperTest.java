@@ -38,32 +38,25 @@ public class FileHelperTest {
     assertThat(lines, is(equalTo(result)));
   }
 
-  @Test(expected = NullPointerException.class)
-  public void shouldWriteLinesToFileAndThrowNullPointerExceptionIfLInesParameterIsNull() throws IOException {
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldWriteLinesToFileAndThrowIllegalArgumentExceptionIfLInesParameterIsNull()
+      throws IOException {
     //given
     File file = File.createTempFile("123", "");
     file.deleteOnExit();
-    List<String> lines = new ArrayList<>();
 
     //when
     FileHelper.writeToFile(null, file.toString());
-
-    //then
-    assertThat(lines,is(equalTo(NullPointerException.class)));
   }
 
-  @Test(expected = NullPointerException.class)
-  public void shouldWriteLinesToFileAndThrowNullPointerExceptionIfFileParameterIsNull() throws IOException {
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldWriteLinesToFileAndThrowIllegalArgumentExceptionIfFileParameterIsNull()
+      throws IOException {
     //given
-    File file = File.createTempFile("123", "");
-    file.deleteOnExit();
     List<String> lines = new ArrayList<>();
 
     //when
     FileHelper.writeToFile(lines, null);
-
-    //then
-    assertThat(file,is(equalTo(NullPointerException.class)));
   }
 
   @Test

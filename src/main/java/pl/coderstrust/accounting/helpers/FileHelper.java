@@ -11,6 +11,9 @@ import java.util.List;
 public class FileHelper {
 
   public static void writeToFile(List<String> lines, String  file) throws IOException {
+    if (lines == null || file == null) {
+      throw new IllegalArgumentException("Arguments may not be null");
+    }
     try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
       for (String line : lines) {
         bufferedWriter.write(line);
