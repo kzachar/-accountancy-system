@@ -10,11 +10,14 @@ import java.util.List;
 
 public class FileHelper {
 
-  public static void writeToFile(List<String> lines, String  file) throws IOException {
-    if (lines == null || file == null) {
-      throw new IllegalArgumentException("Arguments may not be null");
+  public static void writeToFile(List<String> lines, String filePath) throws IOException {
+    if (lines == null) {
+      throw new IllegalArgumentException("Parameter lines may not be null");
     }
-    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file))) {
+    if (filePath == null) {
+      throw new IllegalArgumentException("Parameter filePath may not be null");
+    }
+    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath))) {
       for (String line : lines) {
         bufferedWriter.write(line);
         bufferedWriter.newLine();
