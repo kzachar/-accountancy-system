@@ -17,6 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.InvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
@@ -47,6 +48,7 @@ public class InvoiceBookTest {
 
   @Test
   public void shouldSaveCorrectInvoice() {
+
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
 
@@ -54,6 +56,7 @@ public class InvoiceBookTest {
     invoiceBook.saveInvoice(sampleInvoice);
 
     //then
+    verify(invoiceValidatorMock, Mockito.times(1)).validate(sampleInvoice, false);
     verify(databaseMock).saveInvoice(sampleInvoice);
   }
 
@@ -68,6 +71,7 @@ public class InvoiceBookTest {
     invoiceBook.saveInvoice(incorrectInvoice);
 
     //then
+    verify(invoiceValidatorMock, Mockito.times(1)).validate(incorrectInvoice, false);
     verify(databaseMock, never()).saveInvoice(incorrectInvoice);
   }
 

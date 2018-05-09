@@ -22,12 +22,12 @@ public class InvoiceBook {
   }
 
   public void saveInvoice(Invoice invoice) {
-    final Collection<InvoiceValidationException> validate = invoiceValidator.validate(
+    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validate(
         invoice, false);
-    if (validate.isEmpty()) {
+    if (validationErrors.isEmpty()) {
       database.saveInvoice(invoice);
     } else {
-      for (InvoiceValidationException exception : validate) {
+      for (InvoiceValidationException exception : validationErrors) {
         exception.printStackTrace();
       }
     }
