@@ -20,6 +20,18 @@ public class InvoiceHelper {
     return new Invoice("TestIdentifier", LocalDate.now(), buyer, seller, entries);
   }
 
+  public static Invoice getSampleInvoiceWithIncorrectId() {
+    Company buyer = new Company("CompanyBuyerTest-1", "1111111111", "Test Buyer Street -1",
+        "11111",
+        "TestLocationBuyer-1");
+    Company seller = new Company("CompanySellerTest-1", "1111111111", "Test Seller Street -1",
+        "11111",
+        "TestLocationSeller-1");
+    List<InvoiceEntry> entries = getSampleInvoiceEntries();
+
+    return new Invoice(-1, "TestIdentifier-1", LocalDate.now(), buyer, seller, entries);
+  }
+
   public static Company getSampleSellerCompany() {
     return new Company("CompanySellerTest", "987654321", "Test Seller Street 1", "99999",
         "TestLocationSeller");
