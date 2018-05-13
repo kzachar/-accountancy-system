@@ -35,4 +35,17 @@ public class FileHelper {
     }
     return lines;
   }
+
+  public static void writeOneInvoiceToFile(String oneInvoice, String filePath) throws IOException {
+    if (oneInvoice == null) {
+      throw new IllegalArgumentException("Parameter lines may not be null");
+    }
+    if (filePath == null) {
+      throw new IllegalArgumentException("Parameter filePath may not be null");
+    }
+    try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filePath, true))) {
+      bufferedWriter.append(oneInvoice);
+      bufferedWriter.newLine();
+    }
+  }
 }

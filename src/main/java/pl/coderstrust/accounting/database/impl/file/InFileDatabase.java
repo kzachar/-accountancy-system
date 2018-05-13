@@ -1,22 +1,44 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import pl.coderstrust.accounting.database.Database;
+import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public class InFileDatabase implements Database {
 
-  private final Map<Integer, Invoice> invoices = new HashMap<>();
-  private int id = 0;
+  private String databaseFilePath;
+  private String idFilePath;
+
+  public InFileDatabase(String databaseFilePath, String idFilePath) {
+    if (databaseFilePath == null || "".equals(databaseFilePath)) {
+      throw new IllegalArgumentException("Database filepath can't be empty");
+    }
+    if (idFilePath == null || "".equals(idFilePath)) {
+      throw new IllegalArgumentException("ID filepath can't be empty");
+    }
+    this.databaseFilePath = databaseFilePath;
+    this.idFilePath = idFilePath;
+  }
 
   @Override
   public int saveInvoice(Invoice invoice) {
-    invoices.put(++id, new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
-        invoice.getBuyer(), invoice.getSeller(), invoice.getEntries()));
+    int id = 0;
+    try {
+      id = FileInvoiceHelper.getAndIncrementLastId(idFilePath);
+    } catch (IOException ioex) {
+      throw new RuntimeException(ioex);
+    }
+    Invoice invoiceToWrite = new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
+        invoice.getBuyer(), invoice.getSeller(), invoice.getEntries());
+    try {
+      FileInvoiceHelper.writeInvoiceToFile(invoiceToWrite, databaseFilePath);
+    } catch (IOException ieox) {
+      throw new RuntimeException(ieox);
+    }
     return id;
   }
 
@@ -32,6 +54,7 @@ public class InFileDatabase implements Database {
 
   @Override
   public Invoice get(int id) {
+
     return null;
   }
 
