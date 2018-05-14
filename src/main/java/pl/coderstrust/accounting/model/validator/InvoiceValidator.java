@@ -20,12 +20,11 @@ public class InvoiceValidator {
     this.companyValidator = companyValidator;
   }
 
-  public Collection<InvoiceValidationException> validate(Invoice invoice) {
+  public Collection<InvoiceValidationException> validate(Invoice invoice, boolean checkForId) {
     List<InvoiceValidationException> validationExceptions = new LinkedList<>();
-    if (invoice.getId() == null) {
+    if (invoice.getId() == null && checkForId) {
       validationExceptions.add(new InvoiceValidationException("Expected not empty Id"));
     } else {
-
       if (invoice.getId() < 0) {
         validationExceptions.add(new InvoiceValidationException(
             "Expected Id to be greater than 0, got: " + String.valueOf(invoice.getId())));
