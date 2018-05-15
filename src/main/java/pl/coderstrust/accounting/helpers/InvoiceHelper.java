@@ -90,6 +90,34 @@ public class InvoiceHelper {
     return new Invoice(4, "TestIdentifier4", LocalDate.now(), buyer, seller, entries);
   }
 
+  public static Invoice getSampleInvoiceWithId5() {
+    Company buyer = new Company("CompanyBuyerTest5", "555555555", "Test Buyer Street 5", "55555",
+        "TestLocationBuyer4");
+    Company seller = new Company("CompanySellerTest5", "555555555", "Test Seller Street 5", "55555",
+        "TestLocationSeller4");
+
+    return new Invoice(5, "TestIdentifier5", LocalDate.now(), buyer, seller, InvoiceHelper.getSampleEmptyListOfEntries());
+  }
+
+
+  public static Invoice getSampleInvoiceWithId6() {
+    Company buyer = new Company("CompanyBuyerTest6", "666666666", "Test Buyer Street 6", "66666",
+        "TestLocationBuyer4");
+    Company seller = new Company("CompanySellerTest6", "666666666", "Test Seller Street 4", "66666",
+        "TestLocationSeller4");
+
+    return new Invoice(6, "TestIdentifier6", LocalDate.now(), buyer, seller, InvoiceHelper.getSampleListOfEntries());
+  }
+
+  public static Invoice getSampleInvoiceWithId7() {
+    Company buyer = new Company("CompanyBuyerTest7", "777777777", "Test Buyer Street 7", "77777",
+        "TestLocationBuyer4");
+    Company seller = new Company("CompanySellerTest7", "777777777", "Test Seller Street 7", "77777",
+        "TestLocationSeller4");
+
+    return new Invoice(7, "TestIdentifier7", LocalDate.now(), buyer, seller, InvoiceHelper.getSampleInvoiceEntries());
+  }
+
   public static Company getSampleBuyer() {
     return new Company("CompanyBuyerTest4", "1444444444", "Test Buyer Street 4", "44-444",
         "TestLocationBuyer4");
@@ -98,6 +126,12 @@ public class InvoiceHelper {
   public static Company getSampleSeller() {
     return new Company("CompanySellerTest4", "1444444444", "Test Buyer Street 4", "44-444",
         "TestLocationBuyer4");
+  }
+
+  public static List<InvoiceEntry> getSampleEmptyListOfEntries() {
+    List<InvoiceEntry> entries = new ArrayList<>();
+
+    return entries;
   }
 
   public static List<InvoiceEntry> getSampleListOfEntries() {
@@ -110,8 +144,10 @@ public class InvoiceHelper {
 
   public static List<InvoiceEntry> getSampleInvoiceEntries() {
     List<InvoiceEntry> entries = new ArrayList<>();
-    entries.add(new InvoiceEntry("Test Entry #1", BigDecimal.TEN, Vat.REDUCED1));
-    entries.add(new InvoiceEntry("Test Entry #2", BigDecimal.TEN, Vat.REGULAR));
+    entries.add(new InvoiceEntry("Test Entry #1", BigDecimal.TEN, Vat.REGULAR));
+    entries.add(new InvoiceEntry("Test Entry #2", BigDecimal.TEN, Vat.REDUCED1));
+    entries.add(new InvoiceEntry("Test Entry #3", BigDecimal.TEN, Vat.REDUCED2));
+    entries.add(new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.ZERO));
 
     return entries;
   }

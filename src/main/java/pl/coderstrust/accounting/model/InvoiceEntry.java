@@ -5,9 +5,12 @@ import java.util.Objects;
 
 public class InvoiceEntry {
 
-  private final String description;
-  private final BigDecimal price;
-  private final Vat vat;
+  private String description;
+  private BigDecimal price;
+  private Vat vat;
+
+  public InvoiceEntry() {
+  }
 
   public InvoiceEntry(String description, BigDecimal price, Vat vat) {
     this.description = description;

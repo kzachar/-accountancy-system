@@ -4,11 +4,14 @@ import java.util.Objects;
 
 public class Company {
 
-  private final String name;
-  private final String taxId;
-  private final String streetAndNumber;
-  private final String postalCode;
-  private final String location;
+  private String name;
+  private String taxId;
+  private String streetAndNumber;
+  private String postalCode;
+  private String location;
+
+  public Company() {
+  }
 
   public Company(String name, String taxId, String streetAndNumber, String postalCode,
       String location) {
@@ -38,7 +41,6 @@ public class Company {
   public String getLocation() {
     return location;
   }
-
 
   @Override
   public boolean equals(Object obj) {
