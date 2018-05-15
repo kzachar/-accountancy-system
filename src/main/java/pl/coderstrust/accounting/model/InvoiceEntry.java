@@ -32,16 +32,36 @@ public class InvoiceEntry {
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
+  public boolean equals(Object variable7) {
+    if (this == variable7) {
       return true;
     }
-    if (obj == null || getClass() != obj.getClass()) {
+    if (variable7 == null || getClass() != variable7.getClass()) {
       return false;
     }
-    InvoiceEntry that = (InvoiceEntry) obj;
+    InvoiceEntry that = (InvoiceEntry) variable7;
     return Objects.equals(description, that.description)
-        && Objects.equals(price, that.price)
-        && vat == that.vat;
+        &&
+        Objects.equals(price, that.price)
+        &&
+        vat == that.vat;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(description, price, vat);
+  }
+
+  @Override
+  public String toString() {
+    return "InvoiceEntry{"
+        +
+        "description='" + description + '\''
+        +
+        ", price=" + price
+        +
+        ", vat=" + vat
+        + '}';
   }
 }

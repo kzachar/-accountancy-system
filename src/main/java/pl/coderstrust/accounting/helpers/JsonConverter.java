@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class JsonConverter {
 
-  public static String toJSON(Invoice invoice) throws IOException {
+  public static String toJson(Invoice invoice) throws IOException {
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -24,7 +24,7 @@ public class JsonConverter {
     return json;
   }
 
-  public static Invoice fromJSON(String json) throws IOException {
+  public static Invoice fromJson(String json) throws IOException {
 
     ObjectMapper mapper = new ObjectMapper();
 
