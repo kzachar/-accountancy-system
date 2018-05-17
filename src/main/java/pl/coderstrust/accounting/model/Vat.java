@@ -5,9 +5,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 
-
 public enum Vat {
   REGULAR(23), REDUCED1(8), REDUCED2(5), ZERO(0);
+
+  Vat(int rate) {
+    this.rate = rate;
+  }
 
   private final int rate;
 
@@ -16,15 +19,11 @@ public enum Vat {
     return Arrays.stream(Vat.values())
         .filter(status -> status.getValue() == value)
         .findFirst()
-        .orElse(ZERO);
+        .orElse(null);
   }
 
   @JsonValue
   public int getValue() {
     return rate;
-  }
-
-  Vat(int rate) {
-    this.rate = rate;
   }
 }

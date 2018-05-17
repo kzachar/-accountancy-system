@@ -2,7 +2,6 @@ package pl.coderstrust.accounting.model;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 public class Invoice {
 
@@ -53,51 +52,5 @@ public class Invoice {
 
   public List<InvoiceEntry> getEntries() {
     return entries;
-  }
-
-  @Override
-  public boolean equals(Object variable7) {
-    if (this == variable7) {
-      return true;
-    }
-    if (variable7 == null || getClass() != variable7.getClass()) {
-      return false;
-    }
-    Invoice invoice = (Invoice) variable7;
-    return Objects.equals(id, invoice.id)
-        &&
-        Objects.equals(identifier, invoice.identifier)
-        &&
-        Objects.equals(issuedDate, invoice.issuedDate)
-        &&
-        Objects.equals(buyer, invoice.buyer)
-        &&
-        Objects.equals(seller, invoice.seller)
-        &&
-        Objects.equals(entries, invoice.entries);
-  }
-
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(id, identifier, issuedDate, buyer, seller, entries);
-  }
-
-  @Override
-  public String toString() {
-    return "Invoice{"
-        +
-        "id=" + id
-        +
-        ", identifier='" + identifier + '\''
-        +
-        ", issuedDate=" + issuedDate
-        +
-        ", buyer=" + buyer
-        +
-        ", seller=" + seller
-        +
-        ", entries=" + entries
-        + '}';
   }
 }

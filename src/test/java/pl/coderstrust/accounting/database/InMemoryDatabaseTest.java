@@ -115,7 +115,7 @@ public class InMemoryDatabaseTest {
     LocalDate newDate = LocalDate.now();
     Invoice updatedInvoice = new Invoice(1, newIdentifier, newDate,
         InvoiceHelper.getSampleBuyerCompany(), InvoiceHelper.getSampleSellerCompany(),
-        InvoiceHelper.getSampleCoupleOfInvoiceEntries());
+        InvoiceHelper.getSampleFourInvoiceEntries());
 
     //when
     database.saveInvoice(invoice);

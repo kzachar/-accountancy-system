@@ -43,14 +43,14 @@ public class Company {
   }
 
   @Override
-  public boolean equals(Object variable7) {
-    if (this == variable7) {
+  public boolean equals(Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (variable7 == null || getClass() != variable7.getClass()) {
+    if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
-    Company company = (Company) variable7;
+    Company company = (Company) obj;
     return Objects.equals(name, company.name)
         &&
         Objects.equals(taxId, company.taxId)
@@ -60,27 +60,5 @@ public class Company {
         Objects.equals(postalCode, company.postalCode)
         &&
         Objects.equals(location, company.location);
-  }
-
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(name, taxId, streetAndNumber, postalCode, location);
-  }
-
-  @Override
-  public String toString() {
-    return "Company{"
-        +
-        "name='" + name + '\''
-        +
-        ", taxId='" + taxId + '\''
-        +
-        ", streetAndNumber='" + streetAndNumber + '\''
-        +
-        ", postalCode='" + postalCode + '\''
-        +
-        ", location='" + location + '\''
-        + '}';
   }
 }

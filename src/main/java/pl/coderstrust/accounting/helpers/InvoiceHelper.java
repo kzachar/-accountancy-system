@@ -7,6 +7,7 @@ import pl.coderstrust.accounting.model.Vat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class InvoiceHelper {
   public static Invoice getSampleInvoiceWithNullId() {
     Company buyer = getSampleBuyerCompany();
     Company seller = getSampleSellerCompany();
-    List<InvoiceEntry> entries = getSampleCoupleOfInvoiceEntries();
+    List<InvoiceEntry> entries = getSampleFourInvoiceEntries();
 
     return new Invoice("TestIdentifier", LocalDate.now(), buyer, seller, entries);
   }
@@ -27,7 +28,7 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest-1", "1111111111", "Test Seller Street -1",
         "11111",
         "TestLocationSeller-1");
-    List<InvoiceEntry> entries = getSampleInvoiceEntries();
+    List<InvoiceEntry> entries = getSampleOneInvoiceEntries();
 
     return new Invoice(-1, "TestIdentifier-1", LocalDate.now(), buyer, seller, entries);
   }
@@ -48,9 +49,9 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest1", "1111111111", "Test Seller Street 1",
         "11111",
         "TestLocationSeller1");
-    List<InvoiceEntry> entries = getSampleCoupleOfInvoiceEntries();
+    List<InvoiceEntry> entries = getSampleFourInvoiceEntries();
 
-    return new Invoice(1, "TestIdentifier1", LocalDate.now(), buyer, seller, entries);
+    return new Invoice(1, "TestIdentifier1", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller, entries);
   }
 
   public static Invoice getSampleInvoiceWithId2() {
@@ -62,7 +63,7 @@ public class InvoiceHelper {
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(entry);
 
-    return new Invoice(2, "TestIdentifier2", LocalDate.now(), buyer, seller, entries);
+    return new Invoice(2, "TestIdentifier2", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller, entries);
   }
 
   public static Invoice getSampleInvoiceWithId3() {
@@ -87,7 +88,7 @@ public class InvoiceHelper {
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(entry);
 
-    return new Invoice(4, "TestIdentifier4", LocalDate.now(), buyer, seller, entries);
+    return new Invoice(4, "TestIdentifier4", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller, entries);
   }
 
   public static Invoice getSampleInvoiceWithId5() {
@@ -96,7 +97,7 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest5", "555555555", "Test Seller Street 5", "55555",
         "TestLocationSeller4");
 
-    return new Invoice(5, "TestIdentifier5", LocalDate.now(), buyer, seller,
+    return new Invoice(5, "TestIdentifier5", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
         InvoiceHelper.getSampleEmptyInvoiceEntries());
   }
 
@@ -107,7 +108,7 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest6", "666666666", "Test Seller Street 4", "66666",
         "TestLocationSeller4");
 
-    return new Invoice(6, "TestIdentifier6", LocalDate.now(), buyer, seller,
+    return new Invoice(6, "TestIdentifier6", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
         InvoiceHelper.getSampleOneInvoiceEntries());
   }
 
@@ -117,8 +118,8 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest7", "777777777", "Test Seller Street 7", "77777",
         "TestLocationSeller4");
 
-    return new Invoice(7, "TestIdentifier7", LocalDate.now(), buyer, seller,
-        InvoiceHelper.getSampleCoupleOfInvoiceEntries());
+    return new Invoice(7, "TestIdentifier7", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
+        InvoiceHelper.getSampleFourInvoiceEntries());
   }
 
   public static Company getSampleBuyer() {
@@ -145,7 +146,7 @@ public class InvoiceHelper {
     return entries;
   }
 
-  public static List<InvoiceEntry> getSampleCoupleOfInvoiceEntries() {
+  public static List<InvoiceEntry> getSampleFourInvoiceEntries() {
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(new InvoiceEntry("Test Entry #1", BigDecimal.TEN, Vat.REGULAR));
     entries.add(new InvoiceEntry("Test Entry #2", BigDecimal.TEN, Vat.REDUCED1));
