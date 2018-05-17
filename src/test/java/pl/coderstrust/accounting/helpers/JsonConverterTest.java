@@ -4,7 +4,6 @@ import static junitparams.JUnitParamsRunner.$;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import junitparams.JUnitParamsRunner;
@@ -13,10 +12,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.accounting.model.Invoice;
-import pl.coderstrust.accounting.model.InvoiceEntry;
 
 import java.io.IOException;
-import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
 public class JsonConverterTest {
@@ -105,12 +102,7 @@ public class JsonConverterTest {
     assertThat(invoice.getIssuedDate(), is(invoiceToCompare.getIssuedDate()));
     assertThat(invoice.getBuyer(), is(invoiceToCompare.getBuyer()));
     assertThat(invoice.getSeller(), is(invoiceToCompare.getSeller()));
-    assertEntriesEqual(invoice.getEntries(), invoiceToCompare.getEntries());
-  }
+    assertTrue(invoice.getEntries().equals(invoiceToCompare.getEntries()));
 
-  private static void assertEntriesEqual(List<InvoiceEntry> entries,
-      List<InvoiceEntry> entriesToCompare) {
-    assertEquals(entries.size(), entriesToCompare.size());
-    assertTrue(entries.equals(entriesToCompare));
   }
 }
