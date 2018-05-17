@@ -16,7 +16,7 @@ public class InvoiceHelper {
   public static Invoice getSampleInvoiceWithNullId() {
     Company buyer = getSampleBuyerCompany();
     Company seller = getSampleSellerCompany();
-    List<InvoiceEntry> entries = getSampleFourInvoiceEntries();
+    List<InvoiceEntry> entries = getSampleFourInvoiceEntriesList();
 
     return new Invoice("TestIdentifier", LocalDate.now(), buyer, seller, entries);
   }
@@ -28,7 +28,7 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest-1", "1111111111", "Test Seller Street -1",
         "11111",
         "TestLocationSeller-1");
-    List<InvoiceEntry> entries = getSampleOneInvoiceEntries();
+    List<InvoiceEntry> entries = getSampleOneInvoiceEntryList();
 
     return new Invoice(-1, "TestIdentifier-1", LocalDate.now(), buyer, seller, entries);
   }
@@ -49,7 +49,7 @@ public class InvoiceHelper {
     Company seller = new Company("CompanySellerTest1", "1111111111", "Test Seller Street 1",
         "11111",
         "TestLocationSeller1");
-    List<InvoiceEntry> entries = getSampleFourInvoiceEntries();
+    List<InvoiceEntry> entries = getSampleFourInvoiceEntriesList();
 
     return new Invoice(1, "TestIdentifier1", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller, entries);
   }
@@ -98,7 +98,7 @@ public class InvoiceHelper {
         "TestLocationSeller4");
 
     return new Invoice(5, "TestIdentifier5", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
-        InvoiceHelper.getSampleEmptyInvoiceEntries());
+        InvoiceHelper.getSampleEmptyInvoiceEntryList());
   }
 
 
@@ -109,7 +109,7 @@ public class InvoiceHelper {
         "TestLocationSeller4");
 
     return new Invoice(6, "TestIdentifier6", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
-        InvoiceHelper.getSampleOneInvoiceEntries());
+        InvoiceHelper.getSampleOneInvoiceEntryList());
   }
 
   public static Invoice getSampleInvoiceWithId7() {
@@ -119,7 +119,7 @@ public class InvoiceHelper {
         "TestLocationSeller4");
 
     return new Invoice(7, "TestIdentifier7", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
-        InvoiceHelper.getSampleFourInvoiceEntries());
+        InvoiceHelper.getSampleFourInvoiceEntriesList());
   }
 
   public static Company getSampleBuyer() {
@@ -132,13 +132,13 @@ public class InvoiceHelper {
         "TestLocationBuyer4");
   }
 
-  public static List<InvoiceEntry> getSampleEmptyInvoiceEntries() {
+  public static List<InvoiceEntry> getSampleEmptyInvoiceEntryList() {
     List<InvoiceEntry> entries = new ArrayList<>();
 
     return entries;
   }
 
-  public static List<InvoiceEntry> getSampleOneInvoiceEntries() {
+  public static List<InvoiceEntry> getSampleOneInvoiceEntryList() {
     InvoiceEntry entry = new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(entry);
@@ -146,7 +146,7 @@ public class InvoiceHelper {
     return entries;
   }
 
-  public static List<InvoiceEntry> getSampleFourInvoiceEntries() {
+  public static List<InvoiceEntry> getSampleFourInvoiceEntriesList() {
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(new InvoiceEntry("Test Entry #1", BigDecimal.TEN, Vat.REGULAR));
     entries.add(new InvoiceEntry("Test Entry #2", BigDecimal.TEN, Vat.REDUCED1));

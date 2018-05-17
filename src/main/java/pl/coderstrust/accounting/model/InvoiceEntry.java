@@ -9,6 +9,7 @@ public class InvoiceEntry {
   private BigDecimal price;
   private Vat vat;
 
+  // Left empty constructor for Jackson
   public InvoiceEntry() {
   }
 
