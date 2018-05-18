@@ -54,13 +54,9 @@ public class Company {
     }
     Company company = (Company) obj;
     return Objects.equals(name, company.name)
-        &&
-        Objects.equals(taxId, company.taxId)
-        &&
-        Objects.equals(streetAndNumber, company.streetAndNumber)
-        &&
-        Objects.equals(postalCode, company.postalCode)
-        &&
-        Objects.equals(location, company.location);
+        && Objects.equals(taxId, company.taxId)
+        && Objects.equals(streetAndNumber, company.streetAndNumber)
+        && Objects.equals(postalCode, company.postalCode)
+        && Objects.equals(location, company.location);
   }
 }

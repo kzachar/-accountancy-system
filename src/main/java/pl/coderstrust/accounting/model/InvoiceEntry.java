@@ -41,9 +41,7 @@ public class InvoiceEntry {
     }
     InvoiceEntry that = (InvoiceEntry) obj;
     return Objects.equals(description, that.description)
-        &&
-        Objects.equals(price, that.price)
-        &&
-        vat == that.vat;
+        && Objects.equals(price, that.price)
+        && vat == that.vat;
   }
 }
