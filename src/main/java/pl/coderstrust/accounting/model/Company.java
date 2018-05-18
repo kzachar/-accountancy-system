@@ -1,5 +1,8 @@
 package pl.coderstrust.accounting.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Objects;
 
 public class Company {
@@ -10,8 +13,10 @@ public class Company {
   private final String postalCode;
   private final String location;
 
-  public Company(String name, String taxId, String streetAndNumber, String postalCode,
-      String location) {
+  @JsonCreator
+  public Company(@JsonProperty("name") String name, @JsonProperty("taxId") String taxId,
+      @JsonProperty("streetAndNumber") String streetAndNumber, @JsonProperty("postalCode") String postalCode,
+      @JsonProperty("location") String location) {
     this.name = name;
     this.taxId = taxId;
     this.streetAndNumber = streetAndNumber;
@@ -39,7 +44,6 @@ public class Company {
     return location;
   }
 
-
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {
@@ -50,9 +54,13 @@ public class Company {
     }
     Company company = (Company) obj;
     return Objects.equals(name, company.name)
-        && Objects.equals(taxId, company.taxId)
-        && Objects.equals(streetAndNumber, company.streetAndNumber)
-        && Objects.equals(postalCode, company.postalCode)
-        && Objects.equals(location, company.location);
+        &&
+        Objects.equals(taxId, company.taxId)
+        &&
+        Objects.equals(streetAndNumber, company.streetAndNumber)
+        &&
+        Objects.equals(postalCode, company.postalCode)
+        &&
+        Objects.equals(location, company.location);
   }
 }
