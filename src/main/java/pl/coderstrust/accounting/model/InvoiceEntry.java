@@ -9,8 +9,8 @@ public class InvoiceEntry {
   private BigDecimal price;
   private Vat vat;
 
-  // Left empty constructor for Jackson
   public InvoiceEntry() {
+  // Left empty constructor for Jackson
   }
 
   public InvoiceEntry(String description, BigDecimal price, Vat vat) {

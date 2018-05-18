@@ -12,8 +12,8 @@ public class Invoice {
   private Company seller;
   private List<InvoiceEntry> entries;
 
-  // Left empty constructor for Jackson
   public Invoice() {
+  // Left empty constructor for Jackson
   }
 
   public Invoice(Integer id, String identifier, LocalDate issuedDate, Company buyer,

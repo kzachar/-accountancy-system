@@ -10,8 +10,8 @@ public class Company {
   private String postalCode;
   private String location;
 
-  // Left empty constructor for Jackson
   public Company() {
+    // Left empty constructor for Jackson
   }
 
   public Company(String name, String taxId, String streetAndNumber, String postalCode,
