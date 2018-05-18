@@ -15,7 +15,6 @@ public class InvoiceValidator {
 
   List<InvoiceValidationException> validationExceptions = new LinkedList<>();
 
-
   public InvoiceValidator(InvoiceEntryValidator invoiceEntryValidator,
       CompanyValidator companyValidator) {
     this.invoiceEntryValidator = invoiceEntryValidator;
