@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -24,6 +23,7 @@ import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +47,7 @@ public class InvoiceBookTest {
   }
 
   @Test
-  public void shouldSaveCorrectInvoice() {
+  public void shouldSaveCorrectInvoice() throws IOException {
 
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
@@ -56,27 +56,27 @@ public class InvoiceBookTest {
     invoiceBook.saveInvoice(sampleInvoice);
 
     //then
-    verify(invoiceValidatorMock, Mockito.times(1)).validate(sampleInvoice, false);
+    verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(sampleInvoice);
     verify(databaseMock).saveInvoice(sampleInvoice);
   }
 
   @Test
-  public void shouldNotSaveIncorrectInvoice() {
+  public void shouldNotSaveIncorrectInvoice() throws IOException {
     //given
     Invoice incorrectInvoice = InvoiceHelper.getSampleInvoiceWithIncorrectId();
 
     //when
-    when(invoiceValidatorMock.validate(incorrectInvoice, false))
+    when(invoiceValidatorMock.validateInvoiceForSave(incorrectInvoice))
         .thenReturn(Collections.singletonList(new InvoiceValidationException("List Exceptions")));
     invoiceBook.saveInvoice(incorrectInvoice);
 
     //then
-    verify(invoiceValidatorMock, Mockito.times(1)).validate(incorrectInvoice, false);
+    verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(incorrectInvoice);
     verify(databaseMock, never()).saveInvoice(incorrectInvoice);
   }
 
   @Test
-  public void shouldRemoveInvoice() {
+  public void shouldRemoveInvoice() throws IOException {
     //given
     when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
 
@@ -88,7 +88,7 @@ public class InvoiceBookTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() {
+  public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() throws IOException {
     //given
     when(databaseMock.get(anyInt())).thenReturn(null);
 
@@ -116,7 +116,7 @@ public class InvoiceBookTest {
     //then
     verify(databaseMock)
         .updateInvoice(argThat(passed -> verifyArguments(passed, invoice, sampleInvoice)));
-    verify(invoiceValidatorMock).validate(any(), eq(true));
+    verify(invoiceValidatorMock).validateInvoiceForUpdate(any());
   }
 
   private boolean verifyArguments(Invoice passedToDatabase, Invoice passedToMethod,
@@ -208,7 +208,7 @@ public class InvoiceBookTest {
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
     List<InvoiceValidationException> validationExceptions = new ArrayList<>();
     validationExceptions.add(new InvoiceValidationException("TEST"));
-    when(invoiceValidatorMock.validate(any(), eq(true))).thenReturn(validationExceptions);
+    when(invoiceValidatorMock.validateInvoiceForUpdate(any())).thenReturn(validationExceptions);
     when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
     boolean thrown = false;
 

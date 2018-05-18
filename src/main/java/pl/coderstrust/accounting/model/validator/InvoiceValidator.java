@@ -4,7 +4,6 @@ import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,13 +13,24 @@ public class InvoiceValidator {
 
   private final CompanyValidator companyValidator;
 
+  List<InvoiceValidationException> validationExceptions = new LinkedList<>();
+
+
   public InvoiceValidator(InvoiceEntryValidator invoiceEntryValidator,
       CompanyValidator companyValidator) {
     this.invoiceEntryValidator = invoiceEntryValidator;
     this.companyValidator = companyValidator;
   }
 
-  public Collection<InvoiceValidationException> validate(Invoice invoice, boolean checkForId) {
+  public List<InvoiceValidationException> validateInvoiceForUpdate(Invoice invoice) {
+    return validate(invoice, true);
+  }
+
+  public List<InvoiceValidationException> validateInvoiceForSave(Invoice invoice) {
+    return validate(invoice, false);
+  }
+
+  private List<InvoiceValidationException> validate(Invoice invoice, boolean checkForId) {
     List<InvoiceValidationException> validationExceptions = new LinkedList<>();
     if (invoice.getId() == null && checkForId) {
       validationExceptions.add(new InvoiceValidationException("Expected not empty Id"));

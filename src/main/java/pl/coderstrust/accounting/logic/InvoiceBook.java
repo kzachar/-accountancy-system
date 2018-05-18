@@ -7,6 +7,7 @@ import pl.coderstrust.accounting.model.InvoiceEntry;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -21,9 +22,9 @@ public class InvoiceBook {
     this.invoiceValidator = invoiceValidator;
   }
 
-  public void saveInvoice(Invoice invoice) {
-    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validate(
-        invoice, false);
+  public void saveInvoice(Invoice invoice) throws IOException {
+    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validateInvoiceForSave(
+        invoice);
     if (validationErrors.isEmpty()) {
       database.saveInvoice(invoice);
     } else {
@@ -48,7 +49,7 @@ public class InvoiceBook {
     } else {
       Invoice invoiceToUpdate = prepareInvoiceToUpdate(invoice, current);
       Collection<InvoiceValidationException> validationExceptions = invoiceValidator
-          .validate(invoiceToUpdate, true);
+          .validateInvoiceForUpdate(invoiceToUpdate);
       if (validationExceptions.isEmpty()) {
         database.updateInvoice(invoiceToUpdate);
       } else {
@@ -75,7 +76,7 @@ public class InvoiceBook {
         entries);
   }
 
-  public void removeInvoice(int id) {
+  public void removeInvoice(int id) throws IOException {
     if (database.get(id) != null) {
       database.removeInvoice(id);
     } else {
