@@ -8,9 +8,13 @@ import java.util.Objects;
 
 public class InvoiceEntry {
 
-  private final String description;
-  private final BigDecimal price;
-  private final Vat vat;
+  private String description;
+  private BigDecimal price;
+  private Vat vat;
+
+  public InvoiceEntry() {
+  // Left empty constructor for Jackson
+  }
 
   @JsonCreator
   public InvoiceEntry(@JsonProperty("description") String description, @JsonProperty("price") BigDecimal price, @JsonProperty("vat") Vat vat) {
@@ -41,7 +45,9 @@ public class InvoiceEntry {
     }
     InvoiceEntry that = (InvoiceEntry) obj;
     return Objects.equals(description, that.description)
-        && Objects.equals(price, that.price)
-        && vat == that.vat;
+        &&
+        Objects.equals(price, that.price)
+        &&
+        vat == that.vat;
   }
 }

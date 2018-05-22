@@ -45,7 +45,7 @@ public class InvoiceValidatorTest {
 
     Invoice testInvoice = new Invoice(-9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
-        InvoiceHelper.getSampleListOfEntries());
+        InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);;
 
@@ -60,7 +60,7 @@ public class InvoiceValidatorTest {
     Invoice testInvoice = new Invoice(null, "Sample Identifier",
         LocalDate.of(2017, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
-        InvoiceHelper.getSampleListOfEntries());
+        InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
 
@@ -74,7 +74,7 @@ public class InvoiceValidatorTest {
 
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2019, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
-        InvoiceHelper.getSampleListOfEntries());
+        InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
 
@@ -88,7 +88,7 @@ public class InvoiceValidatorTest {
 
     Invoice testInvoice = new Invoice(9, "Sample Identifier", null,
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
-        InvoiceHelper.getSampleListOfEntries());
+        InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
 
@@ -102,7 +102,7 @@ public class InvoiceValidatorTest {
 
     Invoice testInvoice = new Invoice(9, null, LocalDate.of(2017, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
-        InvoiceHelper.getSampleListOfEntries());
+        InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForSave(testInvoice);
 
@@ -115,7 +115,7 @@ public class InvoiceValidatorTest {
   public void shouldCheckIfBuyerFieldIsNotNull() {
 
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
-        null, InvoiceHelper.getSampleSeller(), InvoiceHelper.getSampleListOfEntries());
+        null, InvoiceHelper.getSampleSeller(), InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForSave(testInvoice);
 
@@ -128,7 +128,7 @@ public class InvoiceValidatorTest {
   public void shouldCheckIfSellerFieldIsNotNull() {
 
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
-        InvoiceHelper.getSampleBuyer(), null, InvoiceHelper.getSampleListOfEntries());
+        InvoiceHelper.getSampleBuyer(), null, InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
 
@@ -185,7 +185,7 @@ public class InvoiceValidatorTest {
     when(companyValidatorMock.validate(sampleSeller)).thenReturn(sellerValidationExcetpions);
 
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
-        sampleBuyer, sampleSeller, InvoiceHelper.getSampleListOfEntries());
+        sampleBuyer, sampleSeller, InvoiceHelper.getSampleOneInvoiceEntryList());
 
     Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
 
@@ -198,7 +198,7 @@ public class InvoiceValidatorTest {
 
   @Test
   public void shouldValidateInvoiceEntries() {
-    List<InvoiceEntry> sampleListOfEntries = InvoiceHelper.getSampleListOfEntries();
+    List<InvoiceEntry> sampleListOfEntries = InvoiceHelper.getSampleOneInvoiceEntryList();
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         sampleListOfEntries);
