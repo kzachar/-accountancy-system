@@ -22,8 +22,8 @@ public class InvoiceBook {
   }
 
   public void saveInvoice(Invoice invoice) {
-    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validate(
-        invoice, false);
+    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validateInvoiceForSave(
+        invoice);
     if (validationErrors.isEmpty()) {
       database.saveInvoice(invoice);
     } else {
@@ -48,7 +48,7 @@ public class InvoiceBook {
     } else {
       Invoice invoiceToUpdate = prepareInvoiceToUpdate(invoice, current);
       Collection<InvoiceValidationException> validationExceptions = invoiceValidator
-          .validate(invoiceToUpdate, true);
+          .validateInvoiceForUpdate(invoiceToUpdate);
       if (validationExceptions.isEmpty()) {
         database.updateInvoice(invoiceToUpdate);
       } else {
