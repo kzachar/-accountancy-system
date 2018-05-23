@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,7 +55,7 @@ public class InvoiceBookTest {
     invoiceBook.saveInvoice(sampleInvoice);
 
     //then
-    verify(invoiceValidatorMock, Mockito.times(1)).validate(sampleInvoice, false);
+    verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(sampleInvoice);
     verify(databaseMock).saveInvoice(sampleInvoice);
   }
 
@@ -66,12 +65,12 @@ public class InvoiceBookTest {
     Invoice incorrectInvoice = InvoiceHelper.getSampleInvoiceWithIncorrectId();
 
     //when
-    when(invoiceValidatorMock.validate(incorrectInvoice, false))
+    when(invoiceValidatorMock.validateInvoiceForSave(incorrectInvoice))
         .thenReturn(Collections.singletonList(new InvoiceValidationException("List Exceptions")));
     invoiceBook.saveInvoice(incorrectInvoice);
 
     //then
-    verify(invoiceValidatorMock, Mockito.times(1)).validate(incorrectInvoice, false);
+    verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(incorrectInvoice);
     verify(databaseMock, never()).saveInvoice(incorrectInvoice);
   }
 
@@ -116,7 +115,7 @@ public class InvoiceBookTest {
     //then
     verify(databaseMock)
         .updateInvoice(argThat(passed -> verifyArguments(passed, invoice, sampleInvoice)));
-    verify(invoiceValidatorMock).validate(any(), eq(true));
+    verify(invoiceValidatorMock).validateInvoiceForUpdate(any());
   }
 
   private boolean verifyArguments(Invoice passedToDatabase, Invoice passedToMethod,
@@ -208,7 +207,7 @@ public class InvoiceBookTest {
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
     List<InvoiceValidationException> validationExceptions = new ArrayList<>();
     validationExceptions.add(new InvoiceValidationException("TEST"));
-    when(invoiceValidatorMock.validate(any(), eq(true))).thenReturn(validationExceptions);
+    when(invoiceValidatorMock.validateInvoiceForUpdate(any())).thenReturn(validationExceptions);
     when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
     boolean thrown = false;
 

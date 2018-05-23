@@ -1,19 +1,24 @@
 package pl.coderstrust.accounting.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class Invoice {
 
-  private final Integer id;
-  private final String identifier;
-  private final LocalDate issuedDate;
-  private final Company buyer;
-  private final Company seller;
+  private Integer id;
+  private String identifier;
+  private LocalDate issuedDate;
+  private Company buyer;
+  private Company seller;
   private List<InvoiceEntry> entries;
 
-  public Invoice(Integer id, String identifier, LocalDate issuedDate, Company buyer,
-      Company seller, List<InvoiceEntry> entries) {
+  @JsonCreator
+  public Invoice(@JsonProperty("id") Integer id, @JsonProperty("identifier") String identifier,
+      @JsonProperty("issuedDate") LocalDate issuedDate, @JsonProperty("buyer") Company buyer,
+      @JsonProperty("seller") Company seller, @JsonProperty("entries") List<InvoiceEntry> entries) {
     this.id = id;
     this.identifier = identifier;
     this.issuedDate = issuedDate;
