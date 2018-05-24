@@ -30,7 +30,7 @@ public class InFileDatabase implements Database {
     try {
       id = FileInvoiceHelper.getAndIncrementLastId(idFilePath);
     } catch (IOException ioex) {
-      throw new RuntimeException(ioex);
+      throw new RuntimeException("File " + idFilePath + " does not exist", ioex);
     }
     Invoice invoiceToWrite = new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
         invoice.getBuyer(), invoice.getSeller(), invoice.getEntries());
@@ -54,7 +54,6 @@ public class InFileDatabase implements Database {
 
   @Override
   public Invoice get(int id) {
-
     return null;
   }
 

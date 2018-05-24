@@ -12,6 +12,15 @@ public class InvoiceEntry {
   private BigDecimal price;
   private Vat vat;
 
+  @Override
+  public String toString() {
+    return "InvoiceEntry{"
+        + "description='" + description + '\''
+        + ", price=" + price
+        + ", vat=" + vat
+        + '}';
+  }
+
   public InvoiceEntry() {
   // Left empty constructor for Jackson
   }
@@ -25,6 +34,12 @@ public class InvoiceEntry {
 
   public String getDescription() {
     return description;
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(description, price, vat);
   }
 
   public BigDecimal getPrice() {
@@ -45,9 +60,7 @@ public class InvoiceEntry {
     }
     InvoiceEntry that = (InvoiceEntry) obj;
     return Objects.equals(description, that.description)
-        &&
-        Objects.equals(price, that.price)
-        &&
-        vat == that.vat;
+        && Objects.equals(price, that.price)
+        && vat == that.vat;
   }
 }

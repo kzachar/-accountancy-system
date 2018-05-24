@@ -2,12 +2,13 @@ package pl.coderstrust.accounting.helpers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import pl.coderstrust.accounting.database.impl.file.InFileDatabase;
+import com.fasterxml.jackson.datatype.jsr310.JSR310Module;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FileInvoiceHelper {
@@ -15,7 +16,8 @@ public class FileInvoiceHelper {
   private static ObjectMapper mapper = new ObjectMapper();
 
   static {
-    mapper.enable(SerializationFeature.INDENT_OUTPUT);
+    mapper.registerModule(new JSR310Module());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
   }
 
   public static List<Invoice> readInvoicesFromFile(String filePath) throws IOException {
@@ -31,17 +33,19 @@ public class FileInvoiceHelper {
   public static void writeInvoiceToFile(Invoice invoiceToWrite, String filePath)
       throws IOException {
     String convertedInvoice = mapper.writeValueAsString(invoiceToWrite);
-    FileHelper.writeOneInvoiceToFile(convertedInvoice, filePath);
+    FileHelper.appendToFile(convertedInvoice, filePath);
   }
 
   public static int getAndIncrementLastId(String filePath) throws IOException {
     List<String> lines = null;
     lines = FileHelper.readFromFile(filePath);
     if (lines.isEmpty()) {
-      InFileDatabase inFileDatabase = new InFileDatabase(filePath, "0");
+      FileHelper.writeToFile(Collections.singletonList("0"), filePath);//  liste jednoelemtnwoa
+      return 0;
     }
     if (lines.size() > 1) {
-      throw new IllegalStateException("You can't isnsert more than 1 invoice");
+      throw new IllegalStateException(
+          "File can't included more than 1 id");
     }
     int id = Integer.valueOf(lines.get(0)) + 1;
     List<String> idToSave = Arrays.asList(String.valueOf(id));

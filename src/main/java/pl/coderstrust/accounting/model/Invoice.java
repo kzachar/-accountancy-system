@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class Invoice {
 
@@ -25,6 +26,45 @@ public class Invoice {
     this.buyer = buyer;
     this.seller = seller;
     this.entries = entries;
+  }
+
+  @Override
+  public String toString() {
+    return "Invoice{"
+        + "id=" + id
+        + ", identifier='" + identifier + '\''
+        + ", issuedDate=" + issuedDate
+        + ", buyer=" + buyer
+        + ", seller=" + seller
+        + ", entries=" + entries
+        + '}';
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Invoice invoice = (Invoice) obj;
+    return Objects.equals(id, invoice.id)
+        && Objects.equals(identifier, invoice.identifier)
+        && Objects.equals(issuedDate, invoice.issuedDate)
+        && Objects.equals(buyer, invoice.buyer)
+        && Objects.equals(seller, invoice.seller)
+        && Objects.equals(entries, invoice.entries);
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(id, identifier, issuedDate, buyer, seller, entries);
+  }
+
+  public Invoice() {
+
   }
 
   public Invoice(String identifier, LocalDate issuedDate, Company buyer, Company seller,

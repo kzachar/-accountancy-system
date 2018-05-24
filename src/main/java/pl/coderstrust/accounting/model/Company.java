@@ -28,6 +28,26 @@ public class Company {
     this.location = location;
   }
 
+  @Override
+  public String toString() {
+    return "Company{"
+        + "name='" + name + '\''
+        + ", taxId='" + taxId + '\''
+        + ", streetAndNumber='" + streetAndNumber + '\''
+        + ", postalCode='" + postalCode + '\''
+        + ", location='" + location + '\''
+        + '}';
+  }
+
+  @Override
+  public int hashCode() {
+
+    return Objects.hash(name, taxId, streetAndNumber, postalCode, location);
+  }
+
+  public Company() {
+  }
+
   public String getName() {
     return name;
   }
@@ -58,13 +78,9 @@ public class Company {
     }
     Company company = (Company) obj;
     return Objects.equals(name, company.name)
-        &&
-        Objects.equals(taxId, company.taxId)
-        &&
-        Objects.equals(streetAndNumber, company.streetAndNumber)
-        &&
-        Objects.equals(postalCode, company.postalCode)
-        &&
-        Objects.equals(location, company.location);
+        && Objects.equals(taxId, company.taxId)
+        && Objects.equals(streetAndNumber, company.streetAndNumber)
+        && Objects.equals(postalCode, company.postalCode)
+        && Objects.equals(location, company.location);
   }
 }

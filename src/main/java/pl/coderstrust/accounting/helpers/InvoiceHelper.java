@@ -43,6 +43,17 @@ public class InvoiceHelper {
         "TestLocationBuyer");
   }
 
+  public static Invoice getSampleInvoiceWithId0() {
+    Company buyer = new Company("CompanyBuyerTest0", "000000000", "Test Buyer Street 0", "00000",
+        "TestLocationBuyer0");
+    Company seller = new Company("CompanySellerTest0", "0000000000", "Test Seller Street 0",
+        "00000",
+        "TestLocationSeller0");
+    List<InvoiceEntry> entries = getSampleInvoiceEntries();
+
+    return new Invoice(0, "TestIdentifier0", LocalDate.now(), buyer, seller, entries);
+  }
+
   public static Invoice getSampleInvoiceWithId1() {
     Company buyer = new Company("CompanyBuyerTest1", "1111111111", "Test Buyer Street 1", "11111",
         "TestLocationBuyer1");
