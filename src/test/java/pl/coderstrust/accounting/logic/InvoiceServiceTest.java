@@ -29,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
-public class InvoiceBookTest {
+public class InvoiceServiceTest {
 
   @Mock
   private Database databaseMock;
@@ -37,12 +37,12 @@ public class InvoiceBookTest {
   @Mock
   private InvoiceValidator invoiceValidatorMock;
 
-  private InvoiceBook invoiceBook;
+  private InvoiceService invoiceService;
 
   @Before
   public void setUp() {
     initMocks(this);
-    invoiceBook = new InvoiceBook(databaseMock, invoiceValidatorMock);
+    invoiceService = new InvoiceService(databaseMock, invoiceValidatorMock);
   }
 
   @Test
@@ -52,7 +52,7 @@ public class InvoiceBookTest {
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
 
     //when
-    invoiceBook.saveInvoice(sampleInvoice);
+    invoiceService.saveInvoice(sampleInvoice);
 
     //then
     verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(sampleInvoice);
@@ -67,7 +67,7 @@ public class InvoiceBookTest {
     //when
     when(invoiceValidatorMock.validateInvoiceForSave(incorrectInvoice))
         .thenReturn(Collections.singletonList(new InvoiceValidationException("List Exceptions")));
-    invoiceBook.saveInvoice(incorrectInvoice);
+    invoiceService.saveInvoice(incorrectInvoice);
 
     //then
     verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(incorrectInvoice);
@@ -80,7 +80,7 @@ public class InvoiceBookTest {
     when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
 
     //when
-    invoiceBook.removeInvoice(1);
+    invoiceService.removeInvoice(1);
 
     //then
     verify(databaseMock).removeInvoice(1);
@@ -93,7 +93,7 @@ public class InvoiceBookTest {
 
     //when
     try {
-      invoiceBook.removeInvoice(1);
+      invoiceService.removeInvoice(1);
       fail("should throw exception");
     } catch (IllegalArgumentException error) {
 
@@ -110,7 +110,7 @@ public class InvoiceBookTest {
     when(databaseMock.get(anyInt())).thenReturn(sampleInvoice);
 
     //when
-    invoiceBook.updateInvoice(invoice);
+    invoiceService.updateInvoice(invoice);
 
     //then
     verify(databaseMock)
@@ -152,7 +152,7 @@ public class InvoiceBookTest {
 
     //when
     try {
-      invoiceBook.updateInvoice(null);
+      invoiceService.updateInvoice(null);
     } catch (Exception ex) {
       thrown = true;
       assertTrue(ex instanceof IllegalArgumentException);
@@ -171,7 +171,7 @@ public class InvoiceBookTest {
 
     //when
     try {
-      invoiceBook.updateInvoice(sampleInvoice);
+      invoiceService.updateInvoice(sampleInvoice);
     } catch (Exception ex) {
       thrown = true;
       assertTrue(ex instanceof IllegalArgumentException);
@@ -190,7 +190,7 @@ public class InvoiceBookTest {
 
     //when
     try {
-      invoiceBook.updateInvoice(sampleInvoice);
+      invoiceService.updateInvoice(sampleInvoice);
     } catch (Exception ex) {
       thrown = true;
       assertTrue(ex instanceof IllegalArgumentException);
@@ -213,7 +213,7 @@ public class InvoiceBookTest {
 
     //when
     try {
-      invoiceBook.updateInvoice(sampleInvoice);
+      invoiceService.updateInvoice(sampleInvoice);
     } catch (Exception ex) {
       thrown = true;
       assertTrue(ex instanceof IllegalArgumentException);
@@ -233,7 +233,7 @@ public class InvoiceBookTest {
     LocalDate dateTo = LocalDate.now();
 
     //when
-    invoiceBook.findInvoices(searchParams, dateFrom, dateTo);
+    invoiceService.findInvoices(searchParams, dateFrom, dateTo);
 
     //then
     verify(databaseMock).find(searchParams, dateFrom, dateTo);
