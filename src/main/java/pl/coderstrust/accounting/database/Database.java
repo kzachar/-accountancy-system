@@ -16,4 +16,6 @@ public interface Database {
   Invoice get(int id);
 
   Collection<Invoice> find(Invoice searchParams, LocalDate issuedDateFrom, LocalDate issuedDateTo);
+
+  Collection<Invoice> getAll();
 }

@@ -89,4 +89,7 @@ public class InvoiceService {
     return database.find(searchParams, issuedDateFrom, issuedDateTo);
   }
 
+  public Collection<Invoice> getAll() {
+    return database.getAll();
+  }
 }
