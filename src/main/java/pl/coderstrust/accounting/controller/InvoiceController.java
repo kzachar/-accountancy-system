@@ -33,7 +33,7 @@ public class InvoiceController {
   }
 
   @GetMapping("/{id}")
-  public Collection<Invoice> findSingleIvoiceById(@PathVariable(name="id", required = true) int id) {
+  public Collection<Invoice> findSingleIvoiceById(@PathVariable(name="id" , required = true) int id) {
     return invoiceService
         .findInvoices(new Invoice(id, null, null,null, null, null), null, null);
   }
