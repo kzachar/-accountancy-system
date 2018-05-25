@@ -1,4 +1,4 @@
-package pl.coderstrust.accounting.integrationTests;
+package pl.coderstrust.accounting.integration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -20,6 +20,7 @@ import pl.coderstrust.accounting.model.validator.CompanyValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceEntryValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 @RunWith(JUnitParamsRunner.class)
@@ -33,11 +34,11 @@ public class InvoiceBookAndDatabaseTest {
 
   @Before
   public void init() {
-    database = new InMemoryDatabase();
-    invoiceBook = new InvoiceBook(database, invoiceValidator);
-    invoiceValidator = new InvoiceValidator(invoiceEntryValidator, companyValidator);
     invoiceEntryValidator = new InvoiceEntryValidator();
     companyValidator = new CompanyValidator();
+    invoiceValidator = new InvoiceValidator(invoiceEntryValidator, companyValidator);
+    database = new InMemoryDatabase();
+    invoiceBook = new InvoiceBook(database, invoiceValidator);
   }
 
   @Test
@@ -207,24 +208,24 @@ public class InvoiceBookAndDatabaseTest {
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
   }
 
-  //  @Test
-//  public void shouldUpdateInvoice() {
-//    //given
-//    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId2();
-//    String newIdentifier = "ABC";
-//    LocalDate newDate = LocalDate.now();
-//    Invoice updatedInvoice = new Invoice(1, newIdentifier, newDate,
-//        InvoiceHelper.getSampleBuyerCompany(), InvoiceHelper.getSampleSellerCompany(),
-//        InvoiceHelper.getSampleInvoiceEntries());
-//
-//    //when
-//    invoiceBook.saveInvoice(invoice);
-//    invoiceBook.updateInvoice(updatedInvoice);
-//
-//    //then
-//    Invoice actual = database.get(1);
-//    assertThat(actual.getIdentifier(), is(newIdentifier));
-//    assertThat(actual.getIssuedDate(), is(newDate));
-//  }
+  @Test
+  public void shouldUpdateInvoice() {
+    //given
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId2();
+    String newIdentifier = "ABC";
+    LocalDate newDate = LocalDate.now();
+    Invoice updatedInvoice = new Invoice(1, newIdentifier, newDate,
+        InvoiceHelper.getSampleBuyerCompany(), InvoiceHelper.getSampleSellerCompany(),
+        InvoiceHelper.getSampleOneInvoiceEntryList());
+
+    //when
+    invoiceBook.saveInvoice(invoice);
+    invoiceBook.updateInvoice(updatedInvoice);
+
+    //then
+    Invoice actual = database.get(1);
+    assertThat(actual.getIdentifier(), is(newIdentifier));
+    assertThat(actual.getIssuedDate(), is(newDate));
+  }
 
 }
