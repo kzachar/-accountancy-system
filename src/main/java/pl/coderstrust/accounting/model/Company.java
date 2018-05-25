@@ -19,7 +19,8 @@ public class Company {
 
   @JsonCreator
   public Company(@JsonProperty("name") String name, @JsonProperty("taxId") String taxId,
-      @JsonProperty("streetAndNumber") String streetAndNumber, @JsonProperty("postalCode") String postalCode,
+      @JsonProperty("streetAndNumber") String streetAndNumber,
+      @JsonProperty("postalCode") String postalCode,
       @JsonProperty("location") String location) {
     this.name = name;
     this.taxId = taxId;
@@ -43,9 +44,6 @@ public class Company {
   public int hashCode() {
 
     return Objects.hash(name, taxId, streetAndNumber, postalCode, location);
-  }
-
-  public Company() {
   }
 
   public String getName() {

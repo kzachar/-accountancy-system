@@ -13,6 +13,7 @@ import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 
 @RunWith(JUnitParamsRunner.class)
 public class InFileDatabaseTest {
@@ -48,7 +49,7 @@ public class InFileDatabaseTest {
       String actual1 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(0);
       String expected1 = "{\"id\":0"
           + ",\"identifier\":\"TestIdentifier0\""
-          + ",\"issuedDate\":\"2018-05-24\""
+          + ",\"issuedDate\":\"" + LocalDate.now() + "\""
           + ",\"buyer\":{\"name\":\"CompanyBuyerTest0\""
           + ",\"taxId\":\"000000000\""
           + ",\"streetAndNumber\":\"Test Buyer Street 0\""
@@ -56,21 +57,26 @@ public class InFileDatabaseTest {
           + ",\"seller\":{\"name\":\"CompanySellerTest0\",\"taxId\":\"0000000000\""
           + ",\"streetAndNumber\":\"Test Seller Street 0\",\"postalCode\":\"00000\""
           + ",\"location\":\"TestLocationSeller0\"},\"entries\":[{\"description\":\"Test Entry #1\""
-          + ",\"price\":10,\"vat\":\"REDUCED1\"},{\"description\":\"Test Entry #2\""
-          + ",\"price\":10,\"vat\":\"REGULAR\"}]}";
+          + ",\"price\":10,\"vat\":23},{\"description\":\"Test Entry #2\""
+          + ",\"price\":10,\"vat\":8},{\"description\":\"Test Entry #3\""
+          + ",\"price\":10,\"vat\":5},{\"description\":\"Test Entry #4\""
+          + ",\"price\":10,\"vat\":0}]}";
       assertThat(actual1, is((expected1)));
       String actual2 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(1);
       String expected2 = "{\"id\":1"
           + ",\"identifier\":\"TestIdentifier1\""
-          + ",\"issuedDate\":\"2018-05-24\",\"buyer\":{\"name\":\"CompanyBuyerTest1\""
+          + ",\"issuedDate\":\"" + LocalDate.now() + "\""
+          + ",\"buyer\":{\"name\":\"CompanyBuyerTest1\""
           + ",\"taxId\":\"1111111111\""
           + ",\"streetAndNumber\":\"Test Buyer Street 1\""
           + ",\"postalCode\":\"11111\",\"location\":\"TestLocationBuyer1\"}"
           + ",\"seller\":{\"name\":\"CompanySellerTest1\",\"taxId\":\"1111111111\""
           + ",\"streetAndNumber\":\"Test Seller Street 1\",\"postalCode\":\"11111\""
           + ",\"location\":\"TestLocationSeller1\"},\"entries\":[{\"description\":\"Test Entry #1\""
-          + ",\"price\":10,\"vat\":\"REDUCED1\"},{\"description\":\"Test Entry #2\""
-          + ",\"price\":10,\"vat\":\"REGULAR\"}]}";
+          + ",\"price\":10,\"vat\":23},{\"description\":\"Test Entry #2\""
+          + ",\"price\":10,\"vat\":8},{\"description\":\"Test Entry #3\""
+          + ",\"price\":10,\"vat\":5},{\"description\":\"Test Entry #4\""
+          + ",\"price\":10,\"vat\":0}]}";
       assertThat(actual2, is((expected2)));
 
     } finally {
@@ -99,6 +105,7 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
+
   public void shouldThrowExceptionIfDatabaseFilePathIsNull() {
     //given
     database = new InFileDatabase(null, ID_FILE_PATH);

@@ -22,11 +22,12 @@ public class InvoiceEntry {
   }
 
   public InvoiceEntry() {
-  // Left empty constructor for Jackson
+    // Left empty constructor for Jackson
   }
 
   @JsonCreator
-  public InvoiceEntry(@JsonProperty("description") String description, @JsonProperty("price") BigDecimal price, @JsonProperty("vat") Vat vat) {
+  public InvoiceEntry(@JsonProperty("description") String description,
+      @JsonProperty("price") BigDecimal price, @JsonProperty("vat") Vat vat) {
     this.description = description;
     this.price = price;
     this.vat = vat;
