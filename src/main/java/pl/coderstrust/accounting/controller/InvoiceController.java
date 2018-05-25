@@ -15,8 +15,6 @@ import pl.coderstrust.accounting.model.validator.CompanyValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceEntryValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.Collection;
 
 @RestController
@@ -28,8 +26,7 @@ public class InvoiceController {
 
   @GetMapping
   public Collection<Invoice> findInvoices() {
-    return invoiceService
-        .findInvoices(null, LocalDate.of(2018, Month.JANUARY, 1),LocalDate.of(2018, Month.JANUARY, 6));
+    return invoiceService.getAll();
   }
 
   @GetMapping("/{id}")

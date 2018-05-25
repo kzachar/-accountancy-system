@@ -114,4 +114,9 @@ public class InMemoryDatabase implements Database {
     }
     return result;
   }
+
+  @Override
+  public Collection<Invoice> getAll() {
+    return invoices.values();
+  }
 }
