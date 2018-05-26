@@ -84,6 +84,7 @@ public class InFileDatabaseTest {
     }
   }
 
+
   @Test
   public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed()
       throws IOException {
@@ -99,6 +100,20 @@ public class InFileDatabaseTest {
       //then
       assertNotNull(FileHelper.readFromFile(DATABASE_FILE_PATH).get(0));
       assertNotNull(FileHelper.readFromFile(DATABASE_FILE_PATH).get(0));
+    } finally {
+      cleanTestFiles();
+    }
+  }
+
+  @Test
+  public void shouldThrowExceptionIfPathToIdFilePathIsNotExist() {
+    try {
+      // /given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      File fileIdInvoices = new File(ID_FILE_PATH);
+      fileIdInvoices.setReadOnly();
+      Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId0();
+      database.saveInvoice(invoice1);
     } finally {
       cleanTestFiles();
     }

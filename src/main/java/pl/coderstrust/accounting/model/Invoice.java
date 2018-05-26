@@ -64,7 +64,7 @@ public class Invoice {
   }
 
   public Invoice() {
-
+    // Left empty constructor for Jackson
   }
 
   public Invoice(String identifier, LocalDate issuedDate, Company buyer, Company seller,
