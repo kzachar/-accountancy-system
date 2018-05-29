@@ -28,9 +28,6 @@ public class InMemoryDatabaseTest {
     database = new InMemoryDatabase();
   }
 
-  //Tests to check if Id increments need to be added, no method defined at the time when
-  // Add invoice to InMemoryDatabase was coded
-
   @Test
   public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed() {
     //given
@@ -212,6 +209,26 @@ public class InMemoryDatabaseTest {
     //then
     assertNotNull(result);
     assertFalse(result.isEmpty());
+    Invoice actual = result.iterator().next();
+    assertEquals(1, (int) actual.getId());
+    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+  }
+
+  @Test
+  public void shouldGetAllInvoices() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    database.saveInvoice(sampleInvoice);
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId4());
+
+    //when
+    Collection<Invoice> result = database.getAll();
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    assertEquals(3, result.size());
     Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));

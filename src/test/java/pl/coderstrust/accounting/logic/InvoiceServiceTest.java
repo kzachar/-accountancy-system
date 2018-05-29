@@ -239,6 +239,20 @@ public class InvoiceServiceTest {
     verify(databaseMock).find(searchParams, dateFrom, dateTo);
   }
 
+  @Test
+  public void shouldGetAllInvoices() {
+    //given
+    when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
+    when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId2());
+
+    //when
+    invoiceService.getAll();
+
+    //then
+    verify(databaseMock).getAll();
+
+  }
+
   @SuppressWarnings("unused")
   private Object[] updateParameters() {
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
