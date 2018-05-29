@@ -8,22 +8,9 @@ import java.util.Objects;
 
 public class InvoiceEntry {
 
-  private String description;
-  private BigDecimal price;
-  private Vat vat;
-
-  @Override
-  public String toString() {
-    return "InvoiceEntry{"
-        + "description='" + description + '\''
-        + ", price=" + price
-        + ", vat=" + vat
-        + '}';
-  }
-
-  public InvoiceEntry() {
-    // Left empty constructor for Jackson
-  }
+  private final String description;
+  private final BigDecimal price;
+  private final Vat vat;
 
   @JsonCreator
   public InvoiceEntry(@JsonProperty("description") String description,
@@ -35,12 +22,6 @@ public class InvoiceEntry {
 
   public String getDescription() {
     return description;
-  }
-
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(description, price, vat);
   }
 
   public BigDecimal getPrice() {

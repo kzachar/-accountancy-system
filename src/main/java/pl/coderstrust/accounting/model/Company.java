@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.model;
 
+
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -7,15 +8,11 @@ import java.util.Objects;
 
 public class Company {
 
-  private String name;
-  private String taxId;
-  private String streetAndNumber;
-  private String postalCode;
-  private String location;
-
-  public Company() {
-    // Left empty constructor for Jackson
-  }
+  private final String name;
+  private final String taxId;
+  private final String streetAndNumber;
+  private final String postalCode;
+  private final String location;
 
   @JsonCreator
   public Company(@JsonProperty("name") String name, @JsonProperty("taxId") String taxId,
@@ -29,23 +26,6 @@ public class Company {
     this.location = location;
   }
 
-  @Override
-  public String toString() {
-    return "Company{"
-        + "name='" + name + '\''
-        + ", taxId='" + taxId + '\''
-        + ", streetAndNumber='" + streetAndNumber + '\''
-        + ", postalCode='" + postalCode + '\''
-        + ", location='" + location + '\''
-        + '}';
-  }
-
-  @Override
-  public int hashCode() {
-
-    return Objects.hash(name, taxId, streetAndNumber, postalCode, location);
-  }
-
   public String getName() {
     return name;
   }
@@ -57,6 +37,7 @@ public class Company {
   public String getStreetAndNumber() {
     return streetAndNumber;
   }
+
 
   public String getPostalCode() {
     return postalCode;

@@ -84,7 +84,6 @@ public class InFileDatabaseTest {
     }
   }
 
-
   @Test
   public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed()
       throws IOException {
