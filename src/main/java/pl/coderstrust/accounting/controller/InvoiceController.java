@@ -15,6 +15,8 @@ import pl.coderstrust.accounting.model.validator.CompanyValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceEntryValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Collection;
 
 @RestController
@@ -33,6 +35,13 @@ public class InvoiceController {
   public Collection<Invoice> findSingleIvoiceById(@PathVariable(name="id" , required = true) int id) {
     return invoiceService
         .findInvoices(new Invoice(id, null, null,null, null, null), null, null);
+  }
+
+  @GetMapping("/date")
+  public Collection<Invoice> findSingleIvoiceByDateRange() {
+    return invoiceService
+        .findInvoices(null,
+            LocalDate.of(2018, Month.JANUARY, 1), LocalDate.of(2018, Month.JANUARY, 10));
   }
 
   @PostMapping
