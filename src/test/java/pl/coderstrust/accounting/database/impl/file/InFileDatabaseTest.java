@@ -9,6 +9,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import junitparams.JUnitParamsRunner;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import junitparams.Parameters;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.MatcherAssert;
