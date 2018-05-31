@@ -23,6 +23,7 @@ import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -75,7 +76,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldRemoveInvoice() {
+  public void shouldRemoveInvoice() throws IOException {
     //given
     when(databaseMock.get(anyInt())).thenReturn(InvoiceHelper.getSampleInvoiceWithId1());
 
@@ -87,7 +88,7 @@ public class InvoiceServiceTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() {
+  public void shouldThrowExceptionWhenInvoiceDoesNotExistWhenRemoving() throws IOException {
     //given
     when(databaseMock.get(anyInt())).thenReturn(null);
 
