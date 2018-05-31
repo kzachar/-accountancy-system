@@ -1,8 +1,10 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import junitparams.JUnitParamsRunner;
 import org.junit.Test;
@@ -141,5 +143,101 @@ public class InFileDatabaseTest {
   public void shouldThrowExceptionIfIdFilePathhIsEmpty() {
     //given
     database = new InFileDatabase(DATABASE_FILE_PATH, "");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToRemove() throws IOException {
+
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
+
+      //when
+      database.saveInvoice(invoice1);
+      database.removeInvoice(5);
+    } finally {
+      cleanTestFiles();
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowAnExceptionIfNoInvoiceToRemove() throws IOException {
+
+    //given
+    database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+
+    //when
+    database.removeInvoice(5);
+  }
+
+  @Test
+  public void shouldRemoveInvoiceWithGivenIdWhenOneInvoiceInList() throws IOException {
+
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
+
+      //when
+      database.saveInvoice(invoice1);
+      database.removeInvoice(0);
+
+      //then
+      assertTrue(FileHelper.readFromFile(DATABASE_FILE_PATH).isEmpty());
+    } finally {
+      cleanTestFiles();
+    }
+  }
+
+  @Test
+  public void shouldRemoveInvoiceWithGivenIdWhenManyInvoicesInList() throws IOException {
+
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId0();
+      Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId1();
+      Invoice invoice3 = InvoiceHelper.getSampleInvoiceWithId2();
+
+      //when
+      database.saveInvoice(invoice1);
+      database.saveInvoice(invoice2);
+      database.saveInvoice(invoice3);
+      database.removeInvoice(1);
+
+      //then
+      String actual1 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(0);
+      String expected1 = "{\"id\":0"
+          + ",\"identifier\":\"TestIdentifier0\""
+          + ",\"issuedDate\":\"" + LocalDate.now() + "\""
+          + ",\"buyer\":{\"name\":\"CompanyBuyerTest0\""
+          + ",\"taxId\":\"000000000\""
+          + ",\"streetAndNumber\":\"Test Buyer Street 0\""
+          + ",\"postalCode\":\"00000\",\"location\":\"TestLocationBuyer0\"}"
+          + ",\"seller\":{\"name\":\"CompanySellerTest0\",\"taxId\":\"0000000000\""
+          + ",\"streetAndNumber\":\"Test Seller Street 0\",\"postalCode\":\"00000\""
+          + ",\"location\":\"TestLocationSeller0\"},\"entries\":[{\"description\":\"Test Entry #1\""
+          + ",\"price\":10,\"vat\":23},{\"description\":\"Test Entry #2\""
+          + ",\"price\":10,\"vat\":8},{\"description\":\"Test Entry #3\""
+          + ",\"price\":10,\"vat\":5},{\"description\":\"Test Entry #4\""
+          + ",\"price\":10,\"vat\":0}]}";
+      assertThat(actual1, is(equalTo(expected1)));
+      String actual2 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(1);
+      String expected2 = "{\"id\":2"
+          + ",\"identifier\":\"TestIdentifier2\""
+          + ",\"issuedDate\":\"2018-05-31\""
+          + ",\"buyer\":{\"name\":\"CompanyBuyerTest2\""
+          + ",\"taxId\":\"222222222\""
+          + ",\"streetAndNumber\":\"Test Buyer Street 2\""
+          + ",\"postalCode\":\"22222\",\"location\":\"TestLocationBuyer2\"}"
+          + ",\"seller\":{\"name\":\"CompanySellerTest2\",\"taxId\":\"222222222\""
+          + ",\"streetAndNumber\":\"Test Seller Street 2\",\"postalCode\":\"22222\""
+          + ",\"location\":\"TestLocationSeller2\"},\"entries\":[{\"description\":\"Test Entry #2\""
+          + ",\"price\":10,\"vat\":8}]}";
+      assertThat(actual2, is(equalTo(expected2)));
+    } finally {
+      cleanTestFiles();
+    }
   }
 }

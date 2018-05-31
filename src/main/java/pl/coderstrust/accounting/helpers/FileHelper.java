@@ -53,4 +53,26 @@ public class FileHelper {
     }
   }
 
+  public static List<String> removeFromFile(String file, int id) throws IOException {
+    boolean idFound = false;
+    ArrayList<String> lines = new ArrayList<>();
+    if (new File(file).length() == 0) {
+      throw new IllegalArgumentException("List of invoices is empty");
+    } else if (new File(file).exists()) {
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+          lines.add(line);
+          if ((JsonConverter.fromJson(line).getId() == id)) {
+            lines.remove(line);
+            idFound = true;
+          }
+        }
+      }
+      if (!idFound) {
+        throw new IllegalArgumentException("No such id in the list");
+      }
+    }
+    return lines;
+  }
 }

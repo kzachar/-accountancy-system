@@ -7,6 +7,7 @@ import pl.coderstrust.accounting.model.InvoiceEntry;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -75,7 +76,7 @@ public class InvoiceBook {
         entries);
   }
 
-  public void removeInvoice(int id) {
+  public void removeInvoice(int id) throws IOException {
     if (database.get(id) != null) {
       database.removeInvoice(id);
     } else {

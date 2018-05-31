@@ -1,6 +1,7 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import pl.coderstrust.accounting.database.Database;
+import pl.coderstrust.accounting.helpers.FileHelper;
 import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
 
@@ -47,7 +48,8 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void removeInvoice(int id) {
+  public void removeInvoice(int id) throws IOException {
+    FileHelper.writeToFile(FileHelper.removeFromFile(databaseFilePath, id), databaseFilePath);
   }
 
   @Override
