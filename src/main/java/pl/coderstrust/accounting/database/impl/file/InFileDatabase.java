@@ -65,13 +65,23 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void removeInvoice(int id) throws IOException {
-    FileHelper.writeToFile(FileHelper.removeFromFile(databaseFilePath, id), databaseFilePath);
+  public void removeInvoice(int id) {
+    try {
+      FileHelper.removeInvoiceFromFile(databaseFilePath, id);
+    } catch (IOException ieox) {
+      throw new RuntimeException(ieox);
+    }
   }
 
   @Override
   public Invoice get(int id) {
-    return null;
+    Invoice invoiceTaken = null;
+    try {
+      invoiceTaken = FileHelper.getInvoiceFromFileById(databaseFilePath, id);
+    } catch (IOException ieox) {
+      throw new RuntimeException(ieox);
+    }
+    return invoiceTaken;
   }
 
   @Override
