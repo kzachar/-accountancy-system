@@ -200,6 +200,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
+    database.saveInvoice(sampleInvoice);
     database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
 
     //when

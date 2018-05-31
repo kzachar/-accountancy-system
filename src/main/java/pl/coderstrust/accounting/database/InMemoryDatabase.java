@@ -100,15 +100,15 @@ public class InMemoryDatabase implements Database {
         if (issuedDateTo.isAfter(invoice.getIssuedDate()) || issuedDateTo
             .isEqual(invoice.getIssuedDate())) {
           result.add(invoice);
-          break;
+
         }
       }
       if (issuedDateTo != null && issuedDateFrom != null) {
-        if (issuedDateTo.isAfter(invoice.getIssuedDate()) || issuedDateTo
-            .isEqual(invoice.getIssuedDate()) || issuedDateFrom.isBefore(invoice.getIssuedDate())
-            || issuedDateFrom.isEqual(invoice.getIssuedDate())) {
+        if ((issuedDateTo.isAfter(invoice.getIssuedDate()) || issuedDateTo
+            .isEqual(invoice.getIssuedDate())) && (issuedDateFrom.isBefore(invoice.getIssuedDate())
+            || issuedDateFrom.isEqual(invoice.getIssuedDate()))) {
           result.add(invoice);
-          break;
+
         }
       }
     }

@@ -121,6 +121,7 @@ public class InvoiceServiceAndDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     invoiceService.saveInvoice(sampleInvoice);
+    invoiceService.saveInvoice(sampleInvoice);
     invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
 
     //when
@@ -130,6 +131,7 @@ public class InvoiceServiceAndDatabaseTest {
     //then
     assertNotNull(result);
     assertFalse(result.isEmpty());
+    assertEquals(2,result.size());
     Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
@@ -227,5 +229,26 @@ public class InvoiceServiceAndDatabaseTest {
     assertThat(actual.getIdentifier(), is(newIdentifier));
     assertThat(actual.getIssuedDate(), is(newDate));
   }
+
+  @Test
+  public void shouldGetAllInvoices() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    invoiceService.saveInvoice(sampleInvoice);
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId4());
+
+    //when
+    Collection<Invoice> result = database.getAll();
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    assertEquals(3, result.size());
+    Invoice actual = result.iterator().next();
+    assertEquals(1, (int) actual.getId());
+    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+  }
+
 
 }
