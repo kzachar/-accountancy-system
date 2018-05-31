@@ -34,7 +34,7 @@ public class InvoiceBook {
     }
   }
 
-  public void updateInvoice(Invoice invoice) {
+  public void updateInvoice(Invoice invoice) throws IOException {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice to update cannot be null");
     }

@@ -105,7 +105,7 @@ public class InvoiceBookTest {
 
   @Test
   @Parameters(method = "updateParameters")
-  public void shouldUpdateOnlyGivenParam(Invoice invoice) {
+  public void shouldUpdateOnlyGivenParam(Invoice invoice) throws IOException {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
     when(databaseMock.get(anyInt())).thenReturn(sampleInvoice);
@@ -203,7 +203,8 @@ public class InvoiceBookTest {
   }
 
   @Test
-  public void shouldThrowExceptionWhenTryingToUpdateInvoiceThatDoesNotValidate() {
+  public void shouldThrowExceptionWhenTryingToUpdateInvoiceThatDoesNotValidate()
+      throws IOException {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
     List<InvoiceValidationException> validationExceptions = new ArrayList<>();

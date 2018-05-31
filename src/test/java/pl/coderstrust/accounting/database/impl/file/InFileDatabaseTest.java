@@ -7,6 +7,8 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import junitparams.JUnitParamsRunner;
+import org.hamcrest.CoreMatchers;
+import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.accounting.helpers.FileHelper;
@@ -239,5 +241,69 @@ public class InFileDatabaseTest {
     } finally {
       cleanTestFiles();
     }
+  }
+
+  @Test
+  public void shouldGetInvoiceById() throws IOException {
+
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId0();
+      Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId1();
+      Invoice invoice3 = InvoiceHelper.getSampleInvoiceWithId2();
+
+      //when
+      database.saveInvoice(invoice1);
+      database.saveInvoice(invoice2);
+      database.saveInvoice(invoice3);
+
+      //then
+      Invoice actual1 = invoice1;
+      Invoice expected1 = database.get(0);
+      invoicesAreIdentical(actual1, expected1);
+      Invoice actual2 = invoice3;
+      Invoice expected2 = database.get(2);
+      invoicesAreIdentical(actual2, expected2);
+    } finally {
+      cleanTestFiles();
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToGet() throws IOException {
+
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId1();
+
+      //when
+      database.saveInvoice(invoice1);
+      database.get(5);
+    } finally {
+      cleanTestFiles();
+    }
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowAnExceptionIfNoInvoiceToGet() throws IOException {
+
+    //given
+    database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+
+    //when
+    database.get(5);
+  }
+
+  public static void invoicesAreIdentical(Invoice invoice, Invoice invoiceToCompare) {
+    MatcherAssert.assertThat(invoice.getId(), CoreMatchers.is(invoiceToCompare.getId()));
+    MatcherAssert
+        .assertThat(invoice.getIdentifier(), CoreMatchers.is(invoiceToCompare.getIdentifier()));
+    MatcherAssert
+        .assertThat(invoice.getIssuedDate(), CoreMatchers.is(invoiceToCompare.getIssuedDate()));
+    MatcherAssert.assertThat(invoice.getBuyer(), CoreMatchers.is(invoiceToCompare.getBuyer()));
+    MatcherAssert.assertThat(invoice.getSeller(), CoreMatchers.is(invoiceToCompare.getSeller()));
+    assertTrue(invoice.getEntries().equals(invoiceToCompare.getEntries()));
   }
 }
