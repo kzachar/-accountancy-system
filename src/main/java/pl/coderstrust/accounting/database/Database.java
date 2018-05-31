@@ -14,7 +14,7 @@ public interface Database {
 
   void removeInvoice(int id) throws IOException;
 
-  Invoice get(int id);
+  Invoice get(int id) throws IOException;
 
   Collection<Invoice> find(Invoice searchParams, LocalDate issuedDateFrom, LocalDate issuedDateTo);
 
