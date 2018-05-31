@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +18,6 @@ import pl.coderstrust.accounting.model.validator.InvoiceEntryValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.Collection;
 
 @RestController
@@ -37,11 +38,12 @@ public class InvoiceController {
         .findInvoices(new Invoice(id, null, null,null, null, null), null, null);
   }
 
-  @GetMapping("/date")
-  public Collection<Invoice> findSingleIvoiceByDateRange() {
+  @GetMapping("{dateFrom}/{dateTo}")
+  public Collection<Invoice> findSingleIvoiceByDateRange( @PathVariable("dateFrom") @DateTimeFormat(iso= ISO.DATE) LocalDate dateFrom,
+      @PathVariable("dateTo") @DateTimeFormat(iso=ISO.DATE) LocalDate dateTo) {
     return invoiceService
         .findInvoices(null,
-            LocalDate.of(2018, Month.JANUARY, 1), LocalDate.of(2018, Month.JANUARY, 10));
+            dateFrom, dateTo);
   }
 
   @PostMapping
