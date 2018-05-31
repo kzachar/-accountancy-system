@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FileHelper {
 
-  public static void conditionsForExceptions(File file) {
+  public static void checkIfFileExistOrIsEmpty(File file) {
     if (!file.exists()) {
       throw new IllegalArgumentException("No file under given path");
     }
@@ -67,7 +67,7 @@ public class FileHelper {
   public static void removeInvoiceFromFile(String filePath, int id) throws IOException {
     boolean invoiceRemoved = false;
     File file = new File(filePath);
-    conditionsForExceptions(file);
+    checkIfFileExistOrIsEmpty(file);
     File tempFile = new File("tempFile.txt");
     BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
     BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
@@ -92,7 +92,7 @@ public class FileHelper {
     boolean invoiceInFile = false;
     File file = new File(filePath);
     Invoice invoiceFound = null;
-    conditionsForExceptions(file);
+    checkIfFileExistOrIsEmpty(file);
     BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
     String line;
     while ((line = bufferedReader.readLine()) != null) {
