@@ -124,7 +124,7 @@ public class InvoiceServiceAndDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     invoiceService.saveInvoice(sampleInvoice);
-    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = invoiceService.findInvoices(searchParams, null, null);
@@ -156,7 +156,7 @@ public class InvoiceServiceAndDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     invoiceService.saveInvoice(sampleInvoice);
-    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = invoiceService
@@ -176,7 +176,7 @@ public class InvoiceServiceAndDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     invoiceService.saveInvoice(sampleInvoice);
-    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = invoiceService
@@ -196,11 +196,11 @@ public class InvoiceServiceAndDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     invoiceService.saveInvoice(sampleInvoice);
-    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = invoiceService.findInvoices(null, null,
-        LocalDate.of(2017, 3, 20));
+        LocalDate.of(2018, 3, 20));
 
     //then
     assertNotNull(result);

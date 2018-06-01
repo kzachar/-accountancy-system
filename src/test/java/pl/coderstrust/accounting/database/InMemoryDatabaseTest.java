@@ -132,7 +132,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(searchParams, null, null);
@@ -164,7 +164,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
@@ -183,7 +183,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
@@ -202,11 +202,11 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(null, null,
-        LocalDate.of(2017, 3, 20));
+        LocalDate.of(2018, 3, 20));
 
     //then
     assertNotNull(result);

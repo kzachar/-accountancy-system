@@ -60,4 +60,9 @@ public class InFileDatabase implements Database {
       LocalDate issuedDateTo) {
     return null;
   }
+
+  @Override
+  public Collection<Invoice> getAll() {
+    return null;
+  }
 }
