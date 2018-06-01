@@ -20,11 +20,11 @@ public class JsonConverterTest {
 
   Object[] parameters = $(
       $("{\"id\":5,\"identifier\":\"TestIdentifier5\",\"issuedDate\":\"2018-01-01\","
-              + "\"buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"555555555\","
-              + "\"streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55555\","
+              + "\"buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\","
+              + "\"streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\","
               + "\"location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\"CompanySellerTest5\","
-              + "\"taxId\":\"555555555\",\"streetAndNumber\":\"Test Seller Street 5\","
-              + "\"postalCode\":\"55555\",\"location\":\"TestLocationSeller4\"},\"entries\":[]}",
+              + "\"taxId\":\"5555555555\",\"streetAndNumber\":\"Test Seller Street 5\","
+              + "\"postalCode\":\"55-555\",\"location\":\"TestLocationSeller4\"},\"entries\":[]}",
           InvoiceHelper.getSampleInvoiceWithId5()),
       $("{\"id\":6,\"identifier\":\"TestIdentifier6\",\"issuedDate\":\"2018-01-01\","
               + "\"buyer\":{\"name\":\"CompanyBuyerTest6\",\"taxId\":\"666666666\","

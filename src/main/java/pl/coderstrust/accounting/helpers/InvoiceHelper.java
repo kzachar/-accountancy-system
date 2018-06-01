@@ -97,9 +97,9 @@ public class InvoiceHelper {
   }
 
   public static Invoice getSampleInvoiceWithId5() {
-    Company buyer = new Company("CompanyBuyerTest5", "555555555", "Test Buyer Street 5", "55555",
+    Company buyer = new Company("CompanyBuyerTest5", "5555555555", "Test Buyer Street 5", "55-555",
         "TestLocationBuyer4");
-    Company seller = new Company("CompanySellerTest5", "555555555", "Test Seller Street 5", "55555",
+    Company seller = new Company("CompanySellerTest5", "5555555555", "Test Seller Street 5", "55-555",
         "TestLocationSeller4");
     return new Invoice(5, "TestIdentifier5", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
         InvoiceHelper.getSampleEmptyInvoiceEntryList());
