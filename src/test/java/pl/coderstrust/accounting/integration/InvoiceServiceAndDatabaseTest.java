@@ -116,26 +116,7 @@ public class InvoiceServiceAndDatabaseTest {
     invoiceService.updateInvoice(invoice);
   }
 
-  @Test
-  public void shouldFindInvoiceByIssuedDateTo() {
-    //given
-    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
-    invoiceService.saveInvoice(sampleInvoice);
-    invoiceService.saveInvoice(sampleInvoice);
-    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
 
-    //when
-    Collection<Invoice> result = invoiceService.findInvoices(null, null,
-        sampleInvoice.getIssuedDate().plusDays(1));
-
-    //then
-    assertNotNull(result);
-    assertFalse(result.isEmpty());
-    assertEquals(2,result.size());
-    Invoice actual = result.iterator().next();
-    assertEquals(1, (int) actual.getId());
-    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
-  }
 
   @Test
   @Parameters(method = "findParameters")
@@ -208,6 +189,24 @@ public class InvoiceServiceAndDatabaseTest {
     Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+  }
+
+  @Test
+  public void shouldFindInvoiceByIssuedDateTo() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    invoiceService.saveInvoice(sampleInvoice);
+    invoiceService.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+
+    //when
+    Collection<Invoice> result = invoiceService.findInvoices(null, null,
+        LocalDate.of(2017, 3, 20));
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    Invoice actual = result.iterator().next();
+    assertEquals(2, (int) actual.getId());
   }
 
   @Test

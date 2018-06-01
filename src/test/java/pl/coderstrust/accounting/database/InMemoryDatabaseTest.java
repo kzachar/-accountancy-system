@@ -104,6 +104,8 @@ public class InMemoryDatabaseTest {
     database.updateInvoice(invoice);
   }
 
+
+
   @Test
   public void shouldUpdateInvoice() {
     //given
@@ -200,19 +202,17 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(sampleInvoice);
     database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
 
     //when
     Collection<Invoice> result = database.find(null, null,
-        sampleInvoice.getIssuedDate().plusDays(1));
+        LocalDate.of(2017, 3, 20));
 
     //then
     assertNotNull(result);
     assertFalse(result.isEmpty());
     Invoice actual = result.iterator().next();
-    assertEquals(1, (int) actual.getId());
-    assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+    assertEquals(2, (int) actual.getId());
   }
 
   @Test
@@ -234,5 +234,6 @@ public class InMemoryDatabaseTest {
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
   }
+
 
 }
