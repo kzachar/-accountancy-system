@@ -22,15 +22,17 @@ public class InvoiceService {
   }
 
   public int saveInvoice(Invoice invoice) {
-    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validateInvoiceForSave(
-        invoice);
+    final Collection<InvoiceValidationException> validationErrors = invoiceValidator
+        .validateInvoiceForSave(
+            invoice);
     if (validationErrors.isEmpty()) {
       return database.saveInvoice(invoice);
     } else {
       for (InvoiceValidationException exception : validationErrors) {
         exception.printStackTrace();
       }
-    } return 0;
+    }
+    return 0;
   }
 
   public void updateInvoice(Invoice invoice) {
