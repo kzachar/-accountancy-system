@@ -8,11 +8,11 @@ import java.util.List;
 
 public class Invoice {
 
-  private Integer id;
-  private String identifier;
-  private LocalDate issuedDate;
-  private Company buyer;
-  private Company seller;
+  private final Integer id;
+  private final String identifier;
+  private final LocalDate issuedDate;
+  private final Company buyer;
+  private final Company seller;
   private List<InvoiceEntry> entries;
 
   @JsonCreator
