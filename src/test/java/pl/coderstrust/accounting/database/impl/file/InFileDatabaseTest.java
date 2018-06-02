@@ -228,7 +228,7 @@ public class InFileDatabaseTest {
       String actual2 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(1);
       String expected2 = "{\"id\":2"
           + ",\"identifier\":\"TestIdentifier2\""
-          + ",\"issuedDate\":\"2018-05-31\""
+          + ",\"issuedDate\":\"" + LocalDate.now() + "\""
           + ",\"buyer\":{\"name\":\"CompanyBuyerTest2\""
           + ",\"taxId\":\"222222222\""
           + ",\"streetAndNumber\":\"Test Buyer Street 2\""

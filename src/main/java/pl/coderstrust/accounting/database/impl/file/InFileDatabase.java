@@ -3,7 +3,6 @@ package pl.coderstrust.accounting.database.impl.file;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.FileHelper;
 import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
-import pl.coderstrust.accounting.helpers.JsonConverter;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
@@ -49,14 +48,23 @@ public class InFileDatabase implements Database {
   }
 
   @Override
-  public void removeInvoice(int id) throws IOException {
-    FileHelper.writeToFile(FileHelper.removeFromFile(databaseFilePath, id), databaseFilePath);
+  public void removeInvoice(int id) {
+    try {
+      FileHelper.writeToFile(FileHelper.removeInvoiceFromFile(databaseFilePath, id), databaseFilePath);
+    } catch (IOException ieox) {
+      throw new RuntimeException(ieox);
+    }
   }
 
   @Override
-  public Invoice get(int id) throws IOException {
-    String invoice = FileHelper.getInvoiceFromFileById(databaseFilePath, id).get(0);
-    return JsonConverter.fromJson(invoice);
+  public Invoice get(int id) {
+    Invoice invoiceTaken = null;
+    try {
+      invoiceTaken = FileHelper.getInvoiceFromFileById(databaseFilePath, id);
+    } catch (IOException ieox) {
+      throw new RuntimeException(ieox);
+    }
+    return invoiceTaken;
   }
 
   @Override
