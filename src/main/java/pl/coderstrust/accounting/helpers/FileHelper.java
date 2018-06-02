@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.helpers;
 
+import pl.coderstrust.accounting.model.Invoice;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,26 +41,33 @@ public class FileHelper {
     return lines;
   }
 
-  public static List<String> getInvoiceFromFileById(String file, int id) throws IOException {
-    boolean idFound = false;
+  public static Invoice getInvoiceFromFileById(String filePath, int id) throws IOException {
+    boolean invoiceRemoved = false;
+    Invoice invoice = null;
+    File file = new File(filePath);
     ArrayList<String> lines = new ArrayList<>();
-    if (new File(file).length() == 0) {
+    if (!file.exists()) {
+      throw new IllegalArgumentException("No file under given path");
+    }
+    if (file.length() == 0) {
       throw new IllegalArgumentException("List of invoices is empty");
-    } else if (new File(file).exists()) {
-      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+    } else {
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
-          if ((JsonConverter.fromJson(line).getId() == id)) {
+          invoice = JsonConverter.fromJson(line);
+          if ((invoice.getId() == id)) {
             lines.add(line);
-            idFound = true;
+            invoiceRemoved = true;
+            return invoice;
           }
         }
       }
-      if (!idFound) {
-        throw new IllegalArgumentException("No such id in the list");
+      if (!invoiceRemoved) {
+        throw new IllegalArgumentException("No invoice with given id in file");
       }
     }
-    return lines;
+    return invoice;
   }
 
   public static void appendToFile(String line, String filePath)
@@ -75,24 +84,28 @@ public class FileHelper {
     }
   }
 
-  public static List<String> removeFromFile(String file, int id) throws IOException {
-    boolean idFound = false;
+  public static List<String> removeInvoiceFromFile(String filePath, int id) throws IOException {
+    boolean invoiceRemoved = false;
     ArrayList<String> lines = new ArrayList<>();
-    if (new File(file).length() == 0) {
+    File file = new File(filePath);
+    if (!file.exists()) {
+      throw new IllegalArgumentException("No file under given path");
+    }
+    if (file.length() == 0) {
       throw new IllegalArgumentException("List of invoices is empty");
-    } else if (new File(file).exists()) {
-      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+    } else {
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
           lines.add(line);
           if ((JsonConverter.fromJson(line).getId() == id)) {
             lines.remove(line);
-            idFound = true;
+            invoiceRemoved = true;
           }
         }
       }
-      if (!idFound) {
-        throw new IllegalArgumentException("No such id in the list");
+      if (!invoiceRemoved) {
+        throw new IllegalArgumentException("No invoice with given id in file");
       }
     }
     return lines;
