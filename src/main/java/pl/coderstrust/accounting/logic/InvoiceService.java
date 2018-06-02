@@ -10,7 +10,6 @@ import pl.coderstrust.accounting.model.InvoiceEntry;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +41,7 @@ public class InvoiceService {
     return 0;
   }
 
-  public void updateInvoice(Invoice invoice) throws IOException {
+  public void updateInvoice(Invoice invoice) {
     if (invoice == null) {
       throw new IllegalArgumentException("Invoice to update cannot be null");
     }
@@ -83,7 +82,7 @@ public class InvoiceService {
         entries);
   }
 
-  public void removeInvoice(int id) throws IOException {
+  public void removeInvoice(int id) {
     if (database.get(id) != null) {
       database.removeInvoice(id);
     } else {

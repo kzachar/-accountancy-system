@@ -1,5 +1,8 @@
 package pl.coderstrust.accounting.helpers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
@@ -10,9 +13,16 @@ import java.util.List;
 
 public class FileInvoiceHelper {
 
+  private static ObjectMapper mapper = new ObjectMapper();
+
+  static {
+    mapper.registerModule(new JavaTimeModule());
+    mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+  }
+
   public static void writeInvoiceToFile(Invoice invoiceToWrite, String filePath)
       throws IOException {
-    String convertedInvoice = JsonConverter.toJson(invoiceToWrite);
+    String convertedInvoice = mapper.writeValueAsString(invoiceToWrite);
     FileHelper.appendToFile(convertedInvoice, filePath);
   }
 
@@ -31,7 +41,7 @@ public class FileInvoiceHelper {
     lines = FileHelper.readFromFile(filePath);
     if (lines.size() > 1) {
       throw new IllegalStateException(
-          "File can't included more than 1 id");
+          "File can't include more than 1 id");
     }
     if (lines.isEmpty()) {
       FileHelper.writeToFile(Collections.singletonList("1"), filePath);
