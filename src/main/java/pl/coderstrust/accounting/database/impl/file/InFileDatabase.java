@@ -3,7 +3,6 @@ package pl.coderstrust.accounting.database.impl.file;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
 import pl.coderstrust.accounting.model.Invoice;
-import pl.coderstrust.accounting.model.InvoiceEntry;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -64,58 +63,77 @@ public class InFileDatabase implements Database {
   public Collection<Invoice> find(Invoice searchParams, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
     Set<Invoice> resultSchearching = new HashSet<>();
+    List<Invoice> invoices = null;
     try {
-      List<Invoice> invoices = FileInvoiceHelper.readInvoicesFromFile(databaseFilePath);
-
-      for (Invoice invoice : invoices) {
-        if (searchParams != null) {
-          if (searchParams.getId() != null) {
-            if (searchParams.getId().equals(invoice.getId())) {
-              resultSchearching.add(invoice);
-              break;
-            }
-          }
-          if (searchParams.getIdentifier() != null) {
-            if (searchParams.getIdentifier().equals(invoice.getIdentifier())) {
-              resultSchearching.add(invoice);
-              break;
-            }
-          }
-          if (searchParams.getBuyer() != null) {
-            if (searchParams.getBuyer().equals(invoice.getBuyer())) {
-              resultSchearching.add(invoice);
-              break;
-            }
-          }
-          if (searchParams.getSeller() != null) {
-            if (searchParams.getSeller().equals(invoice.getSeller())) {
-              resultSchearching.add(invoice);
-              break;
-            }
-          }
-          if (searchParams.getIssuedDate() != null) {
-            if (searchParams.getIssuedDate().isEqual(invoice.getIssuedDate())) {
-              resultSchearching.add(invoice);
-              break;
-            }
-          }
-          if (searchParams.getEntries() != null) {
-            boolean found = false;
-            for (InvoiceEntry entry : searchParams.getEntries()) {
-              if (!found && invoice.getEntries().contains(entry)) {
-                resultSchearching.add(invoice);
-                found = true;
-              }
-            }
-          } else {
-            resultSchearching.add(invoice);
-          }
-        }
-      }
+      invoices = FileInvoiceHelper.readInvoicesFromFile(databaseFilePath);
     } catch (IOException ioex) {
       ioex.printStackTrace();
     }
+    if (invoices != null) {
+      resultSchearching.addAll(findbyDateRange(invoices, normalaizeDateFrom(issuedDateFrom),
+          normalaizeDateTo(issuedDateTo)));
+      resultSchearching = findById(searchParams.getId(), resultSchearching);
+      resultSchearching = findByIdentifier(searchParams.getIdentifier(), resultSchearching);
+      resultSchearching = findByIssuedDate(searchParams.getIssuedDate(), resultSchearching);
+      resultSchearching = findByBuyer(searchParams.getBuyer(), resultSchearching);
+      resultSchearching = findBySeller(searchParams.getSeller(), resultSchearching);
+      resultSchearching = findByEntries(searchParams.getEntries(), resultSchearching);
+    }
     return resultSchearching;
+  }
+
+  private LocalDate normalaizeDateFrom(LocalDate issuedDateFrom) {
+    return issuedDateFrom == null ? LocalDate.MIN : issuedDateFrom;
+  }
+
+  private LocalDate normalaizeDateTo(LocalDate issuedDateTo) {
+    return issuedDateTo == null ? LocalDate.MAX : issuedDateTo;
+  }
+
+  private Set<Invoice> findById(Integer id, Set<Invoice> resultSchearching) {
+    return resultSchearching.stream()
+        .filter(invoice -> id.equals(invoice.getId()))
+        .collect(Collectors.toCollection(HashSet::new));
+  }
+
+  private Set<Invoice> findByIdentifier(String identifier, Set<Invoice> resultSchearching) {
+    return resultSchearching.stream()
+        .filter(invoice -> identifier.equals(invoice.getIdentifier()))
+        .collect(Collectors.toCollection(HashSet::new));
+  }
+
+  private Set<Invoice> findByIssuedDate(LocalDate issuedDate, Set<Invoice> resultSchearching) {
+    return resultSchearching.stream()
+        .filter(invoice -> issuedDate.equals(invoice.getIssuedDate()))
+        .collect(Collectors.toCollection(HashSet::new));
+  }
+
+  private Set<Invoice> findByBuyer(Company buyer, Set<Invoice> resultSchearching) {
+    return resultSchearching.stream()
+        .filter(invoice -> buyer.equals(invoice.getBuyer()))
+        .collect(Collectors.toCollection(HashSet::new));
+  }
+
+  private Set<Invoice> findBySeller(Company seller, Set<Invoice> resultSchearching) {
+    return resultSchearching.stream()
+        .filter(invoice -> seller.equals(invoice.getSeller()))
+        .collect(Collectors.toCollection(HashSet::new));
+  }
+
+  private Set<Invoice> findByEntries(List<InvoiceEntry> entries, Set<Invoice> resultSchearching) {
+    return resultSchearching.stream()
+        .filter(invoice -> entries.equals(invoice.getEntries()))
+        .collect(Collectors.toCollection(HashSet::new));
+  }
+
+  private Collection<Invoice> findbyDateRange(List<Invoice> inputList, LocalDate issuedDateFrom,
+      LocalDate issuedDateTo) {
+    return inputList.stream()
+
+        .filter(invoice -> invoice.getIssuedDate().isAfter(issuedDateFrom))
+        .filter(invoice -> invoice.getIssuedDate().isBefore(issuedDateTo))
+        .collect(Collectors.toCollection(ArrayList::new));
+
   }
 
   @Override

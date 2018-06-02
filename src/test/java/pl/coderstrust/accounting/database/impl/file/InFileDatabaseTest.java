@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import pl.coderstrust.accounting.helpers.FileHelper;
@@ -144,20 +145,27 @@ public class InFileDatabaseTest {
   }
 
   @Test
-  public void shouldFindeInvoicesWithoutGivenConditions() {
+  @Parameters(method = "providerParameters")
+  public void shouldFindeInvoicesWithId1(Invoice searchParams) {
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
-      Invoice invoice = InvoiceHelper.getSampleInvoiceWithId1();
-      database.saveInvoice(invoice);
+      Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
+      database.saveInvoice(sampleInvoice);
 
       //when
-      Collection<Invoice> result = database.find(null, null, null);
+      Collection<Invoice> result = database.find(searchParams, null, null);
 
       //then
-      assertNotNull(result);
     } finally {
       cleanTestFiles();
     }
+  }
+
+  private Object[] providerParameters() {
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
+    return new Object[]{
+        new Object[]{sampleInvoice}
+    };
   }
 }
