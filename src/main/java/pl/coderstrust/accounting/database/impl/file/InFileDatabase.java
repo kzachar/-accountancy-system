@@ -70,8 +70,8 @@ public class InFileDatabase implements Database {
       ioex.printStackTrace();
     }
     if (invoices != null) {
-      resultSchearching.addAll(findbyDateRange(invoices, normalaizeDateFrom(issuedDateFrom),
-          normalaizeDateTo(issuedDateTo)));
+      resultSchearching.addAll(findbyDateRange(invoices, normalizeDateFrom(issuedDateFrom),
+          normalizeDateTo(issuedDateTo)));
       resultSchearching = findById(searchParams.getId(), resultSchearching);
       resultSchearching = findByIdentifier(searchParams.getIdentifier(), resultSchearching);
       resultSchearching = findByIssuedDate(searchParams.getIssuedDate(), resultSchearching);
@@ -82,11 +82,11 @@ public class InFileDatabase implements Database {
     return resultSchearching;
   }
 
-  private LocalDate normalaizeDateFrom(LocalDate issuedDateFrom) {
+  private LocalDate normalizeDateFrom(LocalDate issuedDateFrom) {
     return issuedDateFrom == null ? LocalDate.MIN : issuedDateFrom;
   }
 
-  private LocalDate normalaizeDateTo(LocalDate issuedDateTo) {
+  private LocalDate normalizeDateTo(LocalDate issuedDateTo) {
     return issuedDateTo == null ? LocalDate.MAX : issuedDateTo;
   }
 
@@ -129,11 +129,9 @@ public class InFileDatabase implements Database {
   private Collection<Invoice> findbyDateRange(List<Invoice> inputList, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
     return inputList.stream()
-
         .filter(invoice -> invoice.getIssuedDate().isAfter(issuedDateFrom))
         .filter(invoice -> invoice.getIssuedDate().isBefore(issuedDateTo))
         .collect(Collectors.toCollection(ArrayList::new));
-
   }
 
   @Override
