@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import pl.coderstrust.accounting.model.Invoice;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +24,16 @@ public class FileInvoiceHelper {
       throws IOException {
     String convertedInvoice = mapper.writeValueAsString(invoiceToWrite);
     FileHelper.appendToFile(convertedInvoice, filePath);
+  }
+
+  public static List<Invoice> readInvoicesFromFile(String filePath) throws IOException {
+    List<Invoice> invoices = new ArrayList<>();
+    List<String> result = FileHelper.readFromFile(filePath);
+    for (String line : result) {
+      Invoice invoice = mapper.readValue(line, Invoice.class);
+      invoices.add(invoice);
+    }
+    return invoices;
   }
 
   public static int getAndIncrementLastId(String filePath) throws IOException {

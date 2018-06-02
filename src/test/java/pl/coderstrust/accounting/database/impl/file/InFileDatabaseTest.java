@@ -14,6 +14,7 @@ import pl.coderstrust.accounting.model.Invoice;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @RunWith(JUnitParamsRunner.class)
 public class InFileDatabaseTest {
@@ -119,7 +120,6 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-
   public void shouldThrowExceptionIfDatabaseFilePathIsNull() {
     //given
     database = new InFileDatabase(null, ID_FILE_PATH);
@@ -141,5 +141,23 @@ public class InFileDatabaseTest {
   public void shouldThrowExceptionIfIdFilePathhIsEmpty() {
     //given
     database = new InFileDatabase(DATABASE_FILE_PATH, "");
+  }
+
+  @Test
+  public void shouldFindeInvoicesWithoutGivenConditions() {
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice invoice = InvoiceHelper.getSampleInvoiceWithId1();
+      database.saveInvoice(invoice);
+
+      //when
+      Collection<Invoice> result = database.find(null, null, null);
+
+      //then
+      assertNotNull(result);
+    } finally {
+      cleanTestFiles();
+    }
   }
 }
