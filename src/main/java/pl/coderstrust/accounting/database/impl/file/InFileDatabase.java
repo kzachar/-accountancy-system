@@ -30,7 +30,6 @@ public class InFileDatabase implements Database {
 
   @Override
   public int saveInvoice(Invoice invoice) {
-    int id = 0;
     try {
       id = FileInvoiceHelper.getAndIncrementLastId(idFilePath);
     } catch (IOException ioex) {
@@ -78,7 +77,7 @@ public class InFileDatabase implements Database {
         searchResult = findBySeller(searchParams.getSeller(), searchResult);
         searchResult = findByEntries(searchParams.getEntries(), searchResult);
       }
-      searchResult.addAll(findbyDateRange(invoices, changeToSearchDateFrom(issuedDateFrom),
+      searchResult.addAll(findByDateRange(invoices, changeToSearchDateFrom(issuedDateFrom),
           changeToSearchDateTo(issuedDateTo)));
     }
     return searchResult;
@@ -128,7 +127,7 @@ public class InFileDatabase implements Database {
         .collect(Collectors.toCollection(HashSet::new));
   }
 
-  private Collection<Invoice> findbyDateRange(List<Invoice> inputList, LocalDate issuedDateFrom,
+  private Collection<Invoice> findByDateRange(List<Invoice> inputList, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
     return inputList.stream()
         .filter(invoice -> invoice.getIssuedDate().isAfter(issuedDateFrom))
