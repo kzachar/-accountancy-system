@@ -13,6 +13,7 @@ public class InFileDatabase implements Database {
 
   private String databaseFilePath;
   private String idFilePath;
+  int id = 0;
 
   public InFileDatabase(String databaseFilePath, String idFilePath) {
     if (databaseFilePath == null || "".equals(databaseFilePath)) {
@@ -45,7 +46,13 @@ public class InFileDatabase implements Database {
 
   @Override
   public void updateInvoice(Invoice invoice) {
+    try {
+      FileHelper.updateInvoice(databaseFilePath, invoice);
+    } catch (IOException ieox) {
+      throw new RuntimeException(ieox);
+    }
   }
+
 
   @Override
   public void removeInvoice(int id) {

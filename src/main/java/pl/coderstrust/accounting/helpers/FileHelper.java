@@ -70,6 +70,35 @@ public class FileHelper {
     return invoice;
   }
 
+  public static List<String> updateInvoice(String filePath, Invoice invoice) throws IOException {
+    boolean invoiceRemoved = false;
+    ArrayList<String> lines = new ArrayList<>();
+    String updatedInvoice = JsonConverter.toJson(invoice);
+    File file = new File(filePath);
+    if (!file.exists()) {
+      throw new IllegalArgumentException("No file under given path");
+    }
+    if (file.length() == 0) {
+      throw new IllegalArgumentException("List of invoices is empty");
+    } else {
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+        String line;
+        while ((line = bufferedReader.readLine()) != null) {
+          lines.add(line);
+          if ((JsonConverter.fromJson(line).getId() == invoice.getId())) {
+            lines.remove(line);
+            lines.add(updatedInvoice);
+            invoiceRemoved = true;
+          }
+        }
+      }
+      if (!invoiceRemoved) {
+        throw new IllegalArgumentException("No invoice with given id in file");
+      }
+    }
+    return lines;
+  }
+
   public static void appendToFile(String line, String filePath)
       throws IOException {
     if (line == null) {

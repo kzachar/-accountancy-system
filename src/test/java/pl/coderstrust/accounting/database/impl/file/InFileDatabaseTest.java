@@ -148,7 +148,7 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToRemove() throws IOException {
+  public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToRemove() {
 
     try {
       //given
@@ -164,7 +164,7 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowAnExceptionIfNoInvoiceToRemove() throws IOException {
+  public void shouldThrowAnExceptionIfNoInvoiceToRemove() {
 
     //given
     database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -244,7 +244,7 @@ public class InFileDatabaseTest {
   }
 
   @Test
-  public void shouldGetInvoiceById() throws IOException {
+  public void shouldGetInvoiceById() {
 
     try {
       //given
@@ -271,7 +271,7 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToGet() throws IOException {
+  public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToGet() {
 
     try {
       //given
@@ -287,13 +287,60 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-  public void shouldThrowAnExceptionIfNoInvoiceToGet() throws IOException {
+  public void shouldThrowAnExceptionIfNoInvoiceToGet() {
 
     //given
     database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
 
     //when
     database.get(5);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowExceptionWhenTryingToUpdateWithNullId() {
+
+    //given
+    database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithNullId();
+
+    //when
+    database.updateInvoice(invoice);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void shouldThrowExceptionWhenTryingToUpdateInvoiceThatDoesNotExist() {
+
+    //given
+    database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId1();
+
+    //when
+    database.updateInvoice(invoice);
+  }
+
+  @Test
+  public void shouldUpdateInvoice() {
+    database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+    try {
+      //given
+    Invoice invoice = InvoiceHelper.getSampleInvoiceWithId1();
+    String newIdentifier = "ABC";
+    LocalDate newDate = LocalDate.now();
+    Invoice updatedInvoice = new Invoice(1, newIdentifier, newDate,
+        InvoiceHelper.getSampleBuyerCompany(), InvoiceHelper.getSampleSellerCompany(),
+        InvoiceHelper.getSampleFourInvoiceEntriesList());
+
+    //when
+    database.saveInvoice(invoice);
+    database.updateInvoice(updatedInvoice);
+
+    //then
+    Invoice actual = database.get(1);
+    assertThat(actual.getIdentifier(), CoreMatchers.is(newIdentifier));
+    assertThat(actual.getIssuedDate(), CoreMatchers.is(newDate));
+    } finally {
+      cleanTestFiles();
+    }
   }
 
   public static void invoicesAreIdentical(Invoice invoice, Invoice invoiceToCompare) {
