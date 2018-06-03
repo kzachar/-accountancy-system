@@ -62,7 +62,7 @@ public class InFileDatabase implements Database {
   @Override
   public Collection<Invoice> find(Invoice searchParams, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
-    Set<Invoice> resultSchearching = new HashSet<>();
+    Set<Invoice> searchResult = new HashSet<>();
     List<Invoice> invoices = null;
     try {
       invoices = FileInvoiceHelper.readInvoicesFromFile(databaseFilePath);
@@ -70,23 +70,25 @@ public class InFileDatabase implements Database {
       ioex.printStackTrace();
     }
     if (invoices != null) {
-      resultSchearching.addAll(findbyDateRange(invoices, normalizeDateFrom(issuedDateFrom),
-          normalizeDateTo(issuedDateTo)));
-      resultSchearching = findById(searchParams.getId(), resultSchearching);
-      resultSchearching = findByIdentifier(searchParams.getIdentifier(), resultSchearching);
-      resultSchearching = findByIssuedDate(searchParams.getIssuedDate(), resultSchearching);
-      resultSchearching = findByBuyer(searchParams.getBuyer(), resultSchearching);
-      resultSchearching = findBySeller(searchParams.getSeller(), resultSchearching);
-      resultSchearching = findByEntries(searchParams.getEntries(), resultSchearching);
+      if (searchParams != null) {
+        searchResult = findById(searchParams.getId(), searchResult);
+        searchResult = findByIdentifier(searchParams.getIdentifier(), searchResult);
+        searchResult = findByIssuedDate(searchParams.getIssuedDate(), searchResult);
+        searchResult = findByBuyer(searchParams.getBuyer(), searchResult);
+        searchResult = findBySeller(searchParams.getSeller(), searchResult);
+        searchResult = findByEntries(searchParams.getEntries(), searchResult);
+      }
+      searchResult.addAll(findbyDateRange(invoices, changeToSearchDateFrom(issuedDateFrom),
+          changeToSearchDateTo(issuedDateTo)));
     }
-    return resultSchearching;
+    return searchResult;
   }
 
-  private LocalDate normalizeDateFrom(LocalDate issuedDateFrom) {
+  private LocalDate changeToSearchDateFrom(LocalDate issuedDateFrom) {
     return issuedDateFrom == null ? LocalDate.MIN : issuedDateFrom;
   }
 
-  private LocalDate normalizeDateTo(LocalDate issuedDateTo) {
+  private LocalDate changeToSearchDateTo(LocalDate issuedDateTo) {
     return issuedDateTo == null ? LocalDate.MAX : issuedDateTo;
   }
 

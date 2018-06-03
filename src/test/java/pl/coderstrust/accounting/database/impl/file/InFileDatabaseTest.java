@@ -1,6 +1,8 @@
 package pl.coderstrust.accounting.database.impl.file;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
@@ -146,7 +148,7 @@ public class InFileDatabaseTest {
 
   @Test
   @Parameters(method = "providerParameters")
-  public void shouldFindeInvoicesWithId1(Invoice searchParams) {
+  public void shouldFindInvoiceInFileByEveryParameter(Invoice searchParams) {
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -157,15 +159,25 @@ public class InFileDatabaseTest {
       Collection<Invoice> result = database.find(searchParams, null, null);
 
       //then
+      assertNotNull(result);
+      assertFalse(result.isEmpty());
+      Invoice actual = result.iterator().next();
+      assertEquals(0, (int) actual.getId());
+      assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
     } finally {
       cleanTestFiles();
     }
   }
 
   private Object[] providerParameters() {
-    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId1();
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     return new Object[]{
-        new Object[]{sampleInvoice}
+        new Object[]{new Invoice(1, null, null, null, null, null)},
+        new Object[]{new Invoice(null, sampleInvoice.getIdentifier(), null, null, null, null)},
+        new Object[]{new Invoice(null, null, sampleInvoice.getIssuedDate(), null, null, null)},
+        new Object[]{new Invoice(null, null, null, sampleInvoice.getBuyer(), null, null)},
+        new Object[]{new Invoice(null, null, null, null, sampleInvoice.getSeller(), null)},
+        new Object[]{new Invoice(null, null, null, null, null, sampleInvoice.getEntries())}
     };
   }
 }
