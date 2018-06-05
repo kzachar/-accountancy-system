@@ -10,12 +10,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class InFileDatabase implements Database {
 
   private String databaseFilePath;
   private String idFilePath;
-  private int id = 0;
+  private int id;
+  private Set<Invoice> searchResult = new HashSet<>();
 
   public InFileDatabase(String databaseFilePath, String idFilePath) {
     if (databaseFilePath == null || "".equals(databaseFilePath)) {
@@ -61,7 +63,6 @@ public class InFileDatabase implements Database {
   @Override
   public Collection<Invoice> find(Invoice searchParams, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
-    Set<Invoice> searchResult = new HashSet<>();
     List<Invoice> invoices = null;
     try {
       invoices = FileInvoiceHelper.readInvoicesFromFile(databaseFilePath);
@@ -92,39 +93,27 @@ public class InFileDatabase implements Database {
   }
 
   private Set<Invoice> findById(Integer id, Set<Invoice> resultSchearching) {
-    return resultSchearching.stream()
-        .filter(invoice -> id.equals(invoice.getId()))
-        .collect(Collectors.toCollection(HashSet::new));
+    return findGeneric(invoice -> id.equals(invoice.getId()));
   }
 
   private Set<Invoice> findByIdentifier(String identifier, Set<Invoice> resultSchearching) {
-    return resultSchearching.stream()
-        .filter(invoice -> identifier.equals(invoice.getIdentifier()))
-        .collect(Collectors.toCollection(HashSet::new));
+    return findGeneric(invoice -> identifier.equals(invoice.getIdentifier()));
   }
 
   private Set<Invoice> findByIssuedDate(LocalDate issuedDate, Set<Invoice> resultSchearching) {
-    return resultSchearching.stream()
-        .filter(invoice -> issuedDate.equals(invoice.getIssuedDate()))
-        .collect(Collectors.toCollection(HashSet::new));
+    return findGeneric(invoice -> issuedDate.equals(invoice.getIssuedDate()));
   }
 
   private Set<Invoice> findByBuyer(Company buyer, Set<Invoice> resultSchearching) {
-    return resultSchearching.stream()
-        .filter(invoice -> buyer.equals(invoice.getBuyer()))
-        .collect(Collectors.toCollection(HashSet::new));
+    return findGeneric(invoice -> buyer.equals(invoice.getBuyer()));
   }
 
   private Set<Invoice> findBySeller(Company seller, Set<Invoice> resultSchearching) {
-    return resultSchearching.stream()
-        .filter(invoice -> seller.equals(invoice.getSeller()))
-        .collect(Collectors.toCollection(HashSet::new));
+    return findGeneric(invoice -> seller.equals(invoice.getSeller()));
   }
 
   private Set<Invoice> findByEntries(List<InvoiceEntry> entries, Set<Invoice> resultSchearching) {
-    return resultSchearching.stream()
-        .filter(invoice -> entries.equals(invoice.getEntries()))
-        .collect(Collectors.toCollection(HashSet::new));
+    return findGeneric(invoice -> entries.equals(invoice.getEntries()));
   }
 
   private Collection<Invoice> findByDateRange(List<Invoice> inputList, LocalDate issuedDateFrom,
@@ -133,6 +122,12 @@ public class InFileDatabase implements Database {
         .filter(invoice -> invoice.getIssuedDate().isAfter(issuedDateFrom))
         .filter(invoice -> invoice.getIssuedDate().isBefore(issuedDateTo))
         .collect(Collectors.toCollection(ArrayList::new));
+  }
+
+  private Set<Invoice> findGeneric(Predicate<? super Invoice> predicate) {
+    return searchResult.stream()
+        .filter(predicate)
+        .collect(Collectors.toSet());
   }
 
   @Override
