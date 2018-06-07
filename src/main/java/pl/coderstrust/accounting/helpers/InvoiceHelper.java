@@ -59,7 +59,7 @@ public class InvoiceHelper {
         "11-111",
         "TestLocationSeller1");
     List<InvoiceEntry> entries = getSampleFourInvoiceEntriesList();
-    return new Invoice(1, "TestIdentifier1", LocalDate.now(), buyer, seller, entries);
+    return new Invoice(1, "TestIdentifier1", LocalDate.now().minusDays(5), buyer, seller, entries);
   }
 
   public static Invoice getSampleInvoiceWithId2() {
@@ -81,7 +81,7 @@ public class InvoiceHelper {
     InvoiceEntry entry = new InvoiceEntry("Test Entry #3", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
     entries.add(entry);
-    return new Invoice(3, "TestIdentifier3", LocalDate.now(), buyer, seller,
+    return new Invoice(3, "TestIdentifier3", LocalDate.now().plusDays(10), buyer, seller,
         entries);
   }
 

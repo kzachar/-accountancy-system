@@ -26,7 +26,7 @@ public class InFileDatabaseTest {
   private static final String ID_FILE_PATH = "test_id_last_invoice.txt";
   private InFileDatabase database;
 
-  private void cleanTestFiles() {
+  public void cleanTestFiles() {
     File fileDatabaseInvoice = new File(DATABASE_FILE_PATH);
     File fileIdInvoices = new File(ID_FILE_PATH);
     if (!fileDatabaseInvoice.delete()) {
@@ -69,7 +69,7 @@ public class InFileDatabaseTest {
       String actual2 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(1);
       String expected2 = "{\"id\":1"
           + ",\"identifier\":\"TestIdentifier1\""
-          + ",\"issuedDate\":\"" + LocalDate.now() + "\""
+          + ",\"issuedDate\":\"" + LocalDate.now().minusDays(5) + "\""
           + ",\"buyer\":{\"name\":\"CompanyBuyerTest1\""
           + ",\"taxId\":\"1111111111\""
           + ",\"streetAndNumber\":\"Test Buyer Street 1\""
@@ -82,7 +82,6 @@ public class InFileDatabaseTest {
           + ",\"price\":10,\"vat\":5},{\"description\":\"Test Entry #4\""
           + ",\"price\":10,\"vat\":0}]}";
       assertThat(actual2, is((expected2)));
-
     } finally {
       cleanTestFiles();
     }
@@ -148,7 +147,7 @@ public class InFileDatabaseTest {
 
   @Test
   @Parameters(method = "providerParameters")
-  public void shouldFindInvoiceInFileByEveryParameter(Invoice searchParams) {
+  public void shouldFindInvoiceInFileByEveryParameter_OneOrMoreParameters(Invoice searchParams) {
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -170,14 +169,56 @@ public class InFileDatabaseTest {
   }
 
   private Object[] providerParameters() {
-    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    Invoice sampleInvoiceUseOneParameter = InvoiceHelper.getSampleInvoiceWithNullId();
+    Invoice sampleInvoiceUseTwoOrMoreParameters = InvoiceHelper.getSampleInvoiceWithId1();
     return new Object[]{
         new Object[]{new Invoice(1, null, null, null, null, null)},
-        new Object[]{new Invoice(null, sampleInvoice.getIdentifier(), null, null, null, null)},
-        new Object[]{new Invoice(null, null, sampleInvoice.getIssuedDate(), null, null, null)},
-        new Object[]{new Invoice(null, null, null, sampleInvoice.getBuyer(), null, null)},
-        new Object[]{new Invoice(null, null, null, null, sampleInvoice.getSeller(), null)},
-        new Object[]{new Invoice(null, null, null, null, null, sampleInvoice.getEntries())}
+        new Object[]{
+            new Invoice(null, sampleInvoiceUseOneParameter.getIdentifier(), null, null, null,
+                null)},
+        new Object[]{
+            new Invoice(null, null, sampleInvoiceUseOneParameter.getIssuedDate(), null, null,
+                null)},
+        new Object[]{
+            new Invoice(null, null, null, sampleInvoiceUseOneParameter.getBuyer(), null, null)},
+        new Object[]{
+            new Invoice(null, null, null, null, sampleInvoiceUseOneParameter.getSeller(), null)},
+        new Object[]{
+            new Invoice(null, null, null, null, null, sampleInvoiceUseOneParameter.getEntries())},
+        new Object[]{new Invoice(null, null, sampleInvoiceUseTwoOrMoreParameters.getIssuedDate(),
+            sampleInvoiceUseTwoOrMoreParameters.getBuyer(), null, null)},
+        new Object[]{
+            new Invoice(null, null, sampleInvoiceUseTwoOrMoreParameters.getIssuedDate(),
+                null, sampleInvoiceUseTwoOrMoreParameters.getSeller(), null)},
+        new Object[]{
+            new Invoice(null, null, sampleInvoiceUseTwoOrMoreParameters.getIssuedDate(),
+                null, sampleInvoiceUseTwoOrMoreParameters.getSeller(),
+                sampleInvoiceUseTwoOrMoreParameters.getEntries())}
     };
+  }
+
+  @Test
+  public void shouldFindInvoiceByDateRange() {
+    try {
+      //given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
+      database.saveInvoice(sampleInvoice);
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId1());
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+
+      //when
+      Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
+          sampleInvoice.getIssuedDate().plusDays(1));
+
+      //then
+      assertNotNull(result);
+      assertFalse(result.isEmpty());
+      Invoice actual = result.iterator().next();
+      assertEquals(0, (int) actual.getId());
+      assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
+    } finally {
+      cleanTestFiles();
+    }
   }
 }
