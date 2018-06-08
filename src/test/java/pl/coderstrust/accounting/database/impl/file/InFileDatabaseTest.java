@@ -43,7 +43,7 @@ public class InFileDatabaseTest {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
       Invoice invoice1 = InvoiceHelper.getSampleInvoiceWithId0();
-      Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId1();
+      Invoice invoice2 = InvoiceHelper.getSampleInvoiceWithId1ForFindByDateRangeTest();
 
       //when
       database.saveInvoice(invoice1);
@@ -57,9 +57,9 @@ public class InFileDatabaseTest {
           + ",\"buyer\":{\"name\":\"CompanyBuyerTest0\""
           + ",\"taxId\":\"000000000\""
           + ",\"streetAndNumber\":\"Test Buyer Street 0\""
-          + ",\"postalCode\":\"00000\",\"location\":\"TestLocationBuyer0\"}"
+          + ",\"postalCode\":\"00-000\",\"location\":\"TestLocationBuyer0\"}"
           + ",\"seller\":{\"name\":\"CompanySellerTest0\",\"taxId\":\"0000000000\""
-          + ",\"streetAndNumber\":\"Test Seller Street 0\",\"postalCode\":\"00000\""
+          + ",\"streetAndNumber\":\"Test Seller Street 0\",\"postalCode\":\"00-000\""
           + ",\"location\":\"TestLocationSeller0\"},\"entries\":[{\"description\":\"Test Entry #1\""
           + ",\"price\":10,\"vat\":23},{\"description\":\"Test Entry #2\""
           + ",\"price\":10,\"vat\":8},{\"description\":\"Test Entry #3\""
@@ -172,7 +172,8 @@ public class InFileDatabaseTest {
     Invoice sampleInvoiceUseOneParameter = InvoiceHelper.getSampleInvoiceWithNullId();
     Invoice sampleInvoiceUseTwoOrMoreParameters = InvoiceHelper.getSampleInvoiceWithId1();
     return new Object[]{
-        new Object[]{new Invoice(1, null, null, null, null, null)},
+        new Object[]{
+            new Invoice(1, null, null, null, null, null)},
         new Object[]{
             new Invoice(null, sampleInvoiceUseOneParameter.getIdentifier(), null, null, null,
                 null)},
@@ -204,8 +205,8 @@ public class InFileDatabaseTest {
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
       Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithId2();
       database.saveInvoice(sampleInvoice);
-      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId1());
-      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId1ForFindByDateRangeTest());
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3ForFindByDateRangeTest());
 
       //when
       Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
