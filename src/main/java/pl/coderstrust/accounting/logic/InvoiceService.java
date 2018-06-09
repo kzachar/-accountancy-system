@@ -46,7 +46,6 @@ public class InvoiceService {
     if (current == null) {
       throw new IllegalArgumentException(
           "Cannot update: An invoice with given ID : " + invoice.getId() + " doesn't exist");
-
     } else {
       Invoice invoiceToUpdate = prepareInvoiceToUpdate(invoice, current);
       Collection<InvoiceValidationException> validationExceptions = invoiceValidator
