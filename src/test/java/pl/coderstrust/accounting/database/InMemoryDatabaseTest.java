@@ -104,8 +104,6 @@ public class InMemoryDatabaseTest {
     database.updateInvoice(invoice);
   }
 
-
-
   @Test
   public void shouldUpdateInvoice() {
     //given
@@ -234,6 +232,4 @@ public class InMemoryDatabaseTest {
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
   }
-
-
 }

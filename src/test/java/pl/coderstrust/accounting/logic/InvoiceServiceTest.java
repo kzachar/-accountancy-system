@@ -250,7 +250,6 @@ public class InvoiceServiceTest {
 
     //then
     verify(databaseMock).getAll();
-
   }
 
   @SuppressWarnings("unused")
