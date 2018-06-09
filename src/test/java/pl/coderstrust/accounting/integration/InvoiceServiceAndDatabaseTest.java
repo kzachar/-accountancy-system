@@ -116,8 +116,6 @@ public class InvoiceServiceAndDatabaseTest {
     invoiceService.updateInvoice(invoice);
   }
 
-
-
   @Test
   @Parameters(method = "findParameters")
   public void shouldFindInvoiceByEveryParameter(Invoice searchParams) {
@@ -135,7 +133,6 @@ public class InvoiceServiceAndDatabaseTest {
     Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
-
   }
 
   @SuppressWarnings("unused")
@@ -248,6 +245,4 @@ public class InvoiceServiceAndDatabaseTest {
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
   }
-
-
 }
