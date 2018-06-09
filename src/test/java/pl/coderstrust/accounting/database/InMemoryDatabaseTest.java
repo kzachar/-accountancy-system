@@ -141,7 +141,6 @@ public class InMemoryDatabaseTest {
     Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
-
   }
 
   @SuppressWarnings("unused")
