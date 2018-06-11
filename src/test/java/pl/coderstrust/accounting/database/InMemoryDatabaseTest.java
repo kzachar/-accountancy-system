@@ -28,9 +28,6 @@ public class InMemoryDatabaseTest {
     database = new InMemoryDatabase();
   }
 
-  //Tests to check if Id increments need to be added, no method defined at the time when
-  // Add invoice to InMemoryDatabase was coded
-
   @Test
   public void shouldIncrementIdWhenInvoiceWithNullIdIsPassed() {
     //given
@@ -133,7 +130,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(searchParams, null, null);
@@ -144,7 +141,6 @@ public class InMemoryDatabaseTest {
     Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
-
   }
 
   @SuppressWarnings("unused")
@@ -165,7 +161,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
@@ -184,7 +180,7 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(null, sampleInvoice.getIssuedDate().minusDays(1),
@@ -203,18 +199,36 @@ public class InMemoryDatabaseTest {
     //given
     Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
     database.saveInvoice(sampleInvoice);
-    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
     //when
     Collection<Invoice> result = database.find(null, null,
-        sampleInvoice.getIssuedDate().plusDays(1));
+        LocalDate.of(2018, 3, 20));
 
     //then
     assertNotNull(result);
     assertFalse(result.isEmpty());
     Invoice actual = result.iterator().next();
+    assertEquals(2, (int) actual.getId());
+  }
+
+  @Test
+  public void shouldGetAllInvoices() {
+    //given
+    Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
+    database.saveInvoice(sampleInvoice);
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+    database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId4());
+
+    //when
+    Collection<Invoice> result = database.getAll();
+
+    //then
+    assertNotNull(result);
+    assertFalse(result.isEmpty());
+    assertEquals(3, result.size());
+    Invoice actual = result.iterator().next();
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
   }
-
 }

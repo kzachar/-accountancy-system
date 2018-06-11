@@ -52,31 +52,26 @@ public class InMemoryDatabase implements Database {
         if (searchParams.getId() != null) {
           if (searchParams.getId().equals(invoice.getId())) {
             result.add(invoice);
-            break;
           }
         }
         if (searchParams.getIdentifier() != null) {
           if (searchParams.getIdentifier().equals(invoice.getIdentifier())) {
             result.add(invoice);
-            break;
           }
         }
         if (searchParams.getBuyer() != null) {
           if (searchParams.getBuyer().equals(invoice.getBuyer())) {
             result.add(invoice);
-            break;
           }
         }
         if (searchParams.getSeller() != null) {
           if (searchParams.getSeller().equals(invoice.getSeller())) {
             result.add(invoice);
-            break;
           }
         }
         if (searchParams.getIssuedDate() != null) {
           if (searchParams.getIssuedDate().isEqual(invoice.getIssuedDate())) {
             result.add(invoice);
-            break;
           }
         }
         if (searchParams.getEntries() != null) {
@@ -93,25 +88,27 @@ public class InMemoryDatabase implements Database {
         if (issuedDateFrom.isBefore(invoice.getIssuedDate()) || issuedDateFrom
             .isEqual(invoice.getIssuedDate())) {
           result.add(invoice);
-          break;
         }
       }
       if (issuedDateTo != null && issuedDateFrom == null) {
         if (issuedDateTo.isAfter(invoice.getIssuedDate()) || issuedDateTo
             .isEqual(invoice.getIssuedDate())) {
           result.add(invoice);
-          break;
         }
       }
       if (issuedDateTo != null && issuedDateFrom != null) {
-        if (issuedDateTo.isAfter(invoice.getIssuedDate()) || issuedDateTo
-            .isEqual(invoice.getIssuedDate()) || issuedDateFrom.isBefore(invoice.getIssuedDate())
-            || issuedDateFrom.isEqual(invoice.getIssuedDate())) {
+        if ((issuedDateTo.isAfter(invoice.getIssuedDate()) || issuedDateTo
+            .isEqual(invoice.getIssuedDate())) && (issuedDateFrom.isBefore(invoice.getIssuedDate())
+            || issuedDateFrom.isEqual(invoice.getIssuedDate()))) {
           result.add(invoice);
-          break;
         }
       }
     }
     return result;
+  }
+
+  @Override
+  public Collection<Invoice> getAll() {
+    return invoices.values();
   }
 }

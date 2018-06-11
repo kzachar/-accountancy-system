@@ -11,26 +11,28 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-public class InvoiceBook {
+public class InvoiceService {
 
   private final Database database;
   private final InvoiceValidator invoiceValidator;
 
-  public InvoiceBook(Database database, InvoiceValidator invoiceValidator) {
+  public InvoiceService(Database database, InvoiceValidator invoiceValidator) {
     this.database = database;
     this.invoiceValidator = invoiceValidator;
   }
 
-  public void saveInvoice(Invoice invoice) {
-    final Collection<InvoiceValidationException> validationErrors = invoiceValidator.validateInvoiceForSave(
-        invoice);
+  public int saveInvoice(Invoice invoice) {
+    final Collection<InvoiceValidationException> validationErrors = invoiceValidator
+        .validateInvoiceForSave(
+            invoice);
     if (validationErrors.isEmpty()) {
-      database.saveInvoice(invoice);
+      return database.saveInvoice(invoice);
     } else {
       for (InvoiceValidationException exception : validationErrors) {
         exception.printStackTrace();
       }
     }
+    return 0;
   }
 
   public void updateInvoice(Invoice invoice) {
@@ -44,7 +46,6 @@ public class InvoiceBook {
     if (current == null) {
       throw new IllegalArgumentException(
           "Cannot update: An invoice with given ID : " + invoice.getId() + " doesn't exist");
-
     } else {
       Invoice invoiceToUpdate = prepareInvoiceToUpdate(invoice, current);
       Collection<InvoiceValidationException> validationExceptions = invoiceValidator
@@ -89,4 +90,7 @@ public class InvoiceBook {
     return database.find(searchParams, issuedDateFrom, issuedDateTo);
   }
 
+  public Collection<Invoice> getAll() {
+    return database.getAll();
+  }
 }
