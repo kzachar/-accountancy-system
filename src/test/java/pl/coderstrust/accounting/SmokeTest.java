@@ -13,11 +13,11 @@ import pl.coderstrust.accounting.controller.InvoiceController;
 @SpringBootTest
 public class SmokeTest {
 
-    @Autowired
-    private InvoiceController controller;
+  @Autowired
+  private InvoiceController controller;
 
-    @Test
-    public void contexLoads() throws Exception {
-        assertThat(controller).isNotNull();
-    }
+  @Test
+  public void contexLoads() throws Exception {
+    assertThat(controller).isNotNull();
+  }
 }

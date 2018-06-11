@@ -96,16 +96,16 @@ public class ApplicationTest {
 
     mockMvc
         .perform(post("/invoices")
-        .content(
-            "{\"id\":6,\"identifier\":\"TestIdentifier6\",\"issuedDate\":\"2018-02-01\",\""
-                + "buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\",\""
-                + "streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\",\""
-                + "location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\""
-                + "CompanySellerTest5\",\"taxId\":\"5555555555\",\"streetAndNumber\":\""
-                + "Test Seller Street 5\",\"postalCode\":\"55-555\",\"location\":\""
-                + "TestLocationSeller4\"},\"entries\":[]}")
-        .contentType(
-            MediaType.APPLICATION_JSON_UTF8))
+            .content(
+                "{\"id\":6,\"identifier\":\"TestIdentifier6\",\"issuedDate\":\"2018-02-01\",\""
+                    + "buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\",\""
+                    + "streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\",\""
+                    + "location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\""
+                    + "CompanySellerTest5\",\"taxId\":\"5555555555\",\"streetAndNumber\":\""
+                    + "Test Seller Street 5\",\"postalCode\":\"55-555\",\"location\":\""
+                    + "TestLocationSeller4\"},\"entries\":[]}")
+            .contentType(
+                MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
