@@ -63,23 +63,35 @@ public class InFileDatabase implements Database {
   @Override
   public Collection<Invoice> find(Invoice searchParams, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
-    List<Invoice> invoices = null;
+    searchResult = null;
     try {
-      invoices = FileInvoiceHelper.readInvoicesFromFile(databaseFilePath);
+      searchResult = new HashSet(FileInvoiceHelper.readInvoicesFromFile(databaseFilePath));
     } catch (IOException ioex) {
       ioex.printStackTrace();
     }
-    if (invoices != null) {
+    if (searchResult != null) {
+      searchResult = findByDateRange(searchResult, changeToSearchDateFrom(issuedDateFrom),
+          changeToSearchDateTo(issuedDateTo));
       if (searchParams != null) {
-        searchResult = findById(searchParams.getId(), searchResult);
-        searchResult = findByIdentifier(searchParams.getIdentifier(), searchResult);
-        searchResult = findByIssuedDate(searchParams.getIssuedDate(), searchResult);
-        searchResult = findByBuyer(searchParams.getBuyer(), searchResult);
-        searchResult = findBySeller(searchParams.getSeller(), searchResult);
-        searchResult = findByEntries(searchParams.getEntries(), searchResult);
+        if (searchParams.getId() != null) {
+          searchResult = findById(searchParams.getId(), searchResult);
+        }
+        if (searchParams.getIdentifier() != null) {
+          searchResult = findByIdentifier(searchParams.getIdentifier(), searchResult);
+        }
+        if (searchParams.getIssuedDate() != null) {
+          searchResult = findByIssuedDate(searchParams.getIssuedDate(), searchResult);
+        }
+        if (searchParams.getBuyer() != null) {
+          searchResult = findByBuyer(searchParams.getBuyer(), searchResult);
+        }
+        if (searchParams.getSeller() != null) {
+          searchResult = findBySeller(searchParams.getSeller(), searchResult);
+        }
+        if (searchParams.getEntries() != null) {
+          searchResult = findByEntries(searchParams.getEntries(), searchResult);
+        }
       }
-      searchResult.addAll(findByDateRange(invoices, changeToSearchDateFrom(issuedDateFrom),
-          changeToSearchDateTo(issuedDateTo)));
     }
     return searchResult;
   }
@@ -116,12 +128,12 @@ public class InFileDatabase implements Database {
     return findGeneric(invoice -> entries.equals(invoice.getEntries()));
   }
 
-  private Collection<Invoice> findByDateRange(List<Invoice> inputList, LocalDate issuedDateFrom,
+  private Set<Invoice> findByDateRange(Set<Invoice> inputList, LocalDate issuedDateFrom,
       LocalDate issuedDateTo) {
     return inputList.stream()
         .filter(invoice -> invoice.getIssuedDate().isAfter(issuedDateFrom))
         .filter(invoice -> invoice.getIssuedDate().isBefore(issuedDateTo))
-        .collect(Collectors.toCollection(ArrayList::new));
+        .collect(Collectors.toCollection(HashSet::new));
   }
 
   private Set<Invoice> findGeneric(Predicate<? super Invoice> predicate) {

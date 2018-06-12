@@ -159,9 +159,8 @@ public class InFileDatabaseTest {
 
       //then
       assertNotNull(result);
-      assertFalse(result.isEmpty());
-      Invoice actual = result.iterator().next();
-      assertEquals(0, (int) actual.getId());
+      Invoice actual = InvoiceHelper.getSampleInvoiceWithId1();
+      assertEquals(1, (int) actual.getId());
       assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
     } finally {
       cleanTestFiles();
@@ -172,6 +171,9 @@ public class InFileDatabaseTest {
     Invoice sampleInvoiceUseOneParameter = InvoiceHelper.getSampleInvoiceWithNullId();
     Invoice sampleInvoiceUseTwoOrMoreParameters = InvoiceHelper.getSampleInvoiceWithId1();
     return new Object[]{
+        new Object[]{
+            sampleInvoiceUseTwoOrMoreParameters
+        },
         new Object[]{
             new Invoice(1, null, null, null, null, null)},
         new Object[]{
