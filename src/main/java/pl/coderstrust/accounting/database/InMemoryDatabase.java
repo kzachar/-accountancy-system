@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.database;
 
+import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.model.InvoiceEntry;
 
@@ -10,6 +11,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+//@Primary
+@Repository
 public class InMemoryDatabase implements Database {
 
   private final Map<Integer, Invoice> invoices = new HashMap<>();
@@ -19,9 +22,9 @@ public class InMemoryDatabase implements Database {
   @Override
   public int saveInvoice(Invoice invoice) {
     invoices
-        .put(++id, new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
+        .put(++id, new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),//id
             invoice.getBuyer(), invoice.getSeller(), invoice.getEntries()));
-    return id;
+    return id;//id++
   }
 
   @Override
