@@ -126,6 +126,26 @@ public class InvoiceHelper {
         InvoiceHelper.getSampleFourInvoiceEntriesList());
   }
 
+  public static Invoice getSampleInvoiceWithId8_WithSameBuyerWhatId7() {
+    Company buyer = new Company("CompanyBuyerTest7", "777777777", "Test Buyer Street 7", "77777",
+        "TestLocationBuyer4");
+    Company seller = new Company("CompanySellerTest8", "888888888", "Test Seller Street 8",
+        "88-888",
+        "TestLocationSeller8");
+    return new Invoice(8, "TestIdentifier8", LocalDate.of(2018, Month.JANUARY, 2), buyer, seller,
+        InvoiceHelper.getSampleFourInvoiceEntriesList());
+  }
+
+  public static Invoice getSampleInvoiceWithId9_WithSameSellerWhatId8() {
+    Company buyer = new Company("CompanyBuyerTest9", "999999999", "Test Buyer Street 9", "99-999",
+        "TestLocationBuyer9");
+    Company seller = new Company("CompanySellerTest8", "888888888", "Test Seller Street 8",
+        "88-888",
+        "TestLocationSeller8");
+    return new Invoice(8, "TestIdentifier9", LocalDate.of(2018, Month.MAY, 2), buyer, seller,
+        InvoiceHelper.getSampleFourInvoiceEntriesList());
+  }
+
   public static Invoice getSampleInvoiceWithId1ForFindByDateRangeTest() {
     Company buyer = new Company("CompanyBuyerTest1", "1111111111", "Test Buyer Street 1", "11-111",
         "TestLocationBuyer1");
@@ -179,5 +199,4 @@ public class InvoiceHelper {
     entries.add(new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.ZERO));
     return entries;
   }
-
 }
