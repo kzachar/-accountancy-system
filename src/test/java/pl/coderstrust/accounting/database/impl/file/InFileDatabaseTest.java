@@ -156,7 +156,7 @@ public class InFileDatabaseTest {
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
       Invoice sampleInvoice = InvoiceHelper.getSampleInvoiceWithNullId();
       database.saveInvoice(sampleInvoice);
-      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId5());
 
       //when
       Collection<Invoice> result = database.find(searchParams, null, null);

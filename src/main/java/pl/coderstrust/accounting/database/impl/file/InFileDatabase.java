@@ -2,7 +2,9 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
+import pl.coderstrust.accounting.model.Company;
 import pl.coderstrust.accounting.model.Invoice;
+import pl.coderstrust.accounting.model.InvoiceEntry;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -10,6 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class InFileDatabase implements Database {
@@ -147,4 +150,3 @@ public class InFileDatabase implements Database {
     return null;
   }
 }
-

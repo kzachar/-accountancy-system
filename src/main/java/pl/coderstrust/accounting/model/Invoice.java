@@ -46,6 +46,18 @@ public class Invoice {
   }
 
   @Override
+  public String toString() {
+    return "Invoice{"
+        + "id=" + id
+        + ", identifier='" + identifier + '\''
+        + ", issuedDate=" + issuedDate
+        + ", buyer=" + buyer
+        + ", seller=" + seller
+        + ", entries=" + entries
+        + '}';
+  }
+
+  @Override
   public int hashCode() {
     return Objects.hash(id, identifier, issuedDate, buyer, seller, entries);
   }
