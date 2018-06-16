@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.model.validator;
 
+import org.springframework.stereotype.Service;
 import pl.coderstrust.accounting.model.Invoice;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class InvoiceValidator {
 
   private final InvoiceEntryValidator invoiceEntryValidator;

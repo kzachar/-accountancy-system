@@ -2,7 +2,7 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
@@ -19,7 +19,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Component
+@Primary
 @Repository
 public class InFileDatabase implements Database {
 
