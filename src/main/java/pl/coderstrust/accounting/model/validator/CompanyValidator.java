@@ -1,5 +1,6 @@
 package pl.coderstrust.accounting.model.validator;
 
+import org.springframework.stereotype.Service;
 import pl.coderstrust.accounting.model.Company;
 import pl.coderstrust.accounting.model.validator.exception.CompanyValidationException;
 
@@ -7,6 +8,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+@Service
 public class CompanyValidator {
 
   public Collection<CompanyValidationException> validate(Company company) {

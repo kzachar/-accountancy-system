@@ -11,7 +11,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-//@Primary
 @Repository
 public class InMemoryDatabase implements Database {
 
@@ -24,7 +23,7 @@ public class InMemoryDatabase implements Database {
     invoices
         .put(++id, new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),//id
             invoice.getBuyer(), invoice.getSeller(), invoice.getEntries()));
-    return id;//id++
+    return id;
   }
 
   @Override
