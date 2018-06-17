@@ -2,7 +2,6 @@ package pl.coderstrust.accounting.database.impl.file;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.helpers.FileInvoiceHelper;
@@ -12,6 +11,7 @@ import pl.coderstrust.accounting.model.InvoiceEntry;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +19,6 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Primary
 @Repository
 public class InFileDatabase implements Database {
 
@@ -28,9 +27,11 @@ public class InFileDatabase implements Database {
   private int id;
   private Set<Invoice> searchResult = new HashSet<>();
 
+  private List<Invoice> invoices = new ArrayList<>();
+
   @Autowired
-  public InFileDatabase(@Value("${database.file.databaseFilePath}") String databaseFilePath,
-      @Value("${database.file.idFilePath}") String idFilePath) {
+  public InFileDatabase(@Value("database.file.databaseFilePath") String databaseFilePath,
+      @Value("database.file.idFilePath") String idFilePath) {
     if (databaseFilePath == null || "".equals(databaseFilePath)) {
       throw new IllegalArgumentException("Database filepath can't be empty");
     }
@@ -155,6 +156,11 @@ public class InFileDatabase implements Database {
 
   @Override
   public Collection<Invoice> getAll() {
-    return null;
+    try {
+      invoices = FileInvoiceHelper.readInvoicesFromFile(databaseFilePath);
+    } catch (IOException ioex) {
+      ioex.printStackTrace();
+    }
+    return invoices;
   }
 }
