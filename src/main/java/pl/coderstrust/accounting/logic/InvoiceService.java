@@ -1,6 +1,7 @@
 package pl.coderstrust.accounting.logic;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import pl.coderstrust.accounting.database.Database;
 import pl.coderstrust.accounting.model.Company;
@@ -16,14 +17,11 @@ import java.util.List;
 @Service
 public class InvoiceService {
 
-  @Autowired
   private final Database database;
-  @Autowired
   private final InvoiceValidator invoiceValidator;
 
   @Autowired
-  public InvoiceService(
-      Database database,
+  public InvoiceService(@Qualifier("inFileDatabase") Database database,
       InvoiceValidator invoiceValidator) {
     this.database = database;
     this.invoiceValidator = invoiceValidator;

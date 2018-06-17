@@ -291,4 +291,24 @@ public class InFileDatabaseTest {
       cleanTestFiles();
     }
   }
+
+  @Test
+  public void shouldGetAllInvoicesFromFile() {
+    try {
+      // /given
+      database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId3());
+      database.saveInvoice(InvoiceHelper.getSampleInvoiceWithId4());
+
+      //when
+      Collection<Invoice> result = database.getAll();
+
+      //then
+      assertNotNull(result);
+      assertFalse(result.isEmpty());
+      assertTrue(result.size() == 2);
+    } finally {
+      cleanTestFiles();
+    }
+  }
 }
