@@ -102,7 +102,8 @@ public class InvoiceHelper {
   public static Invoice getSampleInvoiceWithId5() {
     Company buyer = new Company("CompanyBuyerTest5", "5555555555", "Test Buyer Street 5", "55-555",
         "TestLocationBuyer4");
-    Company seller = new Company("CompanySellerTest5", "5555555555", "Test Seller Street 5", "55-555",
+    Company seller = new Company("CompanySellerTest5", "5555555555", "Test Seller Street 5",
+        "55-555",
         "TestLocationSeller4");
     return new Invoice(5, "TestIdentifier5", LocalDate.of(2018, Month.JANUARY, 1), buyer, seller,
         InvoiceHelper.getSampleEmptyInvoiceEntryList());
@@ -199,4 +200,41 @@ public class InvoiceHelper {
     entries.add(new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.ZERO));
     return entries;
   }
+
+  public static String simpleInvoiceId5Json() {
+    String simpleInvoiceId5Json =
+        "{\"id\":5,\"identifier\":\"TestIdentifier5\",\"issuedDate\":\"2018-01-01\",\""
+            + "buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\",\""
+            + "streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\",\""
+            + "location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\""
+            + "CompanySellerTest5\",\"taxId\":\"5555555555\",\"streetAndNumber\":\""
+            + "Test Seller Street 5\",\"postalCode\":\"55-555\",\"location\":\""
+            + "TestLocationSeller4\"},\"entries\":[]}";
+    return simpleInvoiceId5Json;
+  }
+
+  public static String simpleInvoiceId6Json() {
+    String simpleInvoiceId6Json =
+        "{\"id\":6,\"identifier\":\"TestIdentifier6\",\"issuedDate\":\"2018-01-10\",\""
+            + "buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\",\""
+            + "streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\",\""
+            + "location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\""
+            + "CompanySellerTest5\",\"taxId\":\"5555555555\",\"streetAndNumber\":\""
+            + "Test Seller Street 5\",\"postalCode\":\"55-555\",\"location\":\""
+            + "TestLocationSeller4\"},\"entries\":[]}";
+    return simpleInvoiceId6Json;
+  }
+
+  public static String simpleInvoiceId7Json() {
+    String simpleInvoiceId7Json =
+        "{\"id\":7,\"identifier\":\"TestIdentifier7\",\"issuedDate\":\"2018-02-02\",\""
+            + "buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\",\""
+            + "streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\",\""
+            + "location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\""
+            + "CompanySellerTest5\",\"taxId\":\"5555555555\",\"streetAndNumber\":\""
+            + "Test Seller Street 5\",\"postalCode\":\"55-555\",\"location\":\""
+            + "TestLocationSeller4\"},\"entries\":[]}";
+    return simpleInvoiceId7Json;
+  }
+
 }
