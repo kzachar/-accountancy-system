@@ -13,6 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,6 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnEmptyArrayWhenNothingWasAdded() throws Exception {
-
     mockMvc
         .perform(get(urlInvoices))
         .andDo(print())
@@ -51,8 +51,6 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnInvoiceWhichWasEarlierAdded() throws Exception {
-
-
     String postResponse = mockMvc
         .perform(post(urlInvoices)
             .content(
@@ -78,7 +76,6 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnTwoInvoicesWhichWereEarlierAdded() throws Exception {
-
     mockMvc
         .perform(post(urlInvoices)
             .content(
@@ -108,7 +105,6 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldRemoveInvoiceWhichWasEarlierAdded() throws Exception {
-
     mockMvc
         .perform(post(urlInvoices)
             .content(
@@ -134,11 +130,10 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnSpecificInvoiceWhichWasEarlierAdded() throws Exception {
-
     mockMvc
         .perform(post(urlInvoices)
             .content(
-               InvoiceHelper.simpleInvoiceId5Json())
+                InvoiceHelper.simpleInvoiceId5Json())
             .contentType(
                 MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
@@ -161,7 +156,6 @@ public class InvoiceControllerTest {
 
   @Test
   public void shouldReturnTwoInvoicesWithSetDateRangeThatWereEarlierAdded() throws Exception {
-
     mockMvc
         .perform(post("/invoices")
             .content(
@@ -191,15 +185,12 @@ public class InvoiceControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(2)))
-        .andExpect(jsonPath("$[0].identifier").value("TestIdentifier5"))
-        .andExpect(jsonPath("$[0].id", is(1)))
-        .andExpect(jsonPath("$[1].identifier").value("TestIdentifier6"))
-        .andExpect(jsonPath("$[1].id", is(2)));
+        .andExpect(jsonPath("$[*].identifier")
+            .value(Matchers.containsInAnyOrder("TestIdentifier5", "TestIdentifier6")));
   }
 
   @Test
   public void shouldReturnUpdatedInvoice() throws Exception {
-
     mockMvc
         .perform(post(urlInvoices)
             .content(
