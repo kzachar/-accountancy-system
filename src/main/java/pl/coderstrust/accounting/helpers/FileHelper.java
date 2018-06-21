@@ -13,6 +13,15 @@ import java.util.List;
 
 public class FileHelper {
 
+  public static void conditionsForExceptions(File file) {
+    if (!file.exists()) {
+      throw new IllegalArgumentException("No file under given path");
+    }
+    if (file.length() == 0) {
+      throw new IllegalArgumentException("List of invoices is empty");
+    }
+  }
+
   public static void writeToFile(List<String> lines, String filePath) throws IOException {
     if (lines == null) {
       throw new IllegalArgumentException("Parameter lines may not be null");
@@ -28,10 +37,10 @@ public class FileHelper {
     }
   }
 
-  public static List<String> readFromFile(String file) throws IOException {
+  public static List<String> readFromFile(String filePath) throws IOException {
     ArrayList<String> lines = new ArrayList<>();
-    if (new File(file).exists()) {
-      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+    if (new File(filePath).exists()) {
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
         String line;
         while ((line = bufferedReader.readLine()) != null) {
           lines.add(line);
@@ -39,35 +48,6 @@ public class FileHelper {
       }
     }
     return lines;
-  }
-
-  public static Invoice getInvoiceFromFileById(String filePath, int id) throws IOException {
-    boolean invoiceRemoved = false;
-    Invoice invoice = null;
-    File file = new File(filePath);
-    ArrayList<String> lines = new ArrayList<>();
-    if (!file.exists()) {
-      throw new IllegalArgumentException("No file under given path");
-    }
-    if (file.length() == 0) {
-      throw new IllegalArgumentException("List of invoices is empty");
-    } else {
-      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-          invoice = JsonConverter.fromJson(line);
-          if ((invoice.getId() == id)) {
-            lines.add(line);
-            invoiceRemoved = true;
-            return invoice;
-          }
-        }
-      }
-      if (!invoiceRemoved) {
-        throw new IllegalArgumentException("No invoice with given id in file");
-      }
-    }
-    return invoice;
   }
 
   public static void appendToFile(String line, String filePath)
@@ -84,30 +64,47 @@ public class FileHelper {
     }
   }
 
-  public static List<String> removeInvoiceFromFile(String filePath, int id) throws IOException {
+  public static void removeInvoiceFromFile(String filePath, int id) throws IOException {
     boolean invoiceRemoved = false;
-    ArrayList<String> lines = new ArrayList<>();
     File file = new File(filePath);
-    if (!file.exists()) {
-      throw new IllegalArgumentException("No file under given path");
-    }
-    if (file.length() == 0) {
-      throw new IllegalArgumentException("List of invoices is empty");
-    } else {
-      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
-        String line;
-        while ((line = bufferedReader.readLine()) != null) {
-          lines.add(line);
-          if ((JsonConverter.fromJson(line).getId() == id)) {
-            lines.remove(line);
-            invoiceRemoved = true;
-          }
-        }
+    conditionsForExceptions(file);
+    File tempFile = new File("tempFile.txt");
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(tempFile));
+    BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+    String line;
+    while ((line = bufferedReader.readLine()) != null) {
+      if ((JsonConverter.fromJson(line).getId() == id)) {
+        invoiceRemoved = true;
+        continue;
       }
-      if (!invoiceRemoved) {
-        throw new IllegalArgumentException("No invoice with given id in file");
+      bufferedWriter.write(line);
+      bufferedWriter.newLine();
+    }
+    bufferedReader.close();
+    bufferedWriter.close();
+    tempFile.renameTo(file);
+    if (!invoiceRemoved) {
+      throw new IllegalArgumentException("No invoice with given id in file");
+    }
+  }
+
+  public static Invoice getInvoiceFromFileById(String filePath, int id) throws IOException {
+    boolean invoiceInFile = false;
+    File file = new File(filePath);
+    Invoice invoiceFound = null;
+    conditionsForExceptions(file);
+    BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+    String line;
+    while ((line = bufferedReader.readLine()) != null) {
+      if (JsonConverter.fromJson(line).getId() == id) {
+        invoiceInFile = true;
+        invoiceFound = JsonConverter.fromJson(line);
       }
     }
-    return lines;
+    bufferedReader.close();
+    if (!invoiceInFile) {
+      throw new IllegalArgumentException("No invoice with given id in file");
+    }
+    return invoiceFound;
   }
 }
