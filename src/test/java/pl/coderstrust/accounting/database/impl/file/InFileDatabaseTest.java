@@ -18,6 +18,7 @@ import pl.coderstrust.accounting.model.Invoice;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RunWith(JUnitParamsRunner.class)
 public class InFileDatabaseTest {
@@ -50,7 +51,8 @@ public class InFileDatabaseTest {
       database.saveInvoice(invoice2);
 
       //then
-      String actual1 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(0);
+      List afterSaveList = FileHelper.readFromFile(DATABASE_FILE_PATH);
+      String actual1 = afterSaveList.get(0).toString();
       String expected1 = "{\"id\":0"
           + ",\"identifier\":\"TestIdentifier0\""
           + ",\"issuedDate\":\"" + LocalDate.now() + "\""
@@ -66,7 +68,7 @@ public class InFileDatabaseTest {
           + ",\"price\":10,\"vat\":5},{\"description\":\"Test Entry #4\""
           + ",\"price\":10,\"vat\":0}]}";
       assertThat(actual1, is((expected1)));
-      String actual2 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(1);
+      String actual2 = afterSaveList.get(1).toString();
       String expected2 = "{\"id\":1"
           + ",\"identifier\":\"TestIdentifier1\""
           + ",\"issuedDate\":\"" + LocalDate.now() + "\""
@@ -102,7 +104,6 @@ public class InFileDatabaseTest {
 
       //then
       assertNotNull(FileHelper.readFromFile(DATABASE_FILE_PATH).get(0));
-      assertNotNull(FileHelper.readFromFile(DATABASE_FILE_PATH).get(0));
     } finally {
       cleanTestFiles();
     }
@@ -123,7 +124,6 @@ public class InFileDatabaseTest {
   }
 
   @Test(expected = IllegalArgumentException.class)
-
   public void shouldThrowExceptionIfDatabaseFilePathIsNull() {
     //given
     database = new InFileDatabase(null, ID_FILE_PATH);
@@ -149,7 +149,6 @@ public class InFileDatabaseTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToRemove() throws IOException {
-
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -165,7 +164,6 @@ public class InFileDatabaseTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowAnExceptionIfNoInvoiceToRemove() throws IOException {
-
     //given
     database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
 
@@ -175,7 +173,6 @@ public class InFileDatabaseTest {
 
   @Test
   public void shouldRemoveInvoiceWithGivenIdWhenOneInvoiceInList() throws IOException {
-
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -194,7 +191,6 @@ public class InFileDatabaseTest {
 
   @Test
   public void shouldRemoveInvoiceWithGivenIdWhenManyInvoicesInList() throws IOException {
-
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -209,7 +205,8 @@ public class InFileDatabaseTest {
       database.removeInvoice(1);
 
       //then
-      String actual1 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(0);
+      List afterRemoveLines = FileHelper.readFromFile(DATABASE_FILE_PATH);
+      String actual1 = afterRemoveLines.get(0).toString();
       String expected1 = "{\"id\":0"
           + ",\"identifier\":\"TestIdentifier0\""
           + ",\"issuedDate\":\"" + LocalDate.now() + "\""
@@ -225,7 +222,7 @@ public class InFileDatabaseTest {
           + ",\"price\":10,\"vat\":5},{\"description\":\"Test Entry #4\""
           + ",\"price\":10,\"vat\":0}]}";
       assertThat(actual1, is(equalTo(expected1)));
-      String actual2 = FileHelper.readFromFile(DATABASE_FILE_PATH).get(1);
+      String actual2 = afterRemoveLines.get(1).toString();
       String expected2 = "{\"id\":2"
           + ",\"identifier\":\"TestIdentifier2\""
           + ",\"issuedDate\":\"" + LocalDate.now() + "\""
@@ -245,7 +242,6 @@ public class InFileDatabaseTest {
 
   @Test
   public void shouldGetInvoiceById() throws IOException {
-
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -272,7 +268,6 @@ public class InFileDatabaseTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowAnExceptionIfNoInvoiceWithGivenIdToGet() throws IOException {
-
     try {
       //given
       database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
@@ -288,7 +283,6 @@ public class InFileDatabaseTest {
 
   @Test(expected = IllegalArgumentException.class)
   public void shouldThrowAnExceptionIfNoInvoiceToGet() throws IOException {
-
     //given
     database = new InFileDatabase(DATABASE_FILE_PATH, ID_FILE_PATH);
 

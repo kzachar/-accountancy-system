@@ -15,10 +15,10 @@ public class InFileDatabase implements Database {
   private String idFilePath;
 
   public InFileDatabase(String databaseFilePath, String idFilePath) {
-    if (databaseFilePath == null || "".equals(databaseFilePath)) {
+    if (databaseFilePath == null || "" .equals(databaseFilePath)) {
       throw new IllegalArgumentException("Database filepath can't be empty");
     }
-    if (idFilePath == null || "".equals(idFilePath)) {
+    if (idFilePath == null || "" .equals(idFilePath)) {
       throw new IllegalArgumentException("ID filepath can't be empty");
     }
     this.databaseFilePath = databaseFilePath;
@@ -50,7 +50,7 @@ public class InFileDatabase implements Database {
   @Override
   public void removeInvoice(int id) {
     try {
-      FileHelper.writeToFile(FileHelper.removeInvoiceFromFile(databaseFilePath, id), databaseFilePath);
+      FileHelper.removeInvoiceFromFile(databaseFilePath, id);
     } catch (IOException ieox) {
       throw new RuntimeException(ieox);
     }
