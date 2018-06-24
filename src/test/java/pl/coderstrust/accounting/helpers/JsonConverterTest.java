@@ -53,7 +53,6 @@ public class JsonConverterTest {
       throws IOException {
 
     String stringToJson = JsonConverter.toJson(given);
-
     Assert.assertThat(expected, is(equalTo(stringToJson)));
   }
 

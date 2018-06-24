@@ -43,10 +43,10 @@ public class InvoiceHelper {
   }
 
   public static Invoice getSampleInvoiceWithId0() {
-    Company buyer = new Company("CompanyBuyerTest0", "000000000", "Test Buyer Street 0", "00000",
+    Company buyer = new Company("CompanyBuyerTest0", "000000000", "Test Buyer Street 0", "00-000",
         "TestLocationBuyer0");
     Company seller = new Company("CompanySellerTest0", "0000000000", "Test Seller Street 0",
-        "00000",
+        "00-000",
         "TestLocationSeller0");
     List<InvoiceEntry> entries = getSampleFourInvoiceEntriesList();
     return new Invoice(0, "TestIdentifier0", LocalDate.now(), buyer, seller, entries);
@@ -65,7 +65,8 @@ public class InvoiceHelper {
   public static Invoice getSampleInvoiceWithId2() {
     Company buyer = new Company("CompanyBuyerTest2", "2222222222", "Test Buyer Street 2", "22-222",
         "TestLocationBuyer2");
-    Company seller = new Company("CompanySellerTest2", "2222222222", "Test Seller Street 2", "22-222",
+    Company seller = new Company("CompanySellerTest2", "2222222222", "Test Seller Street 2",
+        "22-222",
         "TestLocationSeller2");
     InvoiceEntry entry = new InvoiceEntry("Test Entry #2", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
@@ -76,7 +77,8 @@ public class InvoiceHelper {
   public static Invoice getSampleInvoiceWithId3() {
     Company buyer = new Company("CompanyBuyerTest3", "3333333333", "Test Buyer Street 3", "33-333",
         "TestLocationBuyer3");
-    Company seller = new Company("CompanySellerTest3", "3333333333", "Test Seller Street 3", "33-333",
+    Company seller = new Company("CompanySellerTest3", "3333333333", "Test Seller Street 3",
+        "33-333",
         "TestLocationSeller3");
     InvoiceEntry entry = new InvoiceEntry("Test Entry #3", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
@@ -88,7 +90,8 @@ public class InvoiceHelper {
   public static Invoice getSampleInvoiceWithId4() {
     Company buyer = new Company("CompanyBuyerTest4", "4444444444", "Test Buyer Street 4", "44-444",
         "TestLocationBuyer4");
-    Company seller = new Company("CompanySellerTest4", "4444444444", "Test Seller Street 4", "44-444",
+    Company seller = new Company("CompanySellerTest4", "4444444444", "Test Seller Street 4",
+        "44-444",
         "TestLocationSeller4");
     InvoiceEntry entry = new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.REDUCED1);
     List<InvoiceEntry> entries = new ArrayList<>();
@@ -123,6 +126,49 @@ public class InvoiceHelper {
         InvoiceHelper.getSampleFourInvoiceEntriesList());
   }
 
+  public static Invoice getSampleInvoiceWithId8_WithSameBuyerWhatId7() {
+    Company buyer = new Company("CompanyBuyerTest7", "777777777", "Test Buyer Street 7", "77777",
+        "TestLocationBuyer4");
+    Company seller = new Company("CompanySellerTest8", "888888888", "Test Seller Street 8",
+        "88-888",
+        "TestLocationSeller8");
+    return new Invoice(8, "TestIdentifier8", LocalDate.of(2018, Month.JANUARY, 2), buyer, seller,
+        InvoiceHelper.getSampleFourInvoiceEntriesList());
+  }
+
+  public static Invoice getSampleInvoiceWithId9_WithSameSellerWhatId8() {
+    Company buyer = new Company("CompanyBuyerTest9", "999999999", "Test Buyer Street 9", "99-999",
+        "TestLocationBuyer9");
+    Company seller = new Company("CompanySellerTest8", "888888888", "Test Seller Street 8",
+        "88-888",
+        "TestLocationSeller8");
+    return new Invoice(8, "TestIdentifier9", LocalDate.of(2018, Month.MAY, 2), buyer, seller,
+        InvoiceHelper.getSampleFourInvoiceEntriesList());
+  }
+
+  public static Invoice getSampleInvoiceWithId1ForFindByDateRangeTest() {
+    Company buyer = new Company("CompanyBuyerTest1", "1111111111", "Test Buyer Street 1", "11-111",
+        "TestLocationBuyer1");
+    Company seller = new Company("CompanySellerTest1", "1111111111", "Test Seller Street 1",
+        "11-111",
+        "TestLocationSeller1");
+    List<InvoiceEntry> entries = getSampleFourInvoiceEntriesList();
+    return new Invoice(1, "TestIdentifier1", LocalDate.now().minusDays(5), buyer, seller, entries);
+  }
+
+  public static Invoice getSampleInvoiceWithId3ForFindByDateRangeTest() {
+    Company buyer = new Company("CompanyBuyerTest3", "3333333333", "Test Buyer Street 3", "33-333",
+        "TestLocationBuyer3");
+    Company seller = new Company("CompanySellerTest3", "3333333333", "Test Seller Street 3",
+        "33-333",
+        "TestLocationSeller3");
+    InvoiceEntry entry = new InvoiceEntry("Test Entry #3", BigDecimal.TEN, Vat.REDUCED1);
+    List<InvoiceEntry> entries = new ArrayList<>();
+    entries.add(entry);
+    return new Invoice(3, "TestIdentifier3", LocalDate.now().plusDays(10), buyer, seller,
+        entries);
+  }
+
   public static Company getSampleBuyer() {
     return new Company("CompanyBuyerTest4", "1444444444", "Test Buyer Street 4", "44-444",
         "TestLocationBuyer4");
@@ -153,5 +199,4 @@ public class InvoiceHelper {
     entries.add(new InvoiceEntry("Test Entry #4", BigDecimal.TEN, Vat.ZERO));
     return entries;
   }
-
 }
