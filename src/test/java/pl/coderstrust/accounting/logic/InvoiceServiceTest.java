@@ -55,8 +55,7 @@ public class InvoiceServiceTest {
     invoiceService.saveInvoice(sampleInvoice);
 
     //then
-    verify(invoiceValidatorMock, Mockito.times(0)).validateInvoiceForSave(sampleInvoice);
-    verify(databaseMock).saveInvoice(sampleInvoice);
+    verify(databaseMock, Mockito.times(1)).saveInvoice(sampleInvoice);
   }
 
   @Test
@@ -70,8 +69,9 @@ public class InvoiceServiceTest {
     invoiceService.saveInvoice(incorrectInvoice);
 
     //then
-    verify(invoiceValidatorMock, Mockito.times(0)).validateInvoiceForSave(incorrectInvoice);
-    verify(databaseMock, never()).saveInvoice(incorrectInvoice);
+    verify(databaseMock, Mockito.times(1)).saveInvoice(incorrectInvoice);
+    assertTrue(!invoiceValidatorMock.validateInvoiceForSave(incorrectInvoice).isEmpty());
+    verify(invoiceValidatorMock, Mockito.times(1)).validateInvoiceForSave(incorrectInvoice);
   }
 
   @Test
