@@ -4,7 +4,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +15,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pl.coderstrust.accounting.database.InMemoryDatabase;
 import pl.coderstrust.accounting.logic.InvoiceService;
 import pl.coderstrust.accounting.model.Invoice;
+import pl.coderstrust.accounting.model.validator.CompanyValidator;
+import pl.coderstrust.accounting.model.validator.InvoiceEntryValidator;
+import pl.coderstrust.accounting.model.validator.InvoiceValidator;
+import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -27,6 +31,10 @@ import java.util.Collection;
 @Api(value = "/{invoices}", description = "Operations in invoicing system")
 public class InvoiceController {
 
+  private final InvoiceValidator invoiceValidator = new InvoiceValidator(
+      new InvoiceEntryValidator(), new CompanyValidator());
+  private InvoiceService invoiceService = new InvoiceService(new InMemoryDatabase(),
+      new InvoiceValidator(new InvoiceEntryValidator(), new CompanyValidator()));
   @Autowired
   private InvoiceService invoiceService;
 
@@ -92,8 +100,13 @@ public class InvoiceController {
       @ApiResponse(code = 401, message = "Access unauthorized "),
       @ApiResponse(code = 403, message = "Access forbidden ")})
   @PostMapping
-  public int saveInvoice(@RequestBody Invoice invoice) {
-    return invoiceService.saveInvoice(invoice);
+  public ResponseEntity<?> saveInvoice(@RequestBody Invoice invoice) {
+    Collection<InvoiceValidationException> validationErrors = invoiceValidator
+        .validateInvoiceForSave(invoice);
+    if (validationErrors.isEmpty()) {
+      return ResponseEntity.ok(invoiceService.saveInvoice(invoice));
+    }
+    return ResponseEntity.badRequest().body(validationErrors);
   }
 
   @ApiOperation(value = "Remove invoice by id",

@@ -15,7 +15,6 @@ import pl.coderstrust.accounting.model.validator.CompanyValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceEntryValidator;
 import pl.coderstrust.accounting.model.validator.InvoiceValidator;
 import pl.coderstrust.accounting.model.validator.exception.CompanyValidationException;
-import pl.coderstrust.accounting.model.validator.exception.InvoiceEntryValidationException;
 import pl.coderstrust.accounting.model.validator.exception.InvoiceValidationException;
 
 import java.time.LocalDate;
@@ -47,7 +46,8 @@ public class InvoiceValidatorTest {
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);;
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -62,7 +62,8 @@ public class InvoiceValidatorTest {
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -76,7 +77,8 @@ public class InvoiceValidatorTest {
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -90,7 +92,8 @@ public class InvoiceValidatorTest {
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -104,7 +107,8 @@ public class InvoiceValidatorTest {
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForSave(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForSave(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -117,7 +121,8 @@ public class InvoiceValidatorTest {
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
         null, InvoiceHelper.getSampleSeller(), InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForSave(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForSave(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -130,7 +135,8 @@ public class InvoiceValidatorTest {
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), null, InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -143,7 +149,8 @@ public class InvoiceValidatorTest {
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(), null);
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
@@ -154,7 +161,8 @@ public class InvoiceValidatorTest {
   public void shouldReturnMultipleValidationExceptions() {
     Invoice testInvoice = new Invoice(null, null, null, null, null);
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(6, result.size());
@@ -164,7 +172,8 @@ public class InvoiceValidatorTest {
   public void shouldValidateCorrectInvoice() {
     Invoice testInvoice = InvoiceHelper.getSampleInvoiceWithId1();
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(0, result.size());
@@ -187,13 +196,13 @@ public class InvoiceValidatorTest {
     Invoice testInvoice = new Invoice(9, "Sample Identifier", LocalDate.of(2017, Month.JANUARY, 1),
         sampleBuyer, sampleSeller, InvoiceHelper.getSampleOneInvoiceEntryList());
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     Mockito.verify(companyValidatorMock).validate(sampleBuyer);
     Mockito.verify(companyValidatorMock).validate(sampleSeller);
     assertEquals(2, result.size());
-
   }
 
   @Test
@@ -203,12 +212,13 @@ public class InvoiceValidatorTest {
         InvoiceHelper.getSampleBuyer(), InvoiceHelper.getSampleSeller(),
         sampleListOfEntries);
 
-    List<InvoiceEntryValidationException> validationExceptions = new ArrayList<>();
-    validationExceptions.add(new InvoiceEntryValidationException("TEST_BUYER"));
+    List<String> validationExceptions = new ArrayList<>();
+    validationExceptions.add("TEST_BUYER");
     when(invoiceEntryValidatorMock.validate(sampleListOfEntries.get(0)))
         .thenReturn(validationExceptions);
 
-    Collection<InvoiceValidationException> result = invoiceValidator.validateInvoiceForUpdate(testInvoice);
+    Collection<InvoiceValidationException> result = invoiceValidator
+        .validateInvoiceForUpdate(testInvoice);
 
     assertNotNull(result);
     assertEquals(1, result.size());
