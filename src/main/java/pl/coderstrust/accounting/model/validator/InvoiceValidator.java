@@ -63,7 +63,7 @@ public class InvoiceValidator {
     } else {
       invoice.getEntries().forEach(invoiceEntry -> invoiceEntryValidator.validate(invoiceEntry)
           .forEach(validationException -> validationExceptions.add(new InvoiceValidationException(
-              "Validation of entry failed, message: " + validationException.getMessage()))));
+              "Validation of entry failed, message: " + validationException))));
     }
     if (invoice.getBuyer() == null) {
       validationExceptions.add(new InvoiceValidationException("Expected not empty buyer"));
