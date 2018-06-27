@@ -35,13 +35,9 @@ public class InvoiceController {
       new InvoiceEntryValidator(), new CompanyValidator());
   private InvoiceService invoiceService = new InvoiceService(new InMemoryDatabase(),
       new InvoiceValidator(new InvoiceEntryValidator(), new CompanyValidator()));
-  @Autowired
-  private InvoiceService invoiceService;
 
   @ApiOperation(value = "Find all invoices",
-      notes = "Method returns list of all invoices",
-      response = Invoice.class,
-      responseContainer = "List")
+      notes = "Method returns list of all invoices")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "All invoices"),
       @ApiResponse(code = 401, message = "Access unauthorized "),
@@ -53,9 +49,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Find invoices by id",
-      notes = "Method returns invoice with in demand id",
-      response = Invoice.class,
-      responseContainer = "List")
+      notes = "Method returns invoice with in demand id")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Found invoice"),
       @ApiResponse(code = 403, message = "Access forbidden "),
@@ -72,9 +66,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Find invoices from the date range",
-      notes = "Method returns all invoices from the date range",
-      response = Invoice.class,
-      responseContainer = "List")
+      notes = "Method returns all invoices from the date range")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Found invoices"),
       @ApiResponse(code = 400, message = "Bad format date, insert bad format, use format YYYY-MM-DD"),
@@ -91,9 +83,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Add invoice",
-      notes = "Method add new invoice",
-      response = Integer.class,
-      responseContainer = "int")
+      notes = "Method add new invoice")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Added new invoice"),
       @ApiResponse(code = 400, message = "Bad format invoice, use format json"),
@@ -110,9 +100,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Remove invoice by id",
-      notes = "Method remove exist invoice",
-      response = Void.class,
-      responseContainer = "void")
+      notes = "Method remove exist invoice")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Removed invoice"),
       @ApiResponse(code = 400, message = "Bad format date, use number"),
@@ -125,9 +113,7 @@ public class InvoiceController {
   }
 
   @ApiOperation(value = "Update invoice by id",
-      notes = "Method update exist invoice",
-      response = Void.class,
-      responseContainer = "void")
+      notes = "Method update exist invoice")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Updated invoice"),
       @ApiResponse(code = 401, message = "Access unauthorized "),
