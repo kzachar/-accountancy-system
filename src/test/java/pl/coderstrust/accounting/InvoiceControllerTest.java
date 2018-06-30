@@ -44,19 +44,15 @@ public class InvoiceControllerTest {
         .andDo(print())
         .andExpect(status().isOk())
         .andExpect(jsonPath("$", hasSize(0)))
-        .andExpect(
-            content().string(containsString("[]")
-            ));
+        .andExpect(content().string(containsString("[]")));
   }
 
   @Test
   public void shouldReturnInvoiceWhichWasEarlierAdded() throws Exception {
     String postResponse = mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId5Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId5Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk())
         .andReturn()
         .getResponse()
@@ -69,27 +65,21 @@ public class InvoiceControllerTest {
         .andExpect(jsonPath("$", hasSize(1)))
         .andExpect(jsonPath("$[0].identifier", is("TestIdentifier5")))
         .andExpect(jsonPath("$[0].id", is(Integer.valueOf(postResponse))))
-        .andExpect(
-            content().string(containsString("[]")
-            ));
+        .andExpect(content().string(containsString("[]")));
   }
 
   @Test
   public void shouldReturnTwoInvoicesWhichWereEarlierAdded() throws Exception {
     mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId5Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId5Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId6Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId6Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
@@ -107,18 +97,14 @@ public class InvoiceControllerTest {
   public void shouldRemoveInvoiceWhichWasEarlierAdded() throws Exception {
     mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId5Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId5Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
         .perform(delete(urlInvoices)
-            .content(
-                "1")
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content("1")
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
@@ -132,18 +118,14 @@ public class InvoiceControllerTest {
   public void shouldReturnSpecificInvoiceWhichWasEarlierAdded() throws Exception {
     mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId5Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId5Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId6Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId6Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
@@ -158,26 +140,20 @@ public class InvoiceControllerTest {
   public void shouldReturnTwoInvoicesWithSetDateRangeThatWereEarlierAdded() throws Exception {
     mockMvc
         .perform(post("/invoices")
-            .content(
-                InvoiceHelper.simpleInvoiceId5Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId5Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
         .perform(post("/invoices")
-            .content(
-                InvoiceHelper.simpleInvoiceId6Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId6Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
         .perform(post("/invoices")
-            .content(
-                InvoiceHelper.simpleInvoiceId7Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId7Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
@@ -193,24 +169,21 @@ public class InvoiceControllerTest {
   public void shouldReturnUpdatedInvoice() throws Exception {
     mockMvc
         .perform(post(urlInvoices)
-            .content(
-                InvoiceHelper.simpleInvoiceId5Json())
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .content(InvoiceHelper.simpleInvoiceId5Json())
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
         .perform(put(urlInvoices)
-            .content(
-                "{\"id\":1,\"identifier\":\"UpdatedIdentifier\",\"issuedDate\":\"2018-02-01\",\""
+            .content("{\"id\":1,\"identifier\":\"UpdatedIdentifier\",\"issuedDate\":\"2018-02-01\""
+                    + ",\""
                     + "buyer\":{\"name\":\"CompanyBuyerTest5\",\"taxId\":\"5555555555\",\""
                     + "streetAndNumber\":\"Test Buyer Street 5\",\"postalCode\":\"55-555\",\""
                     + "location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\""
                     + "CompanySellerTest5\",\"taxId\":\"5555555555\",\"streetAndNumber\":\""
                     + "Test Seller Street 5\",\"postalCode\":\"55-555\",\"location\":\""
                     + "TestLocationSeller4\"},\"entries\":[]}")
-            .contentType(
-                MediaType.APPLICATION_JSON_UTF8))
+            .contentType(MediaType.APPLICATION_JSON_UTF8))
         .andExpect(status().isOk());
 
     mockMvc
