@@ -1,5 +1,7 @@
 package pl.coderstrust.accounting.database.impl.file;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -29,6 +31,8 @@ public class InFileDatabase implements Database {
 
   private List<Invoice> invoices = new ArrayList<>();
 
+  private static Logger logger = LoggerFactory.getLogger(InFileDatabase.class);
+
   @Autowired
   public InFileDatabase(@Value("database.file.databaseFilePath") String databaseFilePath,
       @Value("database.file.idFilePath") String idFilePath) {
@@ -47,6 +51,7 @@ public class InFileDatabase implements Database {
     try {
       id = FileInvoiceHelper.getAndIncrementLastId(idFilePath);
     } catch (IOException ioex) {
+      logger.warn("IOException when opening idFile " + idFilePath, ioex);
       throw new RuntimeException("IOException when opening idFile " + idFilePath, ioex);
     }
     Invoice invoiceToWrite = new Invoice(id, invoice.getIdentifier(), invoice.getIssuedDate(),
