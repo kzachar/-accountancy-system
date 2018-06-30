@@ -29,7 +29,7 @@ public class SwaggerConfig {
   private ApiInfo apiInfo() {
     return new ApiInfo(
         "Adam-Kamil-Piotr REST API",
-        "System accounting of API.",
+        "Accounting system API.",
         "1.0",
         "Terms of service",
         new Contact("John Doe", "www.example.com", "myeaddress@company.com"),

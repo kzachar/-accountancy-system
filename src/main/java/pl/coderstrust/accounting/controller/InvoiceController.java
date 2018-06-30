@@ -28,7 +28,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/invoices")
-@Api(value = "/{invoices}", description = "Operations in invoicing system")
+@Api(value = "/{invoices}", description = "Operations on invoices")
 public class InvoiceController {
 
   private final InvoiceValidator invoiceValidator = new InvoiceValidator(
