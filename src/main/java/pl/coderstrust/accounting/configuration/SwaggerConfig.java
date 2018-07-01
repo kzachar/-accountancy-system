@@ -32,7 +32,7 @@ public class SwaggerConfig {
         "Accounting system API.",
         "1.0",
         "Terms of service",
-        new Contact("John Doe", "www.example.com", "myeaddress@company.com"),
+        new Contact("Blue Team", "www.blueteam.com", "blueteam@company.com"),
         "License of API", "API license URL", Collections.emptyList());
   }
 }
