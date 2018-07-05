@@ -83,6 +83,7 @@ public class FileHelper {
     bufferedReader.close();
     bufferedWriter.close();
     tempFile.renameTo(file);
+    tempFile.delete();
     if (!invoiceRemoved) {
       throw new IllegalArgumentException("No invoice with given id in file");
     }
