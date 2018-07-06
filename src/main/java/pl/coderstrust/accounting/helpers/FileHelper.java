@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FileHelper {
 
-  public static void checkIfFileExistOrIsEmpty(File file) {
+  private static void checkIfFileExistOrIsEmpty(File file) {
     if (!file.exists()) {
       throw new IllegalArgumentException("No file under given path");
     }
@@ -83,7 +83,11 @@ public class FileHelper {
     bufferedReader.close();
     bufferedWriter.close();
     file.delete();
-    tempFile.renameTo(file);
+    try {
+      tempFile.renameTo(file);
+    } catch (Exception ex) {
+      throw new IllegalArgumentException("File not renamed");
+    }
     if (!invoiceRemoved) {
       throw new IllegalArgumentException("No invoice with given id in file");
     }
