@@ -17,14 +17,10 @@ public class JsonConverter {
   }
 
   public static String toJson(Invoice invoice) throws IOException {
-
-    String json = mapper.writeValueAsString(invoice);
-    return json;
+    return mapper.writeValueAsString(invoice);
   }
 
   public static Invoice fromJson(String json) throws IOException {
-
-    Invoice invoiceFromJson = mapper.readValue(json, Invoice.class);
-    return invoiceFromJson;
+    return mapper.readValue(json, Invoice.class);
   }
 }
