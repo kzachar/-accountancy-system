@@ -245,4 +245,16 @@ public class InvoiceServiceAndDatabaseTest {
     assertEquals(1, (int) actual.getId());
     assertThat(actual.getIdentifier(), is(sampleInvoice.getIdentifier()));
   }
+
+  @Test
+  public void shoulssdGetAllInvoices() {
+    //given
+    System.out.println("{\"id\":6,\"identifier\":\"TestIdentifier6\",\"issuedDate\":\"2018-01-01\","
+        + "\"buyer\":{\"name\":\"CompanyBuyerTest6\",\"taxId\":\"666666666\","
+        + "\"streetAndNumber\":\"Test Buyer Street 6\",\"postalCode\":\"66666\","
+        + "\"location\":\"TestLocationBuyer4\"},\"seller\":{\"name\":\"CompanySellerTest6\","
+        + "\"taxId\":\"666666666\",\"streetAndNumber\":\"Test Seller Street 4\","
+        + "\"postalCode\":\"66666\",\"location\":\"TestLocationSeller4\"},"
+        + "\"entries\":[{\"description\":\"Test Entry #4\",\"price\":10,\"vat\":8}]}");
+  }
 }

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping("/invoices")
+@CrossOrigin
 @Api(value = "/{invoices}", description = "Operations on invoices")
 public class InvoiceController {
 

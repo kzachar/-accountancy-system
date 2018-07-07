@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="demo">
+<head>
+  <title>Hello AngularJS</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+  <script src="hello.js"></script>
+</head>
+
+<body ng-controller="Hello">
+<div>
+  <p>The ID is {{invoices[0].id}}</p>
+  <p>The content is {{invoices[0].identifier}}</p>
+</div>
+
+
+<h1 ng-repeat="invoice in invoices">{{invoice}}</h1>
+
+<table>
+  <tr>
+    <th>ID</th>
+    <th>Identifier</th>
+    <th>Issue date</th>
+    <th>buyer</th>
+    <th>seller</th>
+    <th>entries</th>
+  </tr>
+  <tr ng-repeat="invoice in invoices">
+    <td>{{invoice.id}}</td>
+    <td>{{invoice.identifier}}</td>
+    <td>{{invoice.issuedDate}}</td>
+    <td>
+      <pre>{{invoice.buyer | json}}</pre>
+    </td>
+    <td>
+      <pre>{{invoice.seller | json}}</pre>
+    </td>
+    <td>
+      <ul>
+        <li ng-repeat="entry in invoice.entries">
+          <pre>{{entry | json}}</pre>
+        </li>
+      </ul>
+    </td>
+  </tr>
+
+</table>
+
+<form action="http://localhost:8080/invoices" method="post">
+  ID:<br>
+  <input type="text" name="invoices.id"><br>
+  Identifier:<br>
+  <input type="text" name="lastname">
+</form>
+
+</body>
+</html>
