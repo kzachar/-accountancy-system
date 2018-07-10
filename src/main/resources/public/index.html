@@ -1,56 +1,119 @@
-<!doctype html>
-<html ng-app="demo">
+<!DOCTYPE html>
+
+<html>
+
 <head>
-  <title>Hello AngularJS</title>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
-  <script src="hello.js"></script>
+
+  <title>
+
+    AngularJs $http.post() Service Response Example
+
+  </title>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+  <script type="text/javascript">
+
+var app = angular.module('postserviceApp', []);
+
+app.controller('postserviceCtrl', function ($scope, $http) {
+
+$scope.id = null;
+
+$scope.identifier = null;
+
+$scope.issuedDate = null;
+
+$scope.buyer = null;
+
+$scope.name = name;
+
+$scope.lblMsg = null;
+
+$scope.postdata = function (id, identifier, issuedDate, buyer, name, taxId, streetAndNumber, postalCode, location, seller, name2, taxId2, streetAndNumber2, postalCode2, location2, entries) {
+
+var data = {
+
+id: id,
+
+identifier: identifier,
+
+issuedDate: issuedDate,
+
+buyer: {name:name, taxId: taxId, streetAndNumber: streetAndNumber, postalCode: postalCode, location: location},
+
+seller: {name2:name2, taxId2: taxId2, streetAndNumber2: streetAndNumber2, postalCode2: postalCode2, location2: location2},
+
+entries: entries,
+};
+
+//Call the services
+
+$http.post('http://localhost:8080/invoices', JSON.stringify(data)).then(function (response) {
+
+if (response.data)
+
+$scope.msg = "Post Data Submitted Successfully!";
+
+}, function (response) {
+
+$scope.msg = "Service not Exists";
+
+$scope.statusval = response.status;
+
+$scope.statustext = response.statusText;
+
+$scope.headers = response.headers();
+
+});
+
+};
+
+});
+
+</script>
+
 </head>
 
-<body ng-controller="Hello">
-<div>
-  <p>The ID is {{invoices[0].id}}</p>
-  <p>The content is {{invoices[0].identifier}}</p>
+<body>
+
+<div ng-app="postserviceApp" ng-controller="postserviceCtrl">
+
+  <div>
+
+    id : <input ng-model="id" /><br/><br/>
+
+    identifier : <input ng-model="identifier" /><br/><br/>
+
+    issuedDate : <input ng-model="issuedDate" /><br/><br/>
+
+    Buyer: name : <input ng-model="name" /><br/><br/>
+    Buyer: taxId : <input ng-model="taxId" /><br/><br/>
+    Buyer: streetAndNumber : <input ng-model="streetAndNumber" /><br/><br/>
+    Buyer: postalCode : <input ng-model="postalCode" /><br/><br/>
+    Buyer: location : <input ng-model="location" /><br/><br/>
+    Seller: name : <input ng-model="name2" /><br/><br/>
+    Seller: taxId : <input ng-model="taxId2" /><br/><br/>
+    Seller: streetAndNumber : <input ng-model="streetAndNumber2" /><br/><br/>
+    Seller: postalCode : <input ng-model="postalCode2" /><br/><br/>
+    Seller: location : <input ng-model="location2" /><br/><br/>
+    entries : <input ng-model="entries" /><br/><br/>
+
+
+    <input type="button" value="Send" ng-click="postdata(id, identifier, issuedDate, buyer, name, taxId, streetAndNumber, postalCode, location, seller, name2, taxId2, streetAndNumber2, postalCode2, location2, entries)" /> <br/><br/>
+
+  </div>
+
+  <p>Output Message : {{msg}}</p>
+
+  <p>StatusCode: {{statusval}}</p>
+
+  <p>Status: {{statustext}}</p>
+
+  <p>Response Headers: {{headers}}</p>
+
 </div>
 
-
-<h1 ng-repeat="invoice in invoices">{{invoice}}</h1>
-
-<table>
-  <tr>
-    <th>ID</th>
-    <th>Identifier</th>
-    <th>Issue date</th>
-    <th>buyer</th>
-    <th>seller</th>
-    <th>entries</th>
-  </tr>
-  <tr ng-repeat="invoice in invoices">
-    <td>{{invoice.id}}</td>
-    <td>{{invoice.identifier}}</td>
-    <td>{{invoice.issuedDate}}</td>
-    <td>
-      <pre>{{invoice.buyer | json}}</pre>
-    </td>
-    <td>
-      <pre>{{invoice.seller | json}}</pre>
-    </td>
-    <td>
-      <ul>
-        <li ng-repeat="entry in invoice.entries">
-          <pre>{{entry | json}}</pre>
-        </li>
-      </ul>
-    </td>
-  </tr>
-
-</table>
-
-<form action="http://localhost:8080/invoices" method="post">
-  ID:<br>
-  <input type="text" name="invoices.id"><br>
-  Identifier:<br>
-  <input type="text" name="lastname">
-</form>
-
 </body>
+
 </html>

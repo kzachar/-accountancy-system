@@ -5,4 +5,14 @@ angular.module('demo', [])
         function(response) {
             $scope.invoices = response.data;
         });
+
+         function myController($scope){
+          $scope.submitMyForm=function(){
+          /* while compiling form , angular created this object*/
+          var data=$scope.fields;
+          /* post to server*/
+          $http.post('http://localhost:8080/invoices', data);
+          }
+
+
 });
