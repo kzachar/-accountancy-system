@@ -1,119 +1,47 @@
 <!DOCTYPE html>
-
 <html>
-
 <head>
-
   <title>
-
     AngularJs $http.post() Service Response Example
-
   </title>
-
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
-
-  <script type="text/javascript">
-
-var app = angular.module('postserviceApp', []);
-
-app.controller('postserviceCtrl', function ($scope, $http) {
-
-$scope.id = null;
-
-$scope.identifier = null;
-
-$scope.issuedDate = null;
-
-$scope.buyer = null;
-
-$scope.name = name;
-
-$scope.lblMsg = null;
-
-$scope.postdata = function (id, identifier, issuedDate, buyer, name, taxId, streetAndNumber, postalCode, location, seller, name2, taxId2, streetAndNumber2, postalCode2, location2, entries) {
-
-var data = {
-
-id: id,
-
-identifier: identifier,
-
-issuedDate: issuedDate,
-
-buyer: {name:name, taxId: taxId, streetAndNumber: streetAndNumber, postalCode: postalCode, location: location},
-
-seller: {name2:name2, taxId2: taxId2, streetAndNumber2: streetAndNumber2, postalCode2: postalCode2, location2: location2},
-
-entries: entries,
-};
-
-//Call the services
-
-$http.post('http://localhost:8080/invoices', JSON.stringify(data)).then(function (response) {
-
-if (response.data)
-
-$scope.msg = "Post Data Submitted Successfully!";
-
-}, function (response) {
-
-$scope.msg = "Service not Exists";
-
-$scope.statusval = response.status;
-
-$scope.statustext = response.statusText;
-
-$scope.headers = response.headers();
-
-});
-
-};
-
-});
-
-</script>
-
+  <script src="content.js" type="text/javascript"></script>
 </head>
-
+<style>
+      .content {
+      max-width: 500px;
+      margin: auto;
+      }
+   </style>
 <body>
-
-<div ng-app="postserviceApp" ng-controller="postserviceCtrl">
-
-  <div>
-
-    id : <input ng-model="id" /><br/><br/>
-
-    identifier : <input ng-model="identifier" /><br/><br/>
-
-    issuedDate : <input ng-model="issuedDate" /><br/><br/>
-
-    Buyer: name : <input ng-model="name" /><br/><br/>
-    Buyer: taxId : <input ng-model="taxId" /><br/><br/>
-    Buyer: streetAndNumber : <input ng-model="streetAndNumber" /><br/><br/>
-    Buyer: postalCode : <input ng-model="postalCode" /><br/><br/>
-    Buyer: location : <input ng-model="location" /><br/><br/>
-    Seller: name : <input ng-model="name2" /><br/><br/>
-    Seller: taxId : <input ng-model="taxId2" /><br/><br/>
-    Seller: streetAndNumber : <input ng-model="streetAndNumber2" /><br/><br/>
-    Seller: postalCode : <input ng-model="postalCode2" /><br/><br/>
-    Seller: location : <input ng-model="location2" /><br/><br/>
-    entries : <input ng-model="entries" /><br/><br/>
-
-
-    <input type="button" value="Send" ng-click="postdata(id, identifier, issuedDate, buyer, name, taxId, streetAndNumber, postalCode, location, seller, name2, taxId2, streetAndNumber2, postalCode2, location2, entries)" /> <br/><br/>
-
+<div class="content">
+  <P><img src="blue.png" alt="blue" style="width:300px;height:400px;" align="middle"></P>
+  <br/><br/>
+  <div ng-app="postserviceApp" ng-controller="postserviceCtrl">
+    <div>
+      <b>ID : <input ng-model="id" /><br/><br/>
+        Identifier : <input ng-model="identifier" /><br/><br/>
+        IssuedDate : <input ng-model="issuedDate" type="text" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])"/><br/><br/>
+        <font color="darkblue"> Buyer: Name : <input ng-model="name" /><br/><br/>
+          Buyer: TaxId : <input ng-model="taxId" type="text" pattern="[0-9]{10}" title="10 digits number"/><br/><br/>
+          Buyer: StreetAndNumber : <input ng-model="streetAndNumber" /><br/><br/>
+          Buyer: PostalCode : <input ng-model="postalCode" type="text" pattern="[0-9]{2}-[0-9]{3}"/><br/><br/>
+          Buyer: Location : <input ng-model="location" /></font><br/><br/>
+        <font color="darkgreen">Seller: Name : <input ng-model="name2" /><br/><br/>
+          Seller: TaxId : <input ng-model="taxId2" type="text" pattern="[0-9]{10}" title="10 digits number"/><br/><br/>
+          Seller: StreetAndNumber : <input ng-model="streetAndNumber2" /><br/><br/>
+          Seller: PostalCode : <input ng-model="postalCode2" type="text" pattern="[0-9]{2}-[0-9]{3}" /><br/><br/>
+          Seller: Location : <input ng-model="location2" /></font><br/><br/>
+        Entries : <input ng-model="entries" /><br/><br/></b>
+      <input type="button" value="Send" ng-click="postdata(id, identifier, issuedDate, buyer, name,
+                  taxId, streetAndNumber, postalCode, location, seller, name2, taxId2, streetAndNumber2,
+                  postalCode2, location2, entries)" /> <br/><br/>
+    </div>
+    <p>Output Message : {{msg}}</p>
+    <p>StatusCode: {{statusval}}</p>
+    <p>Status: {{statustext}}</p>
+    <p>Response Headers: {{headers}}</p>
   </div>
-
-  <p>Output Message : {{msg}}</p>
-
-  <p>StatusCode: {{statusval}}</p>
-
-  <p>Status: {{statustext}}</p>
-
-  <p>Response Headers: {{headers}}</p>
-
 </div>
-
 </body>
-
 </html>
